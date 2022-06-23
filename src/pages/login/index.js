@@ -22,9 +22,6 @@ function Login() {
             return
         }
         AuthService.login(accessToken).then(({data})=>{
-            console.log(data)
-            
-            
             setToken(data.token)
             navigate("test")
         });
