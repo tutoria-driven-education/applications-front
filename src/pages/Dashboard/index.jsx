@@ -30,14 +30,11 @@ function Dashboard() {
     { label: "Aplicações em parceiras", value: "inPartner" },
     { label: "Aplicações em outras", value: "inOther" }
   ]
-  const mentors = []
-
 
   useEffect(() => {
     const api = getApplications()
     api.then(response => {
       const otherOptions = response.data.mentors.map(mentor => {
-        mentors.push(mentor.name)
         return {
           label: mentor.name,
           value: mentor.name
@@ -81,8 +78,6 @@ function Dashboard() {
     setValueRangeDisplay({
       label: "Total de aplicações", value: "all"
     })
-    console.log(event.value)
-    console.log(mentorInfo)
     setInfoDisplay(mentorInfo.amounts)
   }
 
