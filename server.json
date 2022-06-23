@@ -1,0 +1,132 @@
+{
+  "applications": {
+    "amountApplications": 100,
+    "applicationsInCompanyPartner": {
+      "amounts": {
+        "total": 70,
+        "analyticCurriculum": 0,
+        "stageBehavioral": 0,
+        "match": 0,
+        "notMatch": 0,
+        "giveUp": 0
+      }
+    },
+    "amountApplicationsInOtherCompany": {
+      "amounts": {
+        "total": 70,
+        "analyticCurriculum": 0,
+        "stageBehavioral": 0,
+        "match": 0,
+        "notMatch": 0,
+        "giveUp": 0
+      }
+    },
+    "mentors": [
+      {
+        "name": "nina",
+        "amounts": {
+          "total": 20,
+          "analyticCurriculum": 0,
+          "stageBehavioral": 0,
+          "match": 0,
+          "notMatch": 0,
+          "giveUp": 0
+        }
+      },
+      {
+        "name": "nati",
+        "amounts": {
+          "total": 20,
+          "analyticCurriculum": 0,
+          "stageBehavioral": 0,
+          "match": 0,
+          "notMatch": 0,
+          "giveUp": 0
+        }
+      }
+    ]
+  },
+  "applications-legacy": [
+    {
+      "id": 1,
+      "company_id": 1,
+      "user_id": 1,
+      "job_id": 1,
+      "status_id": false,
+      "link": "http://batatinha.com",
+      "date": "2022-06-22",
+      "profile": true,
+      "technic": false,
+      "behavior": false,
+      "company": {
+        "id": 1,
+        "name": " batata LTD",
+        "is_partner": true
+      },
+      "user": {
+        "id": 1,
+        "name": "xuxu",
+        "access_token": "jlakjalfjljfaljflakjla",
+        "is_mentor": false,
+        "mentor": {
+          "id": 2,
+          "name": "nina"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "company_id": 1,
+      "user_id": 2,
+      "job_id": 1,
+      "status_id": false,
+      "link": "http://batatinha.com",
+      "date": "2022-06-22",
+      "profile": true,
+      "technic": false,
+      "behavior": false,
+      "company": {
+        "id": 1,
+        "name": " batata LTD",
+        "is_partner": true
+      },
+      "user": {
+        "id": 2,
+        "name": "xuxu",
+        "access_token": "jlakjalfjljfaljflakjla",
+        "is_mentor": false,
+        "mentor": {
+          "id": 2,
+          "name": "nina"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "company_id": 1,
+      "user_id": 3,
+      "job_id": 1,
+      "status_id": false,
+      "link": "http://batatinha.com",
+      "date": "2022-06-22",
+      "profile": true,
+      "technic": false,
+      "behavior": false,
+      "company": {
+        "id": 1,
+        "name": " batata LTD",
+        "is_partner": true
+      },
+      "user": {
+        "id": 3,
+        "name": "xuxu",
+        "access_token": "jlakjalfjljfaljflakjla",
+        "is_mentor": false,
+        "mentor": {
+          "id": 2,
+          "name": "nina"
+        }
+      }
+    }
+  ]
+}
