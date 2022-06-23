@@ -7,8 +7,8 @@ import {useNavigate} from "react-router-dom"
 
 
 function Login() {
-    
     const [inputValue, setInputValue] = useState("");
+    const [warning, setWarning] = useState(false);
     const {setToken} = useContext(AuthContext);
     let navigate = useNavigate();
 
@@ -17,6 +17,10 @@ function Login() {
 
         const accessToken = inputValue;
 
+        if(accessToken.length < 30){
+            setWarning(true);
+            return
+        }
         AuthService.login(accessToken).then(({data})=>{
             console.log(data)
             
@@ -29,6 +33,7 @@ function Login() {
     return <PageBody>
         <Header />
         <Box onSubmit={submitInput}>
+            {warning && <p>A senha de acesso está incorreta ou inválida</p>}
             <input onChange={(e) => setInputValue(e.target.value)} value={inputValue} placeholder="Senha de acesso"/>
             <button type="submit">Entrar</button>
         </Box>
@@ -44,7 +49,7 @@ const PageBody = styled.div`
 `;
 
 const Box = styled.form`
-    width: 300px;
+    width: 350px;
     height: 250px;
     background-color: #525268;
     margin:0 auto;
@@ -56,9 +61,9 @@ const Box = styled.form`
     border-radius:15px ;
 
     input {
-        width:250px;
+        width:300px;
         height:35px;
-        font-size:20px;
+        font-size:14px;
         border: none;
         border-radius: 5px;
         ::placeholder{
@@ -77,6 +82,13 @@ const Box = styled.form`
         color:whitesmoke;
         background-color:#FF7BBD;
         border-radius: 15px;
+
+        :hover{
+            background-color:#FF8BCD; ;
+        }
     }
 
+    p {
+        color: red;
+    }
 `;
