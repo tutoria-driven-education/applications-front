@@ -1,17 +1,40 @@
+import { useContext, useState } from "react";
 import styled from "styled-components"
 import Header from "../../components/Header";
+import AuthContext from "../../contexts/AuthContext";
+import AuthService from "../../services/AuthServices";
+import {useNavigate} from "react-router-dom"
+
+
 function Login() {
+    
+    const [inputValue, setInputValue] = useState("");
+    const {setToken} = useContext(AuthContext);
+    let navigate = useNavigate();
+
+    function submitInput(event){
+        event.preventDefault();
+
+        const accessToken = inputValue;
+
+        AuthService.login(accessToken).then(({data})=>{
+            console.log(data)
+            
+            
+            setToken(data.token)
+            navigate("test")
+        });
+    } 
+
     return <PageBody>
         <Header />
-
-        <Box>
-            <input placeholder="Senha de acesso"/>
-            <button>Entrar</button>
+        <Box onSubmit={submitInput}>
+            <input onChange={(e) => setInputValue(e.target.value)} value={inputValue} placeholder="Senha de acesso"/>
+            <button type="submit">Entrar</button>
         </Box>
-
     </PageBody>;
   }
-  
+
 export default Login;
 
 const PageBody = styled.div`
@@ -20,7 +43,7 @@ const PageBody = styled.div`
     background-color: #000;
 `;
 
-const Box = styled.div`
+const Box = styled.form`
     width: 300px;
     height: 250px;
     background-color: #525268;
