@@ -21,7 +21,7 @@ export default function MentoringGrouops() {
 }
 
 const Container = styled.div`
-  height: 100vh;
+  height: 86vh;
   width: 100vw;
 
   display: flex;

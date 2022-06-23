@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 export default function NavButton({ route, buttonText }) {
@@ -27,6 +26,7 @@ const Container = styled.button`
   font-size: 1.5rem;
   font-weight: 700;
   color: #000;
+  line-height: 1rem;
 
   border: none;
   height: 100%;

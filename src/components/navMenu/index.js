@@ -13,7 +13,7 @@ export default function NavMenu() {
 }
 
 const Container = styled.nav`
-  height: 7vh;
+  height: 5vh;
   width: 100vw;
 
   display: flex;
