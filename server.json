@@ -1,0 +1,58 @@
+{
+  "applications": {
+    "allApplications": {
+      "amounts": {
+        "total": 100,
+        "analyticCurriculum": 1,
+        "stageBehavioral": 2,
+        "match": 20,
+        "notMatch": 4,
+        "giveUp": 2
+      }
+    },
+    "applicationsInCompanyPartner": {
+      "amounts": {
+        "total": 70,
+        "analyticCurriculum": 1,
+        "stageBehavioral": 1,
+        "match": 10,
+        "notMatch": 2,
+        "giveUp": 1
+      }
+    },
+    "applicationsInOtherCompany": {
+      "amounts": {
+        "total": 30,
+        "analyticCurriculum": 0,
+        "stageBehavioral": 1,
+        "match": 20,
+        "notMatch": 2,
+        "giveUp": 1
+      }
+    },
+    "mentors": [
+      {
+        "name": "nina",
+        "amounts": {
+          "total": 35,
+          "analyticCurriculum": 0,
+          "stageBehavioral": 0,
+          "match": 0,
+          "notMatch": 0,
+          "giveUp": 0
+        }
+      },
+      {
+        "name": "nati",
+        "amounts": {
+          "total": 20,
+          "analyticCurriculum": 0,
+          "stageBehavioral": 0,
+          "match": 0,
+          "notMatch": 0,
+          "giveUp": 0
+        }
+      }
+    ]
+  }
+}
