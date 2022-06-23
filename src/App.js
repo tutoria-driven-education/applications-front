@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Banner from "./components/Banner";
 import NavMenu from "./components/navMenu";
-import { MentoringGrouops } from "./pages";
+import { MentoringGrouops, PartnerCompanies } from "./pages";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
       <NavMenu />
       <Routes>
         <Route path="/mentoring-groups" element={<MentoringGrouops />}></Route>
+        <Route path="/partner-companies" element={<PartnerCompanies />}></Route>
       </Routes>
     </BrowserRouter>
   );

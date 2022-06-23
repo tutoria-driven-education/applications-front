@@ -1,3 +1,4 @@
 import MentoringGrouops from "./mentoringGroups";
+import PartnerCompanies from "./partnerCompanies";
 
-export {MentoringGrouops}
+export { MentoringGrouops, PartnerCompanies };
