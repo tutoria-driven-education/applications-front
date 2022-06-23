@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
 const StyledSection = styled.section`
-  padding: 0 2rem;
+  padding: 2rem;
   height: 15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const SectionTitle = styled.h2`
