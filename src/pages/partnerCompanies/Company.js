@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AuthContext from "../../contexts/AuthContext";
 import CompaniesService from "../../services/CompaniesServices";
 import { ThreeDots } from "react-loader-spinner";
+import { toast } from "react-toastify";
 
 export default function Company({ id, name, isPartner, reloadCompanies }) {
   const [isChecked, setIsChecked] = useState(isPartner);
@@ -17,7 +18,7 @@ export default function Company({ id, name, isPartner, reloadCompanies }) {
         setIsLoading(false);
       })
       .catch(() => {
-        alert("Erro inesperado");
+        toast.warn("Erro inesperado");
         setIsLoading(false);
       });
   };

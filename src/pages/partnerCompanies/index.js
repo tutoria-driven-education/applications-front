@@ -4,12 +4,21 @@ import CompaniesService from "../../services/CompaniesServices";
 import Company from "./Company";
 import { ThreeDots } from "react-loader-spinner";
 import AuthContext from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function PartnerCompanies() {
   // eslint-disable-next-line no-unused-vars
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useContext(AuthContext);
+  const { isMentor } = useContext(UserContext);
+  const nav = useNavigate();
+
+  if (!isMentor) {
+    nav("/");
+  }
 
   useEffect(() => {
     CompaniesService.getAll(token)
@@ -19,7 +28,7 @@ export default function PartnerCompanies() {
       })
       .catch(() => {
         setIsLoading(false);
-        alert("Erro Inesperado");
+        toast.warn("Erro inesperado");
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
