@@ -1,7 +1,21 @@
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API,
 });
 
-export default instance;
+/**
+ * @typedef { import("../../@types/index").ApplicationResponse } ApplicationResponse
+ */
+
+/**
+ * 
+ * @returns {import("axios").AxiosPromise<ApplicationResponse>}
+ * 
+ */
+export function getApplications() {
+  return api.get("/applications")
+}
+
+export { api }
+

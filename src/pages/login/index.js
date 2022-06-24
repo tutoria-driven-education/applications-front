@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
 import styled from "styled-components"
-import Header from "../../components/Header";
 import AuthContext from "../../contexts/AuthContext";
 import AuthService from "../../services/AuthServices";
 import {useNavigate} from "react-router-dom"
-
 
 function Login() {
     const [inputValue, setInputValue] = useState("");
@@ -23,12 +21,11 @@ function Login() {
         }
         AuthService.login(accessToken).then(({data})=>{
             setToken(data.token)
-            navigate("test")
+            navigate("dashboard")
         });
     } 
 
     return <PageBody>
-        <Header />
         <Box onSubmit={submitInput}>
             {warning && <p>A senha de acesso está incorreta ou inválida</p>}
             <input onChange={(e) => setInputValue(e.target.value)} value={inputValue} placeholder="Senha de acesso"/>
@@ -41,8 +38,11 @@ export default Login;
 
 const PageBody = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 93vh;
     background-color: #000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 `;
 
 const Box = styled.form`
@@ -50,7 +50,6 @@ const Box = styled.form`
     height: 250px;
     background-color: #525268;
     margin:0 auto;
-    margin-top:150px;
     display:flex;
     flex-direction: column;
     justify-content: space-around;
