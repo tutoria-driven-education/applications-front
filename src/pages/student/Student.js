@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader, Section } from "../../components";
 import { Form } from "../../components/FormData";
 import { List } from "../../components/ListComponents";
+import AuthContext from "../../contexts/AuthContext";
 import Applications from "../../services/ApplicationsService";
 import CompaniesService from "../../services/CompaniesService";
 import { Container } from "./Student.style";
@@ -37,6 +38,8 @@ const StudentHomepage = () => {
   const [companies, setCompanies] = useState(undefined);
   const [applications, setApplications] = useState(undefined);
   const [isWaiting, setIsWaiting] = useState(false);
+  const context = useContext(AuthContext);
+  console.log(context);
 
   useEffect(() => {
     const promise = CompaniesService.getCompanies();
@@ -45,6 +48,7 @@ const StudentHomepage = () => {
 
     Applications.getAllApplications()
       .then(({ data }) => {
+        console.log(data);
         setApplications(data);
       })
       .catch(({ response }) => {
@@ -69,7 +73,11 @@ const StudentHomepage = () => {
 
   return (
     <Container>
-      <Form data={companies} title="Adicionar nova aplicação:" />
+      <Form
+        data={companies}
+        title="Adicionar nova aplicação:"
+        token={context.token}
+      />
       <Section title="Aplicações">
         {!applications ? (
           <Loader />

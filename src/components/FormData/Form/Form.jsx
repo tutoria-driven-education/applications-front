@@ -1,17 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import AuthContext from "../../../contexts/AuthContext";
 import Applications from "../../../services/ApplicationsService";
 import { Autocomplete, DatePicker, Input, Button } from "../index";
 import { Form, Row, FormTitle, CustomLoader } from "./Form.styles";
 
-const CustomForm = ({ data, title }) => {
+const CustomForm = ({ data, title, token }) => {
   const [company, setCompany] = useState("");
   const [job, setJob] = useState("");
   const [link, setLink] = useState("");
   const [date, setDate] = useState(null);
   const [disable, setDisable] = useState(true);
-  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     if (company && job && link && date) setDisable(false);
@@ -25,7 +23,7 @@ const CustomForm = ({ data, title }) => {
       toast.warn("Por favor, preencha todos os campos corretamente!");
       return;
     }
-
+    console.log(token);
     Applications.postNewApplication(
       {
         company,
@@ -35,7 +33,7 @@ const CustomForm = ({ data, title }) => {
       },
       token
     )
-      .then(({ _data }) => toast.success("Aplicação salva com sucesso"))
+      .then(() => toast.success("Aplicação salva com sucesso"))
       .catch(({ response }) => toast.error(response?.message));
   }
 
