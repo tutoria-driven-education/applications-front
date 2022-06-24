@@ -3,11 +3,14 @@ import styled from "styled-components";
 import AuthContext from "../../contexts/AuthContext";
 import AuthService from "../../services/AuthServices";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/UserContext";
+
 
 function Login() {
   const [inputValue, setInputValue] = useState("");
   const [warning, setWarning] = useState(false);
   const { setToken } = useContext(AuthContext);
+  const { setIsMentor } = useContext(UserContext);
   let navigate = useNavigate();
 
   function submitInput(event) {
@@ -20,9 +23,9 @@ function Login() {
       return;
     }
     AuthService.login(accessToken).then(({ data }) => {
-      console.log(data);
       setToken(data.token);
-      navigate("student");
+      navigate("student");      
+      setIsMentor(data.is_mentor);
     });
   }
 

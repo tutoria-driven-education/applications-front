@@ -9,8 +9,12 @@ export default class Applications {
     });
   }
 
-  static getAllApplications() {
-    return api.get("/applicationssss");
+  static getAllApplications(token) {
+    return api.get("/application", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
   static updateApplicationField(id, data) {

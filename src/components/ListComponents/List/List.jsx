@@ -7,7 +7,7 @@ const List = ({ array, updateApplication, isWaiting, setApplications }) => {
 
   useEffect(() => {
     setApplications([...array]);
-  }, [flag]);
+  }, [flag]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ListContainer>

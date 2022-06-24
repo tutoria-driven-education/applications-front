@@ -4,7 +4,7 @@ import Applications from "../../../services/ApplicationsService";
 import { Autocomplete, DatePicker, Input, Button } from "../index";
 import { Form, Row, FormTitle, CustomLoader } from "./Form.styles";
 
-const CustomForm = ({ data, title, token }) => {
+const CustomForm = ({ data, title, token, setApplications, applications }) => {
   const [company, setCompany] = useState("");
   const [job, setJob] = useState("");
   const [link, setLink] = useState("");
@@ -14,7 +14,7 @@ const CustomForm = ({ data, title, token }) => {
   useEffect(() => {
     if (company && job && link && date) setDisable(false);
     else !disable && setDisable(true);
-  }, [company, job, link, date]);
+  }, [company, job, link, date]); //eslint-disable-line react-hooks/exhaustive-deps
 
   function sendNewJobApplication(event) {
     event.preventDefault();
@@ -23,7 +23,7 @@ const CustomForm = ({ data, title, token }) => {
       toast.warn("Por favor, preencha todos os campos corretamente!");
       return;
     }
-    console.log(token);
+
     Applications.postNewApplication(
       {
         company,
@@ -33,7 +33,12 @@ const CustomForm = ({ data, title, token }) => {
       },
       token
     )
-      .then(() => toast.success("Aplicação salva com sucesso"))
+      .then(() => {
+        toast.success("Aplicação salva com sucesso");
+        Applications.getAllApplications(token).then(({ data }) => {
+          setApplications(data);
+        });
+      })
       .catch(({ response }) => toast.error(response?.message));
   }
 
