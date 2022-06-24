@@ -1,18 +1,26 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import AuthContext from "./contexts/AuthContext";
+import Login from "./pages/login";
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 import Banner from "./components/Banner";
-import NavMenu from "./components/navMenu";
 import { Dashboard, MentoringGrouops, PartnerCompanies } from "./pages";
 
 function App() {
+
+  const [token, setToken] = useState("");
+
   return (
     <BrowserRouter>
+      <AuthContext.Provider value={{token, setToken}}>
       <Banner />
-      <NavMenu />
       <Routes>
-        <Route path="/mentoring-groups" element={<MentoringGrouops />}></Route>
-        <Route path="/partner-companies" element={<PartnerCompanies />}></Route>
-        <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/login" element={<Login/>} />
+        <Route path="/mentoring-groups" element={<MentoringGrouops />} />
+        <Route path="/partner-companies" element={<PartnerCompanies />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
       </Routes>
+      </AuthContext.Provider>
     </BrowserRouter>
   );
 }
