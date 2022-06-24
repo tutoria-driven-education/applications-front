@@ -14,9 +14,11 @@ export default function MentoringGrouops() {
   const { isMentor } = useContext(UserContext);
   const nav = useNavigate();
 
-  if (!isMentor) {
-    nav("/");
-  }
+  useEffect(() => {
+    if (!isMentor) {
+      nav("/");
+    }
+  }, []);
 
   useEffect(() => {
     UsersService.getMentoringGroups()

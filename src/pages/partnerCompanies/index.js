@@ -16,9 +16,11 @@ export default function PartnerCompanies() {
   const { isMentor } = useContext(UserContext);
   const nav = useNavigate();
 
-  if (!isMentor) {
-    nav("/");
-  }
+  useEffect(() => {
+    if (!isMentor) {
+      nav("/");
+    }
+  }, []);
 
   useEffect(() => {
     CompaniesService.getAll(token)
