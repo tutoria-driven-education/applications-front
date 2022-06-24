@@ -4,13 +4,15 @@ import NavMenu from "../../components/navMenu";
 import CompaniesService from "../../services/CompaniesServices";
 import Company from "./Company";
 import { ThreeDots } from "react-loader-spinner";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function PartnerCompanies() {
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
-    CompaniesService.getAll()
+    CompaniesService.getAll(token)
       .then(({ data }) => {
         setIsLoading(false);
         setCompanies(data.companies);

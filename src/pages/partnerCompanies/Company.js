@@ -1,20 +1,38 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import AuthContext from "../../contexts/AuthContext";
+import CompaniesService from "../../services/CompaniesServices";
+import { ThreeDots } from "react-loader-spinner";
 
-export default function Company({ id, name, isPartner }) {
+export default function Company({ id, name, isPartner, reloadCompanies }) {
   const [isChecked, setIsChecked] = useState(isPartner);
+  const [isLoading, setIsLoading] = useState(false);
+  const { token } = useContext(AuthContext);
 
   const updatePartnershipStatus = (status) => {
-    setIsChecked(!isChecked);
+    setIsLoading(true);
+    CompaniesService.changePartnership(id, token)
+      .then(() => {
+        setIsChecked(!isChecked);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        alert("Erro inesperado");
+        setIsLoading(false);
+      });
   };
 
   return (
     <Container>
       <CompanyNameHolder>{name}</CompanyNameHolder>
-      <CheckButton
-        onClick={() => updatePartnershipStatus(!isChecked)}
-        isChecked={isChecked}
-      />
+      {isLoading ? (
+        Loader
+      ) : (
+        <CheckButton
+          onClick={() => updatePartnershipStatus(!isChecked)}
+          isChecked={isChecked}
+        />
+      )}
     </Container>
   );
 }
@@ -49,3 +67,5 @@ const CheckButton = styled.button`
   border: none;
   border-radius: 5px;
 `;
+
+const Loader = <ThreeDots color="#FF7BBD" height={30} width={30} />;
