@@ -1,14 +1,13 @@
 import { Autocomplete, TextField } from "@mui/material";
 
-const CustomAutocomplete = ({ data }) => {
-  const companies = data || [];
+const CustomAutocomplete = ({ data, label }) => {
   return (
     <Autocomplete
-      options={companies}
+      options={data}
       blurOnSelect
       freeSolo={true}
       color="error"
-      renderInput={(params) => <TextField {...params} label="Empresa" />}
+      renderInput={(params) => <TextField {...params} label={label} />}
     />
   );
 };
