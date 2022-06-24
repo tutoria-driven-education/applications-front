@@ -1,23 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import NavMenu from "../../components/navMenu";
+import UsersService from "../../services/UsersServices";
 import MentoringGrouop from "./MentoringGroup";
 
 export default function MentoringGrouops() {
   // eslint-disable-next-line no-unused-vars
   const [groups, setGroups] = useState([]);
 
+  useEffect(() => {
+    UsersService.getMentoringGroups().then(({ data }) => setGroups(data));
+  }, []);
+
   return (
-    <Container>
-      {groups.map(({ id, mentor, students }) => {
-        return (
-          <MentoringGrouop
-            key={`group-${id}`}
-            mentorName={mentor}
-            students={students}
-          />
-        );
-      })}
-    </Container>
+    <>
+      <NavMenu />
+      <Container>
+        {groups.map(({ id, name: mentorName, Students }) => {
+          return (
+            <MentoringGrouop
+              key={`group-${id}`}
+              mentorName={mentorName}
+              students={Students}
+            />
+          );
+        })}
+      </Container>
+    </>
   );
 }
 
