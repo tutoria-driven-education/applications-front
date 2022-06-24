@@ -4,6 +4,7 @@ const CustomAutocomplete = ({ data, label }) => {
   return (
     <Autocomplete
       options={data}
+      getOptionLabel={(option) => option.name}
       blurOnSelect
       freeSolo={true}
       color="error"

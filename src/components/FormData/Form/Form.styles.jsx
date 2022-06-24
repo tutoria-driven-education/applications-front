@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Loader from "../../Loader/Loader";
 
 const Form = styled.form`
   background-color: var(--darker);
@@ -33,4 +34,10 @@ const FormTitle = styled.h2`
   padding: 1rem;
 `;
 
-export { Form, Row, FormTitle };
+const CustomLoader = styled(Loader)`
+  position: absolute;
+  margin: auto;
+  background-color: red;
+`;
+
+export { Form, Row, FormTitle, CustomLoader };

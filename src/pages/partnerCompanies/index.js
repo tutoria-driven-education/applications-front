@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Company from "./Company";
 
 export default function PartnerCompanies() {
+  // eslint-disable-next-line no-unused-vars
   const [companies, setCompanies] = useState([]);
 
   return (

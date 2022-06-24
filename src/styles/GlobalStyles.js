@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const GlobalStyles = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/ 
