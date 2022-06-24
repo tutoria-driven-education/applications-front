@@ -1,27 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
+import NavMenu from "../../components/navMenu";
+import CompaniesService from "../../services/CompaniesServices";
 import Company from "./Company";
+import { ThreeDots } from "react-loader-spinner";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function PartnerCompanies() {
   const [companies, setCompanies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    CompaniesService.getAll(token)
+      .then(({ data }) => {
+        setIsLoading(false);
+        setCompanies(data.companies);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        alert("Erro Inesperado");
+      });
+  }, []);
 
   return (
-    <Container>
-      <Content>
-        <div>
-          <p>Empresa</p>
-          <p>Parceira?</p>
-        </div>
+    <>
+      <NavMenu />
+      <Container>
+        <Content>
+          <div>
+            <p>Empresa</p>
+            <p>Parceira?</p>
+          </div>
 
-        <div>
-          {companies.map(({ id, name, isPartner }) => {
-            return (
-              <Company key={id} id={id} name={name} isPartner={isPartner} />
-            );
-          })}
-        </div>
-      </Content>
-    </Container>
+          {isLoading && Loader}
+
+          <div>
+            {companies.map(({ id, name, is_partner }) => {
+              return (
+                <Company key={id} id={id} name={name} isPartner={is_partner} />
+              );
+            })}
+          </div>
+        </Content>
+      </Container>
+    </>
   );
 }
 
@@ -76,3 +99,5 @@ const Content = styled.div`
     }
   }
 `;
+
+const Loader = <ThreeDots color="#2C4B7A" height={80} width={80} />;
