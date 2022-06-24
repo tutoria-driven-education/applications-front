@@ -58,6 +58,10 @@ const GlobalStyles = createGlobalStyle`
     --dark: #7D7D8E;
     --darker: #525268;
   }
+  .swal2-popup {
+    font-size: 1.8rem !important;
+    font-family: 'Roboto Condensed', 'Roboto', sans-serif;
+  }
 `;
 
 export default GlobalStyles;

@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import styled from "styled-components";
 
 const ItemContainer = styled.li`
@@ -23,7 +24,7 @@ const ItemTitle = styled.h3`
 
 const MainContent = styled.main`
   display: grid;
-  grid-template-columns: 2fr 0.5fr 0.5fr;
+  grid-template-columns: 1.75fr 1fr 0.5fr;
   gap: 1rem;
 `;
 
@@ -35,6 +36,12 @@ const ItemSection = styled.section`
   min-width: 15rem;
   border-radius: 2rem;
   padding: 1rem;
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   ul {
     display: flex;
@@ -70,6 +77,10 @@ const ItemSectionTitle = styled.h4`
   text-align: center;
 `;
 
+const FinalizationButton = styled(Button)`
+  margin: auto !important;
+`;
+
 export {
   ItemContainer,
   ItemTitle,
@@ -77,4 +88,5 @@ export {
   ItemSectionTitle,
   ItemHeader,
   MainContent,
+  FinalizationButton,
 };
