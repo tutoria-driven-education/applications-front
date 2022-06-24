@@ -1,12 +1,27 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Applications from "../../../services/ApplicationsService";
 import Item from "../Item/Item";
 import { ListContainer } from "./List.styles";
 
-const List = ({ array, updateApplication, isWaiting, setApplications }) => {
+const List = ({
+  array,
+  updateApplication,
+  isWaiting,
+  setApplications,
+  token,
+}) => {
   const [flag, setFlag] = useState(true);
 
   useEffect(() => {
-    setApplications([...array]);
+    Applications.getAllApplications(token)
+      .then(({ data }) => {
+        setApplications(data);
+      })
+      .catch(({ response }) => {
+        console.error(response.data);
+        toast.error(response.data);
+      });
   }, [flag]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
