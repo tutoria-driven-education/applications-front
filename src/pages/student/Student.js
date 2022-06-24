@@ -31,13 +31,11 @@ const StudentHomepage = () => {
 
   function updateApplication(id) {
     const alteredApplication = applications.find((app) => app.id === id);
-
     setIsWaiting(true);
-
-    Applications.updateApplicationField(id, alteredApplication)
+    Applications.updateApplicationField(id, alteredApplication, context.token)
       .catch(({ response }) => {
-        console.error(response.data);
-        toast.error(response.data);
+        console.error(response);
+        toast.error(response);
       })
       .finally(() => setIsWaiting(false));
   }
@@ -49,7 +47,6 @@ const StudentHomepage = () => {
         title="Adicionar nova aplicação:"
         token={context.token}
         setApplications={setApplications}
-        applications={applications}
       />
       <Section title="Aplicações">
         {!applications ? (
@@ -60,6 +57,7 @@ const StudentHomepage = () => {
             isWaiting={isWaiting}
             setApplications={setApplications}
             updateApplication={updateApplication}
+            token={context.token}
           />
         )}
       </Section>

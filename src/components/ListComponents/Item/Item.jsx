@@ -18,14 +18,17 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import { useContext } from "react";
+import UserContext from "../../../contexts/UserContext";
 
 const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
+  const { isMentor } = useContext(UserContext)
   return (
     <ItemContainer>
-      {data.name && (
+      {data.User.name && isMentor && (
         <ItemHeader>
           <BsFillPersonLinesFill size={20} />
-          <ItemTitle>{data.name}</ItemTitle>
+          <ItemTitle>{data.User.name}</ItemTitle>
         </ItemHeader>
       )}
       <MainContent>
@@ -34,11 +37,11 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
           <ul>
             <li>
               <RiBuilding2Fill color="black" size={18} />
-              <span>Empresa: {data.company}</span>
+              <span>Empresa: {data.Company.name}</span>
             </li>
             <li>
               <BsBriefcaseFill color="black" size={18} />{" "}
-              <span>Vaga: {data.job}</span>
+              <span>Vaga: {data.Job.name}</span>
             </li>
             <li>
               <FaLink color="black" size={18} />{" "}
@@ -65,7 +68,7 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
                   onChange={(event) => {
                     data.profile = event.target.checked;
                     setFlag(!flag);
-                    updateApplication(data.id, "profile", event.target.checked);
+                    updateApplication(data.id);
                   }}
                 />
               }
@@ -80,7 +83,7 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
                   onChange={(event) => {
                     data.technic = event.target.checked;
                     setFlag(!flag);
-                    updateApplication(data.id, "technic", event.target.checked);
+                    updateApplication(data.id);
                   }}
                 />
               }
@@ -95,11 +98,7 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
                   onChange={(event) => {
                     data.behavior = event.target.checked;
                     setFlag(!flag);
-                    updateApplication(
-                      data.id,
-                      "behavior",
-                      event.target.checked
-                    );
+                    updateApplication(data.id);
                   }}
                 />
               }
@@ -112,12 +111,14 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
           <ItemSectionTitle>Finalização</ItemSectionTitle>
           <RadioGroup>
             <FormControlLabel
-              value="approved"
+              value={1}
+              checked={data?.Status?.id === 1}
               control={
                 <Radio
                   onChange={(event) => {
-                    data.status = event.target.value;
+                    data.Status = event.target.value;
                     setFlag(!flag);
+                    updateApplication(data.id);
                   }}
                   disabled={isWaiting}
                 />
@@ -125,26 +126,30 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               label="Passei"
             />
             <FormControlLabel
-              value="notMatch"
+              value={2}
+              checked={data?.Status?.id === 2}
               control={
                 <Radio
                   disabled={isWaiting}
                   onChange={(event) => {
-                    data.status = event.target.value;
+                    data.Status = event.target.value;
                     setFlag(!flag);
+                    updateApplication(data.id);
                   }}
                 />
               }
               label="Não rolou"
             />
             <FormControlLabel
-              value="giveUp"
+              value={3}
+              checked={data?.Status?.id === 3}
               control={
                 <Radio
                   disabled={isWaiting}
                   onChange={(event) => {
-                    data.status = event.target.value;
+                    data.Status = event.target.value;
                     setFlag(!flag);
+                    updateApplication(data.id);
                   }}
                 />
               }
