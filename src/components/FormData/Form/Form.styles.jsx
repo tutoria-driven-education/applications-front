@@ -14,6 +14,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 2rem;
   position: relative;
+  transition: height 1s;
 `;
 
 const Row = styled.div`
