@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 const Form = styled.form`
   background-color: var(--darker);
-  width: 80%;
+  width: 100%;
   min-width: 65rem;
+  max-width: 125rem;
   padding: 4rem;
   padding-bottom: 3rem;
   margin: 0 auto;
@@ -24,12 +25,12 @@ const FormTitle = styled.h2`
   font-size: 3rem;
   color: #fff;
   position: absolute;
-  top: -1.8rem;
+  top: -2.3rem;
   left: 4.2rem;
   background-color: var(--darker);
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
-  padding: 0 1rem;
+  padding: 1rem;
 `;
 
 export { Form, Row, FormTitle };
