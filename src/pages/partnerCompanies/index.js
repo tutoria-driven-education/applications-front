@@ -7,6 +7,7 @@ import { ThreeDots } from "react-loader-spinner";
 import AuthContext from "../../contexts/AuthContext";
 
 export default function PartnerCompanies() {
+  // eslint-disable-next-line no-unused-vars
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useContext(AuthContext);
@@ -21,7 +22,7 @@ export default function PartnerCompanies() {
         setIsLoading(false);
         alert("Erro Inesperado");
       });
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

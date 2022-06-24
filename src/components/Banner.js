@@ -9,8 +9,7 @@ export default function Banner() {
 }
 
 const Container = styled.div`
-  height: 7vh;
-  width: 100vw;
+  height: 6rem;
 
   display: flex;
   justify-content: center;
@@ -18,8 +17,7 @@ const Container = styled.div`
 
   background-color: #ff7bbd;
 
-  font-family: "Roboto Condensed", sans-serif;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #000;
 `;

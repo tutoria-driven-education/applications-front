@@ -1,96 +1,116 @@
-import { useEffect, useState } from "react"
-import Select from 'react-select'
-import { getApplications } from "../../services/api"
-import { Container, Content, FilterBar, TableContent, TableItem } from "./styles"
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import { getApplications } from "../../services/api";
+import {
+  Container,
+  Content,
+  FilterBar,
+  TableContent,
+  TableItem,
+} from "./styles";
 
 function Dashboard() {
   /**
    * @type {Array<import("../../../@types").ApplicationResponse>}
-  */
-  const [applications, setApplications] = useState({})
+   */
+  const [applications, setApplications] = useState({});
   const [mentorsOptions, setMentorsOptions] = useState([
     {
       label: "Todos mentores",
-      value: "all"
-    }
-  ])
+      value: "all",
+    },
+  ]);
   /**
    * @type {Array<import("../../../@types").Amounts>}
-  */
-  const [infoDisplay, setInfoDisplay] = useState({})
+   */
+  const [infoDisplay, setInfoDisplay] = useState({});
   const [valueRangeDisplay, setValueRangeDisplay] = useState({
-    label: "Total de aplicações", value: "all"
-  })
+    label: "Total de aplicações",
+    value: "all",
+  });
   const [valueMentorDisplay, setValueMentorDisplay] = useState({
-    label: "Todos mentores", value: "all"
-  })
+    label: "Todos mentores",
+    value: "all",
+  });
 
   const optionsRange = [
     { label: "Total de aplicações", value: "all" },
     { label: "Aplicações em parceiras", value: "inPartner" },
-    { label: "Aplicações em outras", value: "inOther" }
-  ]
+    { label: "Aplicações em outras", value: "inOther" },
+  ];
 
   useEffect(() => {
-    const api = getApplications()
-    api.then(response => {
-      const otherOptions = response.data.mentors.map(mentor => {
+    const api = getApplications();
+    api.then((response) => {
+      const otherOptions = response.data.mentors.map((mentor) => {
         return {
           label: mentor.name,
-          value: mentor.name
-        }
-      })
+          value: mentor.name,
+        };
+      });
 
-      setInfoDisplay(response.data.allApplications.amounts)
-      setApplications(response.data)
-      setMentorsOptions([...mentorsOptions, ...otherOptions])
-    })
-  }, [])
+      setInfoDisplay(response.data.allApplications.amounts);
+      setApplications(response.data);
+      setMentorsOptions([...mentorsOptions, ...otherOptions]);
+    });
+  }, []); //eslint-disable-line  react-hooks/exhaustive-deps
 
   function handleSelectRange(event) {
-    setValueMentorDisplay(mentorsOptions[0])
-    setValueRangeDisplay(event)
+    setValueMentorDisplay(mentorsOptions[0]);
+    setValueRangeDisplay(event);
     switch (event.value) {
       case "all":
-        setInfoDisplay(applications.allApplications.amounts)
-        break
+        setInfoDisplay(applications.allApplications.amounts);
+        break;
       case "inPartner":
-        setInfoDisplay(applications.applicationsInCompanyPartner.amounts)
-        break
+        setInfoDisplay(applications.applicationsInCompanyPartner.amounts);
+        break;
       case "inOther":
-        setInfoDisplay(applications.applicationsInOtherCompany.amounts)
-        break
+        setInfoDisplay(applications.applicationsInOtherCompany.amounts);
+        break;
       default:
-        alert("Recarregue a pagina!")
-        break
+        alert("Recarregue a pagina!");
+        break;
     }
-
   }
   function handleSelectMentor(event) {
-    setValueMentorDisplay(event)
+    setValueMentorDisplay(event);
     if (event.value === "all") {
-      handleSelectRange(optionsRange[0])
+      handleSelectRange(optionsRange[0]);
     }
-    const mentorInfo = applications.mentors.find(mentor => mentor.name === event.value)
+    const mentorInfo = applications.mentors.find(
+      (mentor) => mentor.name === event.value
+    );
     if (!mentorInfo) {
-      return
+      return;
     }
     setValueRangeDisplay({
-      label: "Total de aplicações", value: "all"
-    })
-    setInfoDisplay(mentorInfo.amounts)
+      label: "Total de aplicações",
+      value: "all",
+    });
+    setInfoDisplay(mentorInfo.amounts);
   }
 
   if (Object.keys(applications).length === 0) {
-    return "Loading..."
+    return "Loading...";
   }
 
   return (
     <Container>
       <Content>
         <FilterBar>
-          <Select value={valueRangeDisplay} onChange={handleSelectRange} options={optionsRange} defaultValue={optionsRange[0]} />
-          <Select value={valueMentorDisplay} onChange={handleSelectMentor} options={mentorsOptions} defaultValue={mentorsOptions[0]} />
+          <Select
+            value={valueRangeDisplay}
+            onChange={handleSelectRange}
+            options={optionsRange}
+            defaultValue={optionsRange[0]}
+          />
+          <Select
+            value={valueMentorDisplay}
+            onChange={handleSelectMentor}
+            options={mentorsOptions}
+            defaultValue={mentorsOptions[0]}
+          />
         </FilterBar>
         <TableContent>
           <TableItem> Total de aplicações </TableItem>
@@ -110,12 +130,10 @@ function Dashboard() {
 
           <TableItem> Desistiram </TableItem>
           <TableItem> {infoDisplay.giveUp} </TableItem>
-
         </TableContent>
       </Content>
     </Container>
-  )
+  );
 }
 
-
-export default Dashboard
+export default Dashboard;
