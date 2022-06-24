@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import NavMenu from "../../components/navMenu";
 import CompaniesService from "../../services/CompaniesServices";
 import Company from "./Company";
 import { ThreeDots } from "react-loader-spinner";
@@ -26,7 +25,6 @@ export default function PartnerCompanies() {
 
   return (
     <>
-      <NavMenu />
       <Container>
         <Content>
           <div>
