@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API,
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:4000",
 });
 
 /**
@@ -9,13 +9,12 @@ const api = axios.create({
  */
 
 /**
- * 
+ *
  * @returns {import("axios").AxiosPromise<ApplicationResponse>}
- * 
+ *
  */
 export function getApplications() {
-  return api.get("/applications")
+  return api.get("/applications");
 }
 
-export { api }
-
+export { api };
