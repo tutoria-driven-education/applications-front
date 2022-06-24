@@ -5,7 +5,6 @@ import AuthService from "../../services/AuthServices";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 
-
 function Login() {
   const [inputValue, setInputValue] = useState("");
   const [warning, setWarning] = useState(false);
@@ -24,8 +23,12 @@ function Login() {
     }
     AuthService.login(accessToken).then(({ data }) => {
       setToken(data.token);
-      navigate("student");      
       setIsMentor(data.is_mentor);
+      if (data.is_mentor) {
+        navigate("/mentor");
+      } else {
+        navigate("/student");
+      }
     });
   }
 
