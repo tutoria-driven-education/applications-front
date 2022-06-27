@@ -14,4 +14,14 @@ export default class CompaniesService {
       }
     );
   }
+
+  static createCompany(companyName, token) {
+    return api.post(
+      "/companies",
+      { name: companyName },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+  }
 }
