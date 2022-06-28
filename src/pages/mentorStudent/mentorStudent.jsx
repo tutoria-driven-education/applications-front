@@ -2,6 +2,8 @@ import {
   Container,
   CustomRadioGroup,
   ResultSection,
+  StudentSection,
+  StudentTitleName,
 } from "./mentorStudent.styles";
 import NavMenu from "../../components/navMenu";
 import { Section } from "../../components";
@@ -14,11 +16,13 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaExpandAlt, FaHeartBroken, FaSearch } from "react-icons/fa";
 import SearchService from "../../services/SearchService";
-import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import List from "../../components/ListComponents/List/List";
+import ApplicationsList from "../../components/ListComponents/List/List";
+import dataFormatter from "../../utils/dataFormatter";
+import { BsFillPersonLinesFill } from "react-icons/bs";
+import Message from "../../components/Message/Message";
 
 const MentorStudent = () => {
   const [searchFilter, setSearchFilter] = useState("student");
@@ -29,10 +33,23 @@ const MentorStudent = () => {
     event.preventDefault();
     SearchService.search({ name: input, type: searchFilter })
       .then(({ data }) => {
-        console.log("DADOS -> ", data);
-        if (data.length) {
-          setResult(data);
+        const filteredData = data.map((item) => {
+          return {
+            ...item,
+            Application: dataFormatter(item.Application),
+            expanded: false,
+          };
+        });
+
+        if (filteredData.length) {
+          setResult(filteredData);
           setInput("");
+        } else if (filteredData.length === 0 && data.length !== 0) {
+          toast.error(
+            searchFilter === "student"
+              ? `Nenhuma aplicação encontrada para os(as) alunos(as) selecionados`
+              : `Nenhum aluno(a) do mentor(a) aplicou para alguma vaga até o momento`
+          );
         } else {
           toast.error(
             `Nenhum ${
@@ -43,7 +60,14 @@ const MentorStudent = () => {
           );
         }
       })
-      .catch(({ response }) => console.error(response));
+      .catch((error) => console.error(error.response || error));
+  }
+
+  function expandPanel(id) {
+    const student = result.find((elem) => elem.id === id);
+    student.expanded = !student.expanded;
+    console.log(result);
+    setResult([...result]);
   }
 
   return (
@@ -55,6 +79,7 @@ const MentorStudent = () => {
             value="student"
             control={
               <Radio
+                color="secondary"
                 onChange={(event) => {
                   setSearchFilter(event.target.value);
                 }}
@@ -100,12 +125,38 @@ const MentorStudent = () => {
         </CustomRadioGroup>
         {result !== null && result.length && (
           <ResultSection>
-            <SectionTitle>Resultado</SectionTitle>
-            <List
-              array={result}
-              setApplications={() => {}}
-              isMentorPage={true}
-            />
+            <SectionTitle>
+              {result.length > 1 ? "Resultados" : "Resultado"}
+            </SectionTitle>
+            {result.map((element) => (
+              <StudentSection expanded={element.expanded} key={element.id}>
+                <StudentTitleName
+                  expanded={element.expanded}
+                  onClick={() => expandPanel(element.id)}
+                >
+                  {element.expanded ? (
+                    <BsFillPersonLinesFill size={24} color="white" />
+                  ) : (
+                    <FaExpandAlt size={24} color="white" />
+                  )}
+                  {element.name}
+                </StudentTitleName>
+                {element.expanded && element.Application.length ? (
+                  <ApplicationsList
+                    array={element.Application}
+                    setApplications={() => {}}
+                    isMentorPage={true}
+                  />
+                ) : (
+                  element.expanded && (
+                    <Message>
+                      <FaHeartBroken size={24} /> Nenhuma aplicação até o
+                      momento <FaHeartBroken size={24} />
+                    </Message>
+                  )
+                )}
+              </StudentSection>
+            ))}
           </ResultSection>
         )}
       </Section>

@@ -1,12 +1,10 @@
 import {
-  ItemTitle,
   ItemContainer,
-  ItemHeader,
   ItemSection,
   ItemSectionTitle,
   MainContent,
 } from "./Item.styles";
-import { BsFillPersonLinesFill, BsFillCalendarEventFill } from "react-icons/bs";
+import { BsFillCalendarEventFill } from "react-icons/bs";
 import { RiBuilding2Fill } from "react-icons/ri";
 import { BsBriefcaseFill } from "react-icons/bs";
 import { FaLink } from "react-icons/fa";
@@ -29,12 +27,6 @@ const Item = ({
 }) => {
   return (
     <ItemContainer>
-      {data.name && (
-        <ItemHeader>
-          <BsFillPersonLinesFill size={20} />
-          <ItemTitle>{data.name}</ItemTitle>
-        </ItemHeader>
-      )}
       <MainContent>
         <ItemSection>
           <ItemSectionTitle>Informações</ItemSectionTitle>

@@ -5,7 +5,7 @@ const StyledSection = styled.section`
   padding-top: 4.5rem;
   width: 100%;
   margin: 0 auto;
-  min-height: 15rem;
+  /* min-height: 15rem; */
   display: flex;
   flex-direction: column;
   gap: 2rem;
