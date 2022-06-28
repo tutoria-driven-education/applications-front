@@ -68,7 +68,6 @@ const MentorStudent = () => {
   function expandPanel(id) {
     const student = result.find((elem) => elem.id === id);
     student.expanded = !student.expanded;
-    console.log(result);
     setResult([...result]);
   }
 

@@ -31,7 +31,7 @@ const StudentHomepage = () => {
   function updateApplication(id) {
     const alteredApplication = applications.find((app) => app.id === id);
     delete alteredApplication.name;
-
+    console.log(alteredApplication, applications);
     setIsWaiting(true);
 
     Applications.updateApplicationField(alteredApplication, context.token)
@@ -49,7 +49,6 @@ const StudentHomepage = () => {
         title="Adicionar nova aplicação:"
         token={context.token}
         setApplications={setApplications}
-        applications={applications}
       />
       <Section title="Aplicações">
         {!applications ? (
@@ -60,6 +59,7 @@ const StudentHomepage = () => {
             isWaiting={isWaiting}
             setApplications={setApplications}
             updateApplication={updateApplication}
+            token={context.token}
           />
         )}
       </Section>

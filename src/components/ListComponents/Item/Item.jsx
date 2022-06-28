@@ -33,11 +33,11 @@ const Item = ({
           <ul>
             <li>
               <RiBuilding2Fill color="black" size={18} />
-              <span>Empresa: {data.company}</span>
+              <span>Empresa: {data.name}</span>
             </li>
             <li>
               <BsBriefcaseFill color="black" size={18} />{" "}
-              <span>Vaga: {data.job}</span>
+              <span>Vaga: {data.name}</span>
             </li>
             <li>
               <FaLink color="black" size={18} />{" "}

@@ -1,23 +1,53 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import UsersService from "../../services/UsersServices";
 import MentoringGrouop from "./MentoringGroup";
+import { ThreeDots } from "react-loader-spinner";
+import { toast } from "react-toastify";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function MentoringGrouops() {
   // eslint-disable-next-line no-unused-vars
   const [groups, setGroups] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { isMentor } = useContext(UserContext);
+  const nav = useNavigate();
+
+  useEffect(() => {
+    if (!isMentor) {
+      nav("/");
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    UsersService.getMentoringGroups()
+      .then(({ data }) => {
+        setIsLoading(false);
+        setGroups(data);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        toast.warn("Erro Inesperado");
+      });
+  }, []);
 
   return (
-    <Container>
-      {groups.map(({ id, mentor, students }) => {
-        return (
-          <MentoringGrouop
-            key={`group-${id}`}
-            mentorName={mentor}
-            students={students}
-          />
-        );
-      })}
-    </Container>
+    <>
+      <Container>
+        {isLoading
+          ? Loader
+          : groups.map(({ id, name: mentorName, Students }) => {
+              return (
+                <MentoringGrouop
+                  key={`group-${id}`}
+                  mentorName={mentorName}
+                  students={Students}
+                />
+              );
+            })}
+      </Container>
+    </>
   );
 }
 
@@ -44,3 +74,5 @@ const Container = styled.div`
 
   padding: 2rem 0;
 `;
+
+const Loader = <ThreeDots color="#2C4B7A" height={80} width={80} />;

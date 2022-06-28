@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Applications from "../../../services/ApplicationsService";
+import dataFormatter from "../../../utils/dataFormatter";
 import Item from "../Item/Item";
 import { ListContainer } from "./List.styles";
 
@@ -8,11 +11,19 @@ const List = ({
   isWaiting,
   setApplications,
   isMentorPage,
+  token,
 }) => {
   const [flag, setFlag] = useState(true);
 
   useEffect(() => {
-    setApplications([...array]);
+    Applications.getAllApplications(token)
+      .then(({ data }) => {
+        setApplications(dataFormatter(data));
+      })
+      .catch(({ response }) => {
+        console.error(response.data);
+        toast.error(response.data);
+      });
   }, [flag]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (

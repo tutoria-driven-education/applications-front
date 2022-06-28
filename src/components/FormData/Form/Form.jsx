@@ -5,7 +5,7 @@ import dataFormatter from "../../../utils/dataFormatter";
 import { Autocomplete, DatePicker, Input, Button } from "../index";
 import { Form, Row, FormTitle, CustomLoader } from "./Form.styles";
 
-const CustomForm = ({ data, title, token, setApplications, applications }) => {
+const CustomForm = ({ data, title, token, setApplications }) => {
   const [company, setCompany] = useState("");
   const [job, setJob] = useState("");
   const [link, setLink] = useState("");

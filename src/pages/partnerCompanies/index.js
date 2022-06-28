@@ -1,18 +1,35 @@
 import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import NavMenu from "../../components/navMenu";
 import CompaniesService from "../../services/CompaniesServices";
 import Company from "./Company";
 import { ThreeDots } from "react-loader-spinner";
 import AuthContext from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
+import AddNewCompany from "./newCompany";
 
 export default function PartnerCompanies() {
   // eslint-disable-next-line no-unused-vars
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAddingCompany, setIsAddingCompany] = useState(false);
   const { token } = useContext(AuthContext);
+  const { isMentor } = useContext(UserContext);
+
+  const nav = useNavigate();
 
   useEffect(() => {
+    if (!isMentor) {
+      nav("/");
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    getCompanies();
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  function getCompanies() {
     CompaniesService.getAll(token)
       .then(({ data }) => {
         setIsLoading(false);
@@ -20,14 +37,26 @@ export default function PartnerCompanies() {
       })
       .catch(() => {
         setIsLoading(false);
-        alert("Erro Inesperado");
+        toast.warn("Erro inesperado");
       });
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
+  }
   return (
     <>
-      <NavMenu />
-      <Container>
+      <Container isAddingCompany={isAddingCompany}>
+        <div>
+          <AddNewCompany
+            isAddingCompany={isAddingCompany}
+            setIsAddingCompany={setIsAddingCompany}
+            reloadCompanies={getCompanies}
+          />
+
+          {!isAddingCompany && (
+            <button onClick={() => setIsAddingCompany(true)}>
+              Nova empresa
+            </button>
+          )}
+        </div>
+
         <Content>
           <div>
             <p>Empresa</p>
@@ -54,8 +83,9 @@ const Container = styled.div`
   width: 100vw;
 
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 
   background-color: #000;
 
@@ -65,6 +95,21 @@ const Container = styled.div`
   color: #ffffff;
 
   padding: 2rem 0;
+
+  & > div:first-child {
+    width: 70vw;
+    display: flex;
+    justify-content: flex-end;
+
+    & > button {
+      width: 10rem;
+
+      margin-left: 0.5rem;
+      border-radius: 4px;
+      border: none;
+      padding: 0.5rem;
+    }
+  }
 `;
 
 const Content = styled.div`
