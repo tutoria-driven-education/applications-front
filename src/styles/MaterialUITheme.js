@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import { green } from "@mui/material/colors";
 import { ptBR } from "@mui/material/locale";
 
 const theme = createTheme(
@@ -15,6 +16,27 @@ const theme = createTheme(
     typography: {
       fontSize: 30,
       fontFamily: "Roboto Condensed",
+    },
+    components: {
+      MuiFormControlLabel: {
+        styleOverrides: {
+          root: {
+            "&.Mui-disabled": { fontSize: "5rem" },
+          },
+        },
+      },
+      MuiCheckbox: {
+        styleOverrides: {
+          root: { "&.Mui-checked.Mui-disabled": { color: green[200] } },
+        },
+      },
+      MuiRadio: {
+        styleOverrides: {
+          root: {
+            ".Mui-checked": { color: green[200] },
+          },
+        },
+      },
     },
   },
   ptBR

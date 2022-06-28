@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { ThreeDots } from "react-loader-spinner";
 import AuthContext from "../../contexts/AuthContext";

@@ -11,6 +11,7 @@ import { Dashboard, MentoringGrouops, PartnerCompanies } from "./pages";
 import { ToastContainer } from "react-toastify";
 import { IconContext } from "react-icons";
 import UserContext from "./contexts/UserContext";
+import MentorStudent from "./pages/mentorStudent/mentorStudent";
 import ErrorMessage from "./components/ErrorMessage";
 import SharedLayout from "./components/SharedLayout";
 
@@ -44,7 +45,7 @@ function App() {
                   />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/student" element={<StudentHomepage />} />
-                  <Route path="/mentor" element={<StudentHomepage />} />
+                  <Route path="/mentor" element={<MentorStudent />} />
                   <Route path="*" element={<ErrorMessage />} />
                 </Route>
               </Routes>

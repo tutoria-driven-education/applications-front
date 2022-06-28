@@ -6,6 +6,7 @@ import { List } from "../../components/ListComponents";
 import AuthContext from "../../contexts/AuthContext";
 import Applications from "../../services/ApplicationsService";
 import CompaniesService from "../../services/CompaniesService";
+import dataFormatter from "../../utils/dataFormatter";
 import { Container } from "./Student.style";
 
 const StudentHomepage = () => {
@@ -20,9 +21,7 @@ const StudentHomepage = () => {
     promise.catch(({ response }) => console.error(response));
 
     Applications.getAllApplications(context.token)
-      .then(({ data }) => {
-        setApplications(data);
-      })
+      .then(({ data }) => setApplications(dataFormatter(data)))
       .catch(({ response }) => {
         console.error(response.data);
         toast.error(response.data);
@@ -31,8 +30,11 @@ const StudentHomepage = () => {
 
   function updateApplication(id) {
     const alteredApplication = applications.find((app) => app.id === id);
+    delete alteredApplication.name;
+    console.log(alteredApplication, applications);
     setIsWaiting(true);
-    Applications.updateApplicationField(id, alteredApplication, context.token)
+
+    Applications.updateApplicationField(alteredApplication, context.token)
       .catch(({ response }) => {
         console.error(response);
         toast.error(response);

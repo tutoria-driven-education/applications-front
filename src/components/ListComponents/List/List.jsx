@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
+import dataFormatter from "../../../utils/dataFormatter";
 import Item from "../Item/Item";
 import { ListContainer } from "./List.styles";
 
@@ -9,6 +10,7 @@ const List = ({
   updateApplication,
   isWaiting,
   setApplications,
+  isMentorPage,
   token,
 }) => {
   const [flag, setFlag] = useState(true);
@@ -16,7 +18,7 @@ const List = ({
   useEffect(() => {
     Applications.getAllApplications(token)
       .then(({ data }) => {
-        setApplications(data);
+        setApplications(dataFormatter(data));
       })
       .catch(({ response }) => {
         console.error(response.data);
@@ -34,6 +36,7 @@ const List = ({
           setFlag={setFlag}
           flag={flag}
           data={elem}
+          isMentorPage={isMentorPage}
         />
       ))}
     </ListContainer>

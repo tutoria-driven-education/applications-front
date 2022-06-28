@@ -23,7 +23,7 @@ export default function PartnerCompanies() {
     if (!isMentor) {
       nav("/");
     }
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     getCompanies();

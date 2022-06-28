@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ItemContainer = styled.li`
   display: flex;
   flex-direction: column;
-  background-color: var(--darker);
+  background-color: var(--dark);
   border-radius: 2rem;
   padding: 1.5rem;
 `;
@@ -18,7 +18,7 @@ const ItemHeader = styled.header`
 const ItemTitle = styled.h3`
   font-size: 2rem;
   font-weight: 700;
-  background-color: var(--darker);
+  background-color: var(--dark);
   height: fit-content;
 `;
 
@@ -31,8 +31,7 @@ const MainContent = styled.main`
 const ItemSection = styled.section`
   display: flex;
   flex-direction: column;
-  background-color: var(--dark);
-  min-height: 20rem;
+  background-color: var(--darker);
   min-width: 15rem;
   border-radius: 2rem;
   padding: 1rem;

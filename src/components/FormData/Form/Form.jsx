@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
+import dataFormatter from "../../../utils/dataFormatter";
 import { Autocomplete, DatePicker, Input, Button } from "../index";
 import { Form, Row, FormTitle, CustomLoader } from "./Form.styles";
 
@@ -36,7 +37,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
       .then(() => {
         toast.success("Aplicação salva com sucesso");
         Applications.getAllApplications(token).then(({ data }) => {
-          setApplications(data);
+          setApplications(dataFormatter(data));
         });
       })
       .catch(({ response }) => toast.error(response?.message));

@@ -17,19 +17,8 @@ export default class Applications {
     });
   }
 
-  static updateApplicationField(id, data, token) {
-    const body = {
-      id,
-      company: data.Company.name,
-      job: data.Job.name,
-      link: data.link,
-      date: data.date,
-      profile: data.profile,
-      technic: data.technic,
-      behavior: data.behavior,
-      status: data.Status === null ? data.Status : parseInt(data.Status),
-    };
-    return api.put(`application/`, body, {
+  static updateApplicationField(data, token) {
+    return api.put(`application`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

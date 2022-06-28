@@ -18,7 +18,7 @@ export default function MentoringGrouops() {
     if (!isMentor) {
       nav("/");
     }
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     UsersService.getMentoringGroups()

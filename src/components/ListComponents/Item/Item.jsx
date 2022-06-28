@@ -1,12 +1,10 @@
 import {
-  ItemTitle,
   ItemContainer,
-  ItemHeader,
   ItemSection,
   ItemSectionTitle,
   MainContent,
 } from "./Item.styles";
-import { BsFillPersonLinesFill, BsFillCalendarEventFill } from "react-icons/bs";
+import { BsFillCalendarEventFill } from "react-icons/bs";
 import { RiBuilding2Fill } from "react-icons/ri";
 import { BsBriefcaseFill } from "react-icons/bs";
 import { FaLink } from "react-icons/fa";
@@ -18,30 +16,28 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { useContext } from "react";
-import UserContext from "../../../contexts/UserContext";
 
-const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
-  const { isMentor } = useContext(UserContext)
+const Item = ({
+  data,
+  updateApplication,
+  isWaiting,
+  setFlag,
+  flag,
+  isMentorPage,
+}) => {
   return (
     <ItemContainer>
-      {data.User.name && isMentor && (
-        <ItemHeader>
-          <BsFillPersonLinesFill size={20} />
-          <ItemTitle>{data.User.name}</ItemTitle>
-        </ItemHeader>
-      )}
       <MainContent>
         <ItemSection>
           <ItemSectionTitle>Informações</ItemSectionTitle>
           <ul>
             <li>
               <RiBuilding2Fill color="black" size={18} />
-              <span>Empresa: {data.Company.name}</span>
+              <span>Empresa: {data.name}</span>
             </li>
             <li>
               <BsBriefcaseFill color="black" size={18} />{" "}
-              <span>Vaga: {data.Job.name}</span>
+              <span>Vaga: {data.name}</span>
             </li>
             <li>
               <FaLink color="black" size={18} />{" "}
@@ -64,7 +60,7 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               control={
                 <Checkbox
                   checked={data.profile}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.profile = event.target.checked;
                     setFlag(!flag);
@@ -79,7 +75,7 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               control={
                 <Checkbox
                   checked={data.technic}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.technic = event.target.checked;
                     setFlag(!flag);
@@ -94,7 +90,7 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               control={
                 <Checkbox
                   checked={data.behavior}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.behavior = event.target.checked;
                     setFlag(!flag);
@@ -112,27 +108,27 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
           <RadioGroup>
             <FormControlLabel
               value={1}
-              checked={data?.Status?.id === 1}
+              checked={!!data.status && Number(data.status) === 1}
               control={
                 <Radio
                   onChange={(event) => {
-                    data.Status = event.target.value;
+                    data.status = event.target.value;
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                 />
               }
               label="Passei"
             />
             <FormControlLabel
               value={2}
-              checked={data?.Status?.id === 2}
+              checked={!!data.status && Number(data.status) === 2}
               control={
                 <Radio
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
-                    data.Status = event.target.value;
+                    data.status = event.target.value;
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
@@ -142,12 +138,12 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
             />
             <FormControlLabel
               value={3}
-              checked={data?.Status?.id === 3}
+              checked={!!data.status && Number(data.status) === 3}
               control={
                 <Radio
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
-                    data.Status = event.target.value;
+                    data.status = event.target.value;
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
