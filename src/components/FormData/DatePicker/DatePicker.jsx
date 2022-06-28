@@ -11,7 +11,6 @@ const CustomDatePicker = ({ value, setValue }) => {
         disableFuture
         inputFormat="DD/MM/YYYY"
         onChange={(newValue) => {
-          console.log(newValue);
           setValue(newValue);
         }}
         label="Data de aplicação"
