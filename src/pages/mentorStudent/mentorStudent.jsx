@@ -10,6 +10,7 @@ import { Section } from "../../components";
 import { SectionTitle } from "../../components/Section/Section.styles";
 import {
   Button,
+  Fab,
   FormControlLabel,
   InputAdornment,
   Radio,
@@ -17,6 +18,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FaExpandAlt, FaHeartBroken, FaSearch } from "react-icons/fa";
+import { GrClose } from "react-icons/gr";
 import SearchService from "../../services/SearchService";
 import { toast } from "react-toastify";
 import ApplicationsList from "../../components/ListComponents/List/List";
@@ -68,6 +70,10 @@ const MentorStudent = () => {
     student.expanded = !student.expanded;
     console.log(result);
     setResult([...result]);
+  }
+
+  function resetSearch() {
+    setResult(null);
   }
 
   return (
@@ -128,6 +134,14 @@ const MentorStudent = () => {
             <SectionTitle>
               {result.length > 1 ? "Resultados" : "Resultado"}
             </SectionTitle>
+            <Fab
+              sx={{ position: "absolute", top: "-2.6rem", right: "10rem" }}
+              color="primary"
+              size="medium"
+              onClick={resetSearch}
+            >
+              <GrClose />
+            </Fab>
             {result.map((element) => (
               <StudentSection expanded={element.expanded} key={element.id}>
                 <StudentTitleName
