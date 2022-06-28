@@ -19,7 +19,14 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
+const Item = ({
+  data,
+  updateApplication,
+  isWaiting,
+  setFlag,
+  flag,
+  isMentorPage,
+}) => {
   return (
     <ItemContainer>
       {data.name && (
@@ -61,11 +68,11 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               control={
                 <Checkbox
                   checked={data.profile}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.profile = event.target.checked;
                     setFlag(!flag);
-                    updateApplication(data.id, "profile", event.target.checked);
+                    updateApplication(data.id);
                   }}
                 />
               }
@@ -76,11 +83,11 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               control={
                 <Checkbox
                   checked={data.technic}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.technic = event.target.checked;
                     setFlag(!flag);
-                    updateApplication(data.id, "technic", event.target.checked);
+                    updateApplication(data.id);
                   }}
                 />
               }
@@ -91,15 +98,11 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
               control={
                 <Checkbox
                   checked={data.behavior}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.behavior = event.target.checked;
                     setFlag(!flag);
-                    updateApplication(
-                      data.id,
-                      "behavior",
-                      event.target.checked
-                    );
+                    updateApplication(data.id);
                   }}
                 />
               }
@@ -112,39 +115,45 @@ const Item = ({ data, updateApplication, isWaiting, setFlag, flag }) => {
           <ItemSectionTitle>Finalização</ItemSectionTitle>
           <RadioGroup>
             <FormControlLabel
-              value="approved"
+              value={1}
+              checked={!!data.status && Number(data.status) === 1}
               control={
                 <Radio
                   onChange={(event) => {
                     data.status = event.target.value;
                     setFlag(!flag);
+                    updateApplication(data.id);
                   }}
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                 />
               }
               label="Passei"
             />
             <FormControlLabel
-              value="notMatch"
+              value={2}
+              checked={!!data.status && Number(data.status) === 2}
               control={
                 <Radio
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.status = event.target.value;
                     setFlag(!flag);
+                    updateApplication(data.id);
                   }}
                 />
               }
               label="Não rolou"
             />
             <FormControlLabel
-              value="giveUp"
+              value={3}
+              checked={!!data.status && Number(data.status) === 3}
               control={
                 <Radio
-                  disabled={isWaiting}
+                  disabled={isWaiting || isMentorPage}
                   onChange={(event) => {
                     data.status = event.target.value;
                     setFlag(!flag);
+                    updateApplication(data.id);
                   }}
                 />
               }

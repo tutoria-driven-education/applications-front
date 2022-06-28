@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import Item from "../Item/Item";
 import { ListContainer } from "./List.styles";
 
-const List = ({ array, updateApplication, isWaiting, setApplications }) => {
+const List = ({
+  array,
+  updateApplication,
+  isWaiting,
+  setApplications,
+  isMentorPage,
+}) => {
   const [flag, setFlag] = useState(true);
 
   useEffect(() => {
@@ -19,6 +25,7 @@ const List = ({ array, updateApplication, isWaiting, setApplications }) => {
           setFlag={setFlag}
           flag={flag}
           data={elem}
+          isMentorPage={isMentorPage}
         />
       ))}
     </ListContainer>

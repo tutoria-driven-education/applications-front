@@ -17,7 +17,11 @@ export default class Applications {
     });
   }
 
-  static updateApplicationField(id, data) {
-    return api.patch(`application/${id}`, data);
+  static updateApplicationField(data, token) {
+    return api.put(`application`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }
