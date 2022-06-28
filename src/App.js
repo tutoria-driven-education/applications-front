@@ -12,6 +12,7 @@ import { Dashboard, MentoringGrouops, PartnerCompanies } from "./pages";
 import { ToastContainer } from "react-toastify";
 import { IconContext } from "react-icons";
 import UserContext from "./contexts/UserContext";
+import MentorStudent from "./pages/mentorStudent/mentorStudent";
 
 function App() {
   const [token, setToken] = useState("");
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/" element={<Login />} />
                 <Route path="/student" element={<StudentHomepage />} />
+                <Route path="/mentor/students" element={<MentorStudent />} />
               </Routes>
             </UserContext.Provider>
           </AuthContext.Provider>
