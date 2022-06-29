@@ -19,8 +19,11 @@ export default function AddNewCompany({
     CompaniesServices.createCompany(companyName, token)
       .then(() => {
         setIsLoading(false);
-        reloadCompanies();
+
+        toast.success("Empresa adicionada!");
+
         setCompanyName("");
+        reloadCompanies();
       })
       .catch(() => {
         setIsLoading(false);
@@ -40,6 +43,7 @@ export default function AddNewCompany({
       <button onClick={() => saveCompany()} disabled={isLoading}>
         {isLoading ? Loader : "Salvar"}
       </button>
+      <button onClick={() => setIsAddingCompany(false)}>Voltar</button>
     </Container>
   );
 }
@@ -62,7 +66,7 @@ const Container = styled.div`
   }
 
   input {
-    width: calc(70vw - 10rem);
+    width: calc(70vw - 12rem);
   }
 
   padding: 1rem;
