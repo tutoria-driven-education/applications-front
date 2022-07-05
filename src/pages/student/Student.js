@@ -15,7 +15,7 @@ const StudentHomepage = () => {
   const [applications, setApplications] = useState(undefined);
   const [isWaiting, setIsWaiting] = useState(false);
   const context = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const promise = CompaniesService.getCompanies();
@@ -27,8 +27,7 @@ const StudentHomepage = () => {
       .catch(({ response }) => {
         console.error(response.data);
         toast.error(response.data);
-        navigate("/../")
-
+        navigate("/", { replace: true });
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
