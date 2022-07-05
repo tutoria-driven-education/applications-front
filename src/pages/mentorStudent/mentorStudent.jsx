@@ -35,7 +35,6 @@ const MentorStudent = () => {
     SearchService.search({ name: input, type: searchFilter })
       .then(({ data }) => {
         const filteredData = data.map((item) => {
-          console.log(item);
           return {
             ...item,
             Application: dataFormatter(item.Application),

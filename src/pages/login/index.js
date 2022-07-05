@@ -22,7 +22,6 @@ function Login() {
       return;
     }
     AuthService.login(accessToken).then(({ data }) => {
-      console.log(data);
       setToken(data.token);
       setIsMentor(data.is_mentor);
       if (data.is_mentor) {

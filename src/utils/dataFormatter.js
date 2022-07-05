@@ -1,5 +1,4 @@
 export default function dataFormatter(data) {
-  console.log(data);
   return data.map((item) => {
     item.company = item.Company.name;
     item.job = item.Job.name;
