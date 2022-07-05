@@ -31,7 +31,6 @@ const StudentHomepage = () => {
   function updateApplication(id) {
     const alteredApplication = applications.find((app) => app.id === id);
     delete alteredApplication.name;
-    console.log(alteredApplication, applications);
     setIsWaiting(true);
 
     Applications.updateApplicationField(alteredApplication, context.token)
