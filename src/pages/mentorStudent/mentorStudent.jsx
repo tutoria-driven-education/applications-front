@@ -5,7 +5,6 @@ import {
   StudentSection,
   StudentTitleName,
 } from "./mentorStudent.styles";
-import NavMenu from "../../components/navMenu";
 import { Section } from "../../components";
 import { SectionTitle } from "../../components/Section/Section.styles";
 import {
@@ -36,6 +35,7 @@ const MentorStudent = () => {
     SearchService.search({ name: input, type: searchFilter })
       .then(({ data }) => {
         const filteredData = data.map((item) => {
+          console.log(item);
           return {
             ...item,
             Application: dataFormatter(item.Application),
@@ -54,19 +54,24 @@ const MentorStudent = () => {
           );
         } else {
           toast.error(
-            `Nenhum ${
+            `${
               searchFilter === "student"
-                ? "aluno(a) encontrado(a)"
-                : "mentor(a) encontrado(a)"
+                ? "Nenhum aluno(a) encontrado(a)"
+                : searchFilter === "mentor"
+                ? "Nenhum mentor(a) encontrado(a)"
+                : "Nenhuma Aplicação para esta empresa até o momento"
             }`
           );
         }
       })
-      .catch((error) => console.error(error.response || error));
+      .catch((error) => {
+        toast.error(error.response.data.message);
+        console.error(error.response.message || error);
+      });
   }
 
   function expandPanel(id) {
-    const student = result.find((elem) => elem.id === id);
+    const student = result.find((elem) => elem.Application[0].id === id);
     student.expanded = !student.expanded;
     setResult([...result]);
   }
@@ -77,7 +82,6 @@ const MentorStudent = () => {
 
   return (
     <Container>
-      <NavMenu />
       <Section title={"Barra de pesquisa:"}>
         <CustomRadioGroup onSubmit={handleSubmit} defaultValue={"student"} row>
           <FormControlLabel
@@ -103,13 +107,26 @@ const MentorStudent = () => {
             }
             label="Mentor(a)"
           />
+          <FormControlLabel
+            value="company"
+            control={
+              <Radio
+                onChange={(event) => {
+                  setSearchFilter(event.target.value);
+                }}
+              />
+            }
+            label="Empresa"
+          />
           <TextField
             sx={{ flexGrow: 1, marginLeft: "auto" }}
             variant="filled"
             label={
               searchFilter === "student"
                 ? "Pesquise pelo nome de um(a) aluno(a)"
-                : "Pesquise pelo nome de um(a) mentor(a)"
+                : searchFilter === "mentor"
+                ? "Pesquise pelo nome de um(a) mentor(a)"
+                : "Pesquise pelo nome de uma empresa"
             }
             value={input}
             InputProps={{
@@ -142,10 +159,13 @@ const MentorStudent = () => {
               <GrClose />
             </Fab>
             {result.map((element) => (
-              <StudentSection expanded={element.expanded} key={element.id}>
+              <StudentSection
+                expanded={element.expanded}
+                key={element.Application[0].id}
+              >
                 <StudentTitleName
                   expanded={element.expanded}
-                  onClick={() => expandPanel(element.id)}
+                  onClick={() => expandPanel(element.Application[0].id)}
                 >
                   {element.expanded ? (
                     <BsFillPersonLinesFill size={24} color="white" />

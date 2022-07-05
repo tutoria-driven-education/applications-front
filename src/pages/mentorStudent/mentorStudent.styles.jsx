@@ -12,6 +12,7 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  padding-top: 3rem;
   span {
     color: white;
   }
