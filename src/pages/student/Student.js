@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Loader, Section } from "../../components";
 import { Form } from "../../components/FormData";
@@ -14,6 +15,7 @@ const StudentHomepage = () => {
   const [applications, setApplications] = useState(undefined);
   const [isWaiting, setIsWaiting] = useState(false);
   const context = useContext(AuthContext);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const promise = CompaniesService.getCompanies();
@@ -25,6 +27,8 @@ const StudentHomepage = () => {
       .catch(({ response }) => {
         console.error(response.data);
         toast.error(response.data);
+        navigate("/../")
+
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
