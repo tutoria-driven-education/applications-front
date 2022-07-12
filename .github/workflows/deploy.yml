@@ -26,12 +26,13 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          PUBLIC_DIR: ${{ secrets.PUBLIC_DIR }}
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          envs: REACT_APP_API_URL
+          envs: REACT_APP_API_URL,PUBLIC_DIR
           script: |
             set > ${{ secrets.REMOTE_TARGET }}/.env
             cd ${{ secrets.REMOTE_TARGET }}
