@@ -41,7 +41,7 @@ const MentorStudent = () => {
       nav("/student");
       return;
     }
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   function handleSubmit(event) {
     event.preventDefault();
