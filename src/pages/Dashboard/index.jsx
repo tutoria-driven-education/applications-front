@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Select from "react-select";
-import { getApplications } from "../../services/api";
 import {
   Container,
   Content,
@@ -8,6 +7,8 @@ import {
   TableContent,
   TableItem,
 } from "./styles";
+import AuthContext from '../../contexts/AuthContext'
+import ApplicationService from '../../services/ApplicationsService'
 
 function Dashboard() {
   /**
@@ -32,6 +33,7 @@ function Dashboard() {
     label: "Todos mentores",
     value: "all",
   });
+  const {token} = useContext(AuthContext)
 
   const optionsRange = [
     { label: "Total de aplicações", value: "all" },
@@ -40,8 +42,7 @@ function Dashboard() {
   ];
 
   useEffect(() => {
-    const api = getApplications();
-    api.then((response) => {
+    ApplicationService.getDashboard(token).then((response) => {
       const otherOptions = response.data.mentors.map((mentor) => {
         return {
           label: mentor.name,
