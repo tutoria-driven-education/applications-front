@@ -5,10 +5,9 @@ function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const storedItem = window.localStorage.getItem(key);
-
       return storedItem ? storedItem : initialValue;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return initialValue;
     }
   });
@@ -17,7 +16,7 @@ function useLocalStorage(key, initialValue) {
     try {
       if (!value) {
         setStoredValue(null);
-        localStorage.removeItem("token");
+        localStorage.removeItem(key);
         return;
       }
       const valueToStore =
@@ -25,9 +24,9 @@ function useLocalStorage(key, initialValue) {
 
       setStoredValue(valueToStore);
 
-      window.localStorage.setItem(key, storedValue);
+      window.localStorage.setItem(key, valueToStore);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

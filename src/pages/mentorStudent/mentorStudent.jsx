@@ -24,11 +24,24 @@ import ApplicationsList from "../../components/ListComponents/List/List";
 import dataFormatter from "../../utils/dataFormatter";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import Message from "../../components/Message/Message";
+import { useContext } from "react";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const MentorStudent = () => {
   const [searchFilter, setSearchFilter] = useState("student");
   const [input, setInput] = useState("");
   const [result, setResult] = useState(null);
+  const { isMentor } = useContext(UserContext);
+  const nav = useNavigate();
+
+  useEffect(() => {
+    if (!isMentor) {
+      nav("/student");
+      return;
+    }
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();

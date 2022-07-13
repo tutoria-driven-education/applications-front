@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ThemeProvider } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import StudentHomepage from "./pages/student/Student";
@@ -10,21 +9,18 @@ import Banner from "./components/Banner";
 import { Dashboard, MentoringGrouops, PartnerCompanies } from "./pages";
 import { ToastContainer } from "react-toastify";
 import { IconContext } from "react-icons";
-import UserContext from "./contexts/UserContext";
+import { UserProvider } from "./contexts/UserContext";
 import MentorStudent from "./pages/mentorStudent/mentorStudent";
 import ErrorMessage from "./components/ErrorMessage";
 import SharedLayout from "./components/SharedLayout";
 
 function App() {
-  const [token, setToken] = useState("");
-  const [isMentor, setIsMentor] = useState(false);
-
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <IconContext.Provider value={{ color: "#ff7bbd", size: 16 }}>
-          <AuthProvider value={{ token, setToken }}>
-            <UserContext.Provider value={{ isMentor, setIsMentor }}>
+          <AuthProvider>
+            <UserProvider>
               <ToastContainer
                 theme="dark"
                 pauseOnHover={true}
@@ -49,7 +45,7 @@ function App() {
                   <Route path="*" element={<ErrorMessage />} />
                 </Route>
               </Routes>
-            </UserContext.Provider>
+            </UserProvider>
           </AuthProvider>
         </IconContext.Provider>
       </ThemeProvider>

@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import UserContext from "../../contexts/UserContext";
 import { getApplications } from "../../services/api";
 import {
   Container,
@@ -39,7 +41,14 @@ function Dashboard() {
     { label: "Aplicações em outras", value: "inOther" },
   ];
 
+  const { isMentor } = useContext(UserContext);
+
+  const nav = useNavigate();
   useEffect(() => {
+    if (!isMentor) {
+      nav("/student");
+      return;
+    }
     const api = getApplications();
     api.then((response) => {
       const otherOptions = response.data.mentors.map((mentor) => {

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import AddNewCompany from "./newCompany";
 
 export default function PartnerCompanies() {
-  // eslint-disable-next-line no-unused-vars
   const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddingCompany, setIsAddingCompany] = useState(false);
@@ -21,11 +20,8 @@ export default function PartnerCompanies() {
 
   useEffect(() => {
     if (!isMentor) {
-      nav("/");
+      nav("/student");
     }
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
     getCompanies();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
