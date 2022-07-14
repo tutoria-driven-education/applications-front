@@ -9,6 +9,8 @@ export const Container = styled.div`
   width: 100vw;
   height: 100%;
 
+  font-size: 1.7rem;
+
 `
 
 export const Content = styled.div`
@@ -19,7 +21,7 @@ export const Content = styled.div`
   
   width: 80%;
   height: 100%;
-  max-width: 1000px;
+  max-width: 1440px;
   margin-top: 1rem;
   padding: 1rem;
 
@@ -51,8 +53,9 @@ export const TableContent = styled.div`
 export const TableItem = styled.div`
   line-height: 2rem;
   background-color: #525268;
-  /* padding: 0 10%; */
   width: 100%;
   text-align: center;
+  padding: 1rem;
+  border-radius: 1px;
   
 `

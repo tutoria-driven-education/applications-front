@@ -2,6 +2,7 @@ export interface Amounts {
   total: number;
   analyticCurriculum: number;
   stageBehavioral: number;
+  stageTechnic: number;
   match: number;
   notMatch: number;
   giveUp: number;

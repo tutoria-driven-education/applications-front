@@ -33,7 +33,7 @@ function Dashboard() {
     label: "Todos mentores",
     value: "all",
   });
-  const {token} = useContext(AuthContext)
+  const { token } = useContext(AuthContext)
 
   const optionsRange = [
     { label: "Total de aplicações", value: "all" },
@@ -122,6 +122,9 @@ function Dashboard() {
 
           <TableItem> Etapa Comportamental </TableItem>
           <TableItem> {infoDisplay.stageBehavioral} </TableItem>
+
+          <TableItem> Teste técnico </TableItem>
+          <TableItem> {infoDisplay.stageTechnic} </TableItem>
 
           <TableItem> Receberam propostas </TableItem>
           <TableItem> {infoDisplay.match} </TableItem>
