@@ -24,4 +24,12 @@ export default class Applications {
       },
     });
   }
+
+  static getDashboard(token) {
+    return api.get(`application/dashboard`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 }
