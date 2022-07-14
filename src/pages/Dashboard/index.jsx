@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import UserContext from "../../contexts/UserContext";
-import { getApplications } from "../../services/api";
+import Select from "react-select";
 import {
   Container,
   Content,
@@ -10,6 +10,8 @@ import {
   TableContent,
   TableItem,
 } from "./styles";
+import AuthContext from "../../contexts/AuthContext";
+import ApplicationService from "../../services/ApplicationsService";
 
 function Dashboard() {
   /**
@@ -34,6 +36,7 @@ function Dashboard() {
     label: "Todos mentores",
     value: "all",
   });
+  const { token } = useContext(AuthContext);
 
   const optionsRange = [
     { label: "Total de aplicações", value: "all" },
@@ -49,8 +52,8 @@ function Dashboard() {
       nav("/student");
       return;
     }
-    const api = getApplications();
-    api.then((response) => {
+
+    ApplicationService.getDashboard(token).then((response) => {
       const otherOptions = response.data.mentors.map((mentor) => {
         return {
           label: mentor.name,
@@ -130,6 +133,9 @@ function Dashboard() {
 
           <TableItem> Etapa Comportamental </TableItem>
           <TableItem> {infoDisplay.stageBehavioral} </TableItem>
+
+          <TableItem> Teste técnico </TableItem>
+          <TableItem> {infoDisplay.stageTechnic} </TableItem>
 
           <TableItem> Receberam propostas </TableItem>
           <TableItem> {infoDisplay.match} </TableItem>
