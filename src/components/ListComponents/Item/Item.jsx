@@ -25,7 +25,6 @@ const Item = ({
   flag,
   isMentorPage,
 }) => {
-  console.log(data);
   return (
     <ItemContainer>
       <MainContent>

@@ -6,12 +6,14 @@ import { ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function MentoringGrouops() {
   // eslint-disable-next-line no-unused-vars
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { isMentor } = useContext(UserContext);
+  const { token } = useContext(AuthContext);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function MentoringGrouops() {
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    UsersService.getMentoringGroups()
+    UsersService.getMentoringGroups(token)
       .then(({ data }) => {
         setIsLoading(false);
         setGroups(data);
@@ -30,7 +32,7 @@ export default function MentoringGrouops() {
         setIsLoading(false);
         toast.warn("Erro Inesperado");
       });
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

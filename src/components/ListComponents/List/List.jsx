@@ -14,7 +14,6 @@ const List = ({
   token,
 }) => {
   const [flag, setFlag] = useState(true);
-
   useEffect(() => {
     Applications.getAllApplications(token)
       .then(({ data }) => {
