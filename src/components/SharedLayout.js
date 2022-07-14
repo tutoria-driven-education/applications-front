@@ -14,7 +14,7 @@ export default function SharedLayout() {
 
   useEffect(() => {
     if (pathname === "/") return;
-    validateMethod(navigate, isMentor, token, setToken);
+    validateMethod(navigate, token, setToken);
   }, [pathname]);
 
   return (

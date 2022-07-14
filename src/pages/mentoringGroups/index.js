@@ -18,7 +18,7 @@ export default function MentoringGrouops() {
 
   useEffect(() => {
     if (!isMentor) {
-      nav("/");
+      nav("/student");
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 

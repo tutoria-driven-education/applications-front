@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import UserContext from "../../contexts/UserContext";
 import {
   Container,
   Content,
@@ -7,8 +9,8 @@ import {
   TableContent,
   TableItem,
 } from "./styles";
-import AuthContext from '../../contexts/AuthContext'
-import ApplicationService from '../../services/ApplicationsService'
+import AuthContext from "../../contexts/AuthContext";
+import ApplicationService from "../../services/ApplicationsService";
 
 function Dashboard() {
   /**
@@ -33,7 +35,7 @@ function Dashboard() {
     label: "Todos mentores",
     value: "all",
   });
-  const { token } = useContext(AuthContext)
+  const { token } = useContext(AuthContext);
 
   const optionsRange = [
     { label: "Total de aplicações", value: "all" },
@@ -41,7 +43,15 @@ function Dashboard() {
     { label: "Aplicações em outras", value: "inOther" },
   ];
 
+  const { isMentor } = useContext(UserContext);
+
+  const nav = useNavigate();
   useEffect(() => {
+    if (!isMentor) {
+      nav("/student");
+      return;
+    }
+
     ApplicationService.getDashboard(token).then((response) => {
       const otherOptions = response.data.mentors.map((mentor) => {
         return {
