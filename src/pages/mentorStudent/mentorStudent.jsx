@@ -24,15 +24,18 @@ import ApplicationsList from "../../components/ListComponents/List/List";
 import dataFormatter from "../../utils/dataFormatter";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import Message from "../../components/Message/Message";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
 
 const MentorStudent = () => {
   const [searchFilter, setSearchFilter] = useState("student");
   const [input, setInput] = useState("");
   const [result, setResult] = useState(null);
+  const { token } = useContext(AuthContext);
 
   function handleSubmit(event) {
     event.preventDefault();
-    SearchService.search({ name: input, type: searchFilter })
+    SearchService.search({ name: input, type: searchFilter }, token)
       .then(({ data }) => {
         const filteredData = data.map((item) => {
           return {
@@ -41,7 +44,6 @@ const MentorStudent = () => {
             expanded: false,
           };
         });
-
         if (filteredData.length) {
           setResult(filteredData);
           setInput("");
@@ -70,7 +72,7 @@ const MentorStudent = () => {
   }
 
   function expandPanel(id) {
-    const student = result.find((elem) => elem.Application[0].id === id);
+    const student = result.find((elem) => elem.id === id);
     student.expanded = !student.expanded;
     setResult([...result]);
   }
@@ -158,13 +160,10 @@ const MentorStudent = () => {
               <GrClose />
             </Fab>
             {result.map((element) => (
-              <StudentSection
-                expanded={element.expanded}
-                key={element.Application[0].id}
-              >
+              <StudentSection expanded={element.expanded} key={element.id}>
                 <StudentTitleName
                   expanded={element.expanded}
-                  onClick={() => expandPanel(element.Application[0].id)}
+                  onClick={() => expandPanel(element.id)}
                 >
                   {element.expanded ? (
                     <BsFillPersonLinesFill size={24} color="white" />
@@ -178,12 +177,14 @@ const MentorStudent = () => {
                     array={element.Application}
                     setApplications={() => {}}
                     isMentorPage={true}
+                    token={token}
                   />
                 ) : (
                   element.expanded && (
                     <Message>
-                      <FaHeartBroken size={24} /> Nenhuma aplicação até o
-                      momento <FaHeartBroken size={24} />
+                      <FaHeartBroken size={24} color={"black"} />
+                      {"Nenhuma aplicação até o momento "}
+                      <FaHeartBroken size={24} color={"black"} />
                     </Message>
                   )
                 )}

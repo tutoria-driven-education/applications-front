@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
 import dataFormatter from "../../../utils/dataFormatter";
@@ -14,7 +14,6 @@ const List = ({
   token,
 }) => {
   const [flag, setFlag] = useState(true);
-
   useEffect(() => {
     Applications.getAllApplications(token)
       .then(({ data }) => {
