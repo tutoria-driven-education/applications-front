@@ -32,7 +32,7 @@ export default function MentoringGrouops() {
         setIsLoading(false);
         toast.warn("Erro Inesperado");
       });
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
