@@ -104,6 +104,7 @@ const Container = styled.div`
       border-radius: 4px;
       border: none;
       padding: 0.5rem;
+      cursor: pointer;
     }
   }
 `;

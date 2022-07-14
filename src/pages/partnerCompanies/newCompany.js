@@ -58,11 +58,13 @@ const Container = styled.div`
     border-radius: 4px;
     border: none;
     padding: 0.5rem;
+    outline: none;
   }
 
   button {
     width: 6rem;
     margin-left: 0.5rem;
+    cursor: pointer;
   }
 
   input {
