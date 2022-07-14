@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import UserContext from "../../contexts/UserContext";
-import Select from "react-select";
 import {
   Container,
   Content,
