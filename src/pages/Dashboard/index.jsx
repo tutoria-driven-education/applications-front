@@ -115,12 +115,20 @@ function Dashboard() {
             onChange={handleSelectRange}
             options={optionsRange}
             defaultValue={optionsRange[0]}
+            styles={{
+              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+              control: (provided) => ({ ...provided, cursor: "pointer" }),
+            }}
           />
           <Select
             value={valueMentorDisplay}
             onChange={handleSelectMentor}
             options={mentorsOptions}
             defaultValue={mentorsOptions[0]}
+            styles={{
+              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+              control: (provided) => ({ ...provided, cursor: "pointer" }),
+            }}
           />
         </FilterBar>
         <TableContent>

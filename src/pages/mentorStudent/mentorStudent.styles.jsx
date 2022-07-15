@@ -7,7 +7,7 @@ import {
 
 const Container = styled.main`
   background-color: #000;
-  min-height: calc(100vh - 6rem);
+  min-height: calc(100vh - (6rem + 5vh));
   width: 100%;
   display: flex;
   flex-direction: column;
