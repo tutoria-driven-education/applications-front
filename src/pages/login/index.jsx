@@ -1,18 +1,18 @@
 import { useContext, useState } from "react";
-import styled from "styled-components";
-import AuthContext from "../../contexts/AuthContext";
-import AuthService from "../../services/AuthServices";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../contexts/UserContext";
 import { Button, TextField } from "@mui/material";
 import { toast } from "react-toastify";
+import AuthContext from "../../contexts/AuthContext";
+import UserContext from "../../contexts/UserContext";
+import AuthService from "../../services/AuthServices";
+import { Box, PageBody } from "./style";
 
 export default function Login() {
   const [inputValue, setInputValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const { setToken } = useContext(AuthContext);
   const { setIsMentor } = useContext(UserContext);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   function submitInput(event) {
     event.preventDefault();
@@ -21,11 +21,7 @@ export default function Login() {
       .then(({ data }) => {
         setToken(data.token);
         setIsMentor(data.is_mentor);
-        if (data.is_mentor) {
-          navigate("/mentor");
-        } else {
-          navigate("/student");
-        }
+        data.is_mentor ? navigate("/mentor") : navigate("/student");
       })
       .catch(({ response }) => {
         if (response.status === 404) {
@@ -67,25 +63,3 @@ export default function Login() {
     </PageBody>
   );
 }
-
-const PageBody = styled.div`
-  width: 100%;
-  min-height: calc(100vh - 6rem);
-  background-color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Box = styled.form`
-  width: 50%;
-  min-width: 55rem;
-  height: 250px;
-  background-color: var(--darker);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  border-radius: 1.5rem;
-`;
