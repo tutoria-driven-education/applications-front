@@ -26,6 +26,19 @@ const MainContent = styled.main`
   display: grid;
   grid-template-columns: 1.75fr 1fr 0.5fr;
   gap: 1rem;
+
+  @media (max-width: 875px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    & > section:last-child {
+      grid-area: 2 / 2 / 3 / 3;
+    }
+    & > section:first-child {
+      grid-area: 1 / 1 / 2 / 3;
+    }
+  }
 `;
 
 const ItemSection = styled.section`
@@ -36,10 +49,14 @@ const ItemSection = styled.section`
   border-radius: 2rem;
   padding: 1rem;
 
+  label,
   span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  label {
+    width: 105%;
   }
 
   ul {

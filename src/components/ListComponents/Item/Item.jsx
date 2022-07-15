@@ -66,6 +66,7 @@ const Item = ({
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
+                  sx={{ minWidth: "50px" }}
                 />
               }
               label="Análise de currículo e perfil"
@@ -81,6 +82,7 @@ const Item = ({
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
+                  sx={{ minWidth: "50px" }}
                 />
               }
               label="Etapa técnica"
@@ -96,6 +98,7 @@ const Item = ({
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
+                  sx={{ minWidth: "50px" }}
                 />
               }
               label="Etapa comportamental"
