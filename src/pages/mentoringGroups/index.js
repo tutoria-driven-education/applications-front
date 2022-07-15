@@ -8,7 +8,7 @@ import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 
-export default function MentoringGrouops() {
+export default function MentoringGroups() {
   // eslint-disable-next-line no-unused-vars
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

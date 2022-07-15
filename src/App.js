@@ -1,18 +1,22 @@
-import { ThemeProvider } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import StudentHomepage from "./pages/student/Student";
-import GlobalStyles from "./styles/GlobalStyles";
-import theme from "./styles/MaterialUITheme";
-import { AuthProvider } from "./contexts/AuthContext";
-import Login from "./pages/login";
-import Banner from "./components/Banner";
-import { Dashboard, MentoringGrouops, PartnerCompanies } from "./pages";
 import { ToastContainer } from "react-toastify";
 import { IconContext } from "react-icons";
+import { ThemeProvider } from "@mui/material";
+import { AuthProvider } from "./contexts/AuthContext";
 import { UserProvider } from "./contexts/UserContext";
-import MentorStudent from "./pages/mentorStudent/mentorStudent";
+import GlobalStyles from "./styles/GlobalStyles";
+import theme from "./styles/MaterialUITheme";
+import Banner from "./components/Banner";
 import ErrorMessage from "./components/ErrorMessage";
 import SharedLayout from "./components/SharedLayout";
+import {
+  Dashboard,
+  MentoringGroups,
+  PartnerCompanies,
+  Login,
+  StudentHomepage,
+  MentorStudent,
+} from "./pages";
 
 function App() {
   return (
@@ -31,18 +35,18 @@ function App() {
               <Routes>
                 <Route path="/" element={<SharedLayout />}>
                   <Route index element={<Login />} />
+                  <Route path="*" element={<ErrorMessage />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/student" element={<StudentHomepage />} />
+                  <Route path="/mentor" element={<MentorStudent />} />
                   <Route
                     path="/mentoring-groups"
-                    element={<MentoringGrouops />}
+                    element={<MentoringGroups />}
                   />
                   <Route
                     path="/partner-companies"
                     element={<PartnerCompanies />}
                   />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/student" element={<StudentHomepage />} />
-                  <Route path="/mentor" element={<MentorStudent />} />
-                  <Route path="*" element={<ErrorMessage />} />
                 </Route>
               </Routes>
             </UserProvider>
