@@ -10,25 +10,23 @@ export const Container = styled.div`
   height: 100%;
 
   font-size: 1.7rem;
-
-`
+`;
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+
   width: 80%;
   height: 100%;
   max-width: 1440px;
   margin-top: 1rem;
   padding: 1rem;
 
-  background-color: #7D7D8E;
+  background-color: #7d7d8e;
   border-radius: 1rem;
-
-`
+`;
 
 export const FilterBar = styled.div`
   display: flex;
@@ -37,7 +35,7 @@ export const FilterBar = styled.div`
 
   width: 100%;
   gap: 1rem;
-`
+`;
 
 export const TableContent = styled.div`
   display: grid;
@@ -48,7 +46,7 @@ export const TableContent = styled.div`
   width: 100%;
 
   color: white;
-`
+`;
 
 export const TableItem = styled.div`
   line-height: 2rem;
@@ -57,5 +55,4 @@ export const TableItem = styled.div`
   text-align: center;
   padding: 1rem;
   border-radius: 1px;
-  
-`
+`;

@@ -24,16 +24,9 @@ export default function Company({ id, name, isPartner, reloadCompanies }) {
   };
 
   return (
-    <Container>
+    <Container onClick={() => updatePartnershipStatus(!isChecked)}>
       <CompanyNameHolder>{name}</CompanyNameHolder>
-      {isLoading ? (
-        Loader
-      ) : (
-        <CheckButton
-          onClick={() => updatePartnershipStatus(!isChecked)}
-          isChecked={isChecked}
-        />
-      )}
+      {isLoading ? Loader : <CheckButton isChecked={isChecked} />}
     </Container>
   );
 }
@@ -52,21 +45,28 @@ const Container = styled.div`
   padding-right: 2.5rem;
   border-radius: 15px;
   margin-bottom: 0.5rem;
+  transition: filter 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(110%);
+  }
 `;
 
 const CompanyNameHolder = styled.p`
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 `;
 
 const CheckButton = styled.button`
-  height: 1rem;
-  width: 1rem;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
 
   background-color: ${({ isChecked }) => (isChecked ? "#FF7BBD" : "#E0E0E0")};
 
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
 `;
 
 const Loader = <ThreeDots color="#FF7BBD" height={30} width={30} />;
