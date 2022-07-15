@@ -12,7 +12,7 @@ const Form = styled.form`
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   position: relative;
   transition: height 1s;
 `;
@@ -21,6 +21,11 @@ const Row = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1rem;
+
+  @media (max-width: 875px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const FormTitle = styled.h2`
