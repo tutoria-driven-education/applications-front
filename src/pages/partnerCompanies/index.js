@@ -129,7 +129,9 @@ const Content = styled.div`
     justify-content: space-between;
     width: 90%;
 
-    margin-bottom: 2rem;
+    margin: 1rem 0;
+    padding: 0 3.5rem 0 1.5rem;
+    font-size: 1.8rem;
   }
 
   & > div:last-child {
@@ -137,8 +139,23 @@ const Content = styled.div`
     max-height: 60vh;
 
     overflow: scroll;
+    overflow-x: hidden;
+
     ::-webkit-scrollbar {
-      display: none;
+      width: 3rem;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: var(--darker);
+      border: 1rem solid var(--dark);
+      border-radius: 2rem;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      height: 3rem;
+      background: var(--driven-color);
+      border: 0.5rem solid var(--dark);
+      border-radius: 50%;
     }
   }
 `;

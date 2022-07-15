@@ -14,7 +14,6 @@ export default function NavMenu() {
 
 const Container = styled.nav`
   height: 5vh;
-  width: 100vw;
 
   display: flex;
   justify-content: center;
