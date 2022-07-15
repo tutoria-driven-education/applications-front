@@ -4,10 +4,12 @@ import AuthContext from "../../contexts/AuthContext";
 import AuthService from "../../services/AuthServices";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
+import { Button, TextField } from "@mui/material";
+import { toast } from "react-toastify";
 
-function Login() {
+export default function Login() {
   const [inputValue, setInputValue] = useState("");
-  const [warning, setWarning] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
   const { setToken } = useContext(AuthContext);
   const { setIsMentor } = useContext(UserContext);
   let navigate = useNavigate();
@@ -15,89 +17,75 @@ function Login() {
   function submitInput(event) {
     event.preventDefault();
 
-    const accessToken = inputValue;
-
-    if (accessToken.length < 30) {
-      setWarning(true);
-      return;
-    }
-    AuthService.login(accessToken).then(({ data }) => {
-      setToken(data.token);
-      setIsMentor(data.is_mentor);
-      if (data.is_mentor) {
-        navigate("/mentor");
-      } else {
-        navigate("/student");
-      }
-    });
+    AuthService.login(inputValue)
+      .then(({ data }) => {
+        setToken(data.token);
+        setIsMentor(data.is_mentor);
+        if (data.is_mentor) {
+          navigate("/mentor");
+        } else {
+          navigate("/student");
+        }
+      })
+      .catch(({ response }) => {
+        if (response.status === 404) {
+          toast.error("Senha não encontrada!");
+        } else {
+          toast.error(
+            "Erro inesperado. Por favor, entre em contato com a coordenação!"
+          );
+        }
+        console.error(response);
+      });
   }
 
   return (
     <PageBody>
       <Box onSubmit={submitInput}>
-        {warning && <p>A senha de acesso está incorreta ou inválida</p>}
-        <input
-          onChange={(e) => setInputValue(e.target.value)}
+        <TextField
+          label="Senha de acesso"
+          variant="standard"
           value={inputValue}
-          placeholder="Senha de acesso"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            if (e.target.value.length === 36) setIsDisabled(false);
+            else !isDisabled && setIsDisabled(true);
+          }}
+          placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+          inputProps={{ style: { textAlign: "center" } }}
+          sx={{ width: "80%" }}
         />
-        <button type="submit">Entrar</button>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ fontWeight: 700, width: "30%" }}
+          disabled={isDisabled}
+        >
+          Entrar
+        </Button>
       </Box>
     </PageBody>
   );
 }
 
-export default Login;
-
 const PageBody = styled.div`
   width: 100%;
-  height: 93vh;
-  background-color: #000;
+  min-height: calc(100vh - 6rem);
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
 const Box = styled.form`
-  width: 350px;
+  width: 50%;
+  min-width: 55rem;
   height: 250px;
-  background-color: #525268;
+  background-color: var(--darker);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  border-radius: 15px;
-
-  input {
-    width: 300px;
-    height: 35px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    ::placeholder {
-      font-family: "Roboto Condensed", sans-serif;
-      font-size: 20px;
-    }
-  }
-
-  button {
-    border: none;
-    width: 230px;
-    height: 40px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    color: whitesmoke;
-    background-color: #ff7bbd;
-    border-radius: 15px;
-
-    :hover {
-      background-color: #ff8bcd;
-    }
-  }
-
-  p {
-    color: red;
-  }
+  border-radius: 1.5rem;
 `;
