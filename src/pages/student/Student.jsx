@@ -8,7 +8,7 @@ import AuthContext from "../../contexts/AuthContext";
 import Applications from "../../services/ApplicationsService";
 import CompaniesService from "../../services/CompaniesService";
 import dataFormatter from "../../utils/dataFormatter";
-import { Container } from "./Student.style";
+import { Container, LoaderContainer, Message } from "./Student.style";
 
 const StudentHomepage = () => {
   const [companies, setCompanies] = useState(undefined);
@@ -48,23 +48,32 @@ const StudentHomepage = () => {
     <Container>
       <Form
         data={companies}
-        title="Adicionar nova aplicação:"
+        title="Formulário de aplicação"
         token={context.token}
         setApplications={setApplications}
       />
-      <Section title="Aplicações">
-        {!applications ? (
+      {applications === undefined ? (
+        <LoaderContainer>
           <Loader />
-        ) : (
-          <List
-            array={applications}
-            isWaiting={isWaiting}
-            setApplications={setApplications}
-            updateApplication={updateApplication}
-            token={context.token}
-          />
-        )}
-      </Section>
+        </LoaderContainer>
+      ) : (
+        <Section title="Aplicações">
+          {applications.length === 0 ? (
+            <Message>
+              Você ainda não aplicou para nenhuma vaga.
+              <br /> Que tal aplicar hoje?
+            </Message>
+          ) : (
+            <List
+              array={applications}
+              isWaiting={isWaiting}
+              setApplications={setApplications}
+              updateApplication={updateApplication}
+              token={context.token}
+            />
+          )}
+        </Section>
+      )}
     </Container>
   );
 };
