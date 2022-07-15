@@ -6,7 +6,6 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { UserProvider } from "./contexts/UserContext";
 import GlobalStyles from "./styles/GlobalStyles";
 import theme from "./styles/MaterialUITheme";
-import Banner from "./components/Banner";
 import ErrorMessage from "./components/ErrorMessage";
 import SharedLayout from "./components/SharedLayout";
 import {
@@ -17,6 +16,7 @@ import {
   StudentHomepage,
   MentorStudent,
 } from "./pages";
+import { Header } from "./components";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
                 style={{ fontFamily: "Roboto Condensed", fontSize: 16 }}
               />
               <GlobalStyles />
-              <Banner />
+              <Header>Applications</Header>
               <Routes>
                 <Route path="/" element={<SharedLayout />}>
                   <Route index element={<Login />} />

@@ -19,6 +19,7 @@ export default function Login() {
 
     AuthService.login(inputValue)
       .then(({ data }) => {
+        console.log(data);
         setToken(data.token);
         setIsMentor(data.is_mentor);
         data.is_mentor ? navigate("/mentor") : navigate("/student");

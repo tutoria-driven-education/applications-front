@@ -7,12 +7,22 @@ const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  h1 {
-    font-weight: bold;
-    font-size: 3.6rem;
-    user-select: none;
-  }
+  position: relative;
 `;
 
-export { Header };
+const Title = styled.h1`
+  font-weight: bold;
+  font-size: 3.6rem;
+  text-align: center;
+  user-select: none;
+`;
+
+const FabStyles = {
+  backgroundColor: "black",
+  color: "white",
+  position: "absolute",
+  left: "1rem",
+  gap: "1rem",
+};
+
+export { Header, Title, FabStyles };
