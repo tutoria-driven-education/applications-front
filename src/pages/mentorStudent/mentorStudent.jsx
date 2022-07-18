@@ -66,15 +66,15 @@ const MentorStudent = () => {
               : `Nenhum aluno(a) do mentor(a) aplicou para alguma vaga até o momento`
           );
         } else {
-          toast.error(
-            `${
-              searchFilter === "student"
-                ? "Nenhum aluno(a) encontrado(a)"
-                : searchFilter === "mentor"
-                ? "Nenhum mentor(a) encontrado(a)"
-                : "Nenhuma Aplicação para esta empresa até o momento"
-            }`
-          );
+          searchFilter === "company"
+            ? toast.warning("Nenhuma Aplicação para esta empresa até o momento")
+            : toast.error(
+                `${
+                  searchFilter === "student"
+                    ? "Nenhum aluno(a) encontrado(a)"
+                    : "Nenhum mentor(a) encontrado(a)"
+                }`
+              );
         }
       })
       .catch((error) => {
