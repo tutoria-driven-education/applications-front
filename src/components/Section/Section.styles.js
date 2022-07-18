@@ -14,6 +14,9 @@ const StyledSection = styled.section`
   border-radius: 2rem;
   max-width: 125rem;
   min-width: 65rem;
+  @media (max-width: 875px) {
+    min-width: 100%;
+  }
 `;
 
 const SectionTitle = styled.h2`

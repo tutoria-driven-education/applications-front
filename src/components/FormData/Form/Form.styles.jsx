@@ -15,6 +15,10 @@ const Form = styled.form`
   gap: 1rem;
   position: relative;
   transition: height 1s;
+
+  @media (max-width: 875px) {
+    min-width: 100%;
+  }
 `;
 
 const Row = styled.div`
