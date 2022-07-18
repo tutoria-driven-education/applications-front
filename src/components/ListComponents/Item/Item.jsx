@@ -36,15 +36,15 @@ const Item = ({
               <span>Empresa: {data.company}</span>
             </li>
             <li>
-              <BsBriefcaseFill color="black" size={18} />{" "}
+              <BsBriefcaseFill color="black" size={18} />
               <span>Vaga: {data.job}</span>
             </li>
             <li>
-              <FaLink color="black" size={18} />{" "}
+              <FaLink color="black" size={18} />
               <span>
-                Link:{" "}
+                Link:
                 <a target={"_blank"} rel="noreferrer" href={data.link}>
-                  {data.link}
+                  {` ${data.link}`}
                   <BsBoxArrowUpRight />
                 </a>
               </span>
@@ -52,7 +52,7 @@ const Item = ({
             <li>
               <BsFillCalendarEventFill color="black" size={18} />
               <span>
-                Data de aplicação: {dayjs(data.date).format("DD/MM/YYYY")}{" "}
+                Data de aplicação: {dayjs(data.date).format("DD/MM/YYYY")}
               </span>
             </li>
           </ul>
