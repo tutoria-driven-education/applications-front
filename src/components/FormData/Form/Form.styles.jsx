@@ -19,6 +19,10 @@ const Form = styled.form`
   @media (max-width: 875px) {
     min-width: 100%;
   }
+
+  @media (max-width: 600px) {
+    padding: 2rem 2rem 3rem 2rem;
+  }
 `;
 
 const Row = styled.div`
@@ -42,6 +46,10 @@ const FormTitle = styled.h2`
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   padding: 1rem;
+  @media (max-width: 600px) {
+    position: static;
+    text-align: center;
+  }
 `;
 
 const CustomLoader = styled(Loader)`

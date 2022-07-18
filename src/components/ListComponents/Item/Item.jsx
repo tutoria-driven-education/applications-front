@@ -6,7 +6,7 @@ import {
 } from "./Item.styles";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 import { RiBuilding2Fill } from "react-icons/ri";
-import { BsBriefcaseFill } from "react-icons/bs";
+import { BsBriefcaseFill, BsBoxArrowUpRight } from "react-icons/bs";
 import { FaLink } from "react-icons/fa";
 import dayjs from "dayjs";
 import {
@@ -42,7 +42,11 @@ const Item = ({
             <li>
               <FaLink color="black" size={18} />{" "}
               <span>
-                Link: <a href={data.link}>{data.link}</a>
+                Link:{" "}
+                <a target={"_blank"} rel="noreferrer" href={data.link}>
+                  {data.link}
+                  <BsBoxArrowUpRight />
+                </a>
               </span>
             </li>
             <li>
