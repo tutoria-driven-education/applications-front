@@ -13,4 +13,17 @@ const Container = styled.main`
   }
 `;
 
-export { Container };
+const LoaderContainer = styled.div`
+  margin: 0 auto;
+`;
+
+const Message = styled.h3`
+  text-align: center;
+  font-size: 2.4rem;
+  color: white;
+  line-height: 5.4rem;
+  user-select: none;
+  margin-bottom: 3rem;
+`;
+
+export { Container, LoaderContainer, Message };

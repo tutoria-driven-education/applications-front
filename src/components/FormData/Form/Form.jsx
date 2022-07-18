@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
 import dataFormatter from "../../../utils/dataFormatter";
 import { Autocomplete, DatePicker, Input, Button } from "../index";
-import { Form, Row, FormTitle, CustomLoader } from "./Form.styles";
+import { Form, Row, FormTitle } from "./Form.styles";
 
 const CustomForm = ({ data, title, token, setApplications }) => {
   const [company, setCompany] = useState("");
@@ -50,9 +50,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
   return (
     <Form onSubmit={sendNewJobApplication}>
       <FormTitle>{title}</FormTitle>
-      {!data ? (
-        <CustomLoader />
-      ) : (
+      {data && (
         <>
           <Row>
             <Autocomplete
