@@ -26,6 +26,24 @@ const MainContent = styled.main`
   display: grid;
   grid-template-columns: 1.75fr 1fr 0.5fr;
   gap: 1rem;
+
+  @media (max-width: 875px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    & > section:last-child {
+      grid-area: 2 / 2 / 3 / 3;
+    }
+    & > section:first-child {
+      grid-area: 1 / 1 / 2 / 3;
+    }
+  }
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const ItemSection = styled.section`
@@ -36,10 +54,14 @@ const ItemSection = styled.section`
   border-radius: 2rem;
   padding: 1rem;
 
+  label,
   span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  label {
+    width: 105%;
   }
 
   ul {
@@ -47,8 +69,10 @@ const ItemSection = styled.section`
     flex-direction: column;
     justify-content: space-between;
     flex-grow: 1;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0 1rem 1rem;
+    @media (max-width: 600px) {
+      gap: 2rem;
+    }
   }
 
   li {
@@ -57,14 +81,25 @@ const ItemSection = styled.section`
     gap: 0.6rem;
 
     a {
+      color: var(--driven-color);
       text-decoration: none;
       transition: color 0.3s;
+      svg {
+        margin-left: 0.5rem;
+        transition: color 0.3s;
+      }
       :visited {
-        color: #a8155f;
+        color: #5a0d33;
+        svg {
+          color: #5a0d33 !important;
+        }
       }
       :hover {
         text-decoration: underline;
-        color: #ff7bbd;
+        color: #ffacd6;
+        svg {
+          color: #ffacd6 !important;
+        }
       }
     }
   }

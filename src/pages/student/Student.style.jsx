@@ -7,7 +7,10 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  padding: 4rem 4rem 0 4rem;
+  padding: 4rem 4rem 3rem 4rem;
+  @media (max-width: 600px) {
+    padding: 2rem 1.5rem;
+  }
 `;
 
 export { Container };

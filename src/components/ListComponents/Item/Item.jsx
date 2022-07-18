@@ -6,7 +6,7 @@ import {
 } from "./Item.styles";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 import { RiBuilding2Fill } from "react-icons/ri";
-import { BsBriefcaseFill } from "react-icons/bs";
+import { BsBriefcaseFill, BsBoxArrowUpRight } from "react-icons/bs";
 import { FaLink } from "react-icons/fa";
 import dayjs from "dayjs";
 import {
@@ -36,19 +36,23 @@ const Item = ({
               <span>Empresa: {data.company}</span>
             </li>
             <li>
-              <BsBriefcaseFill color="black" size={18} />{" "}
+              <BsBriefcaseFill color="black" size={18} />
               <span>Vaga: {data.job}</span>
             </li>
             <li>
-              <FaLink color="black" size={18} />{" "}
+              <FaLink color="black" size={18} />
               <span>
-                Link: <a href={data.link}>{data.link}</a>
+                Link:
+                <a target={"_blank"} rel="noreferrer" href={data.link}>
+                  {` ${data.link}`}
+                  <BsBoxArrowUpRight />
+                </a>
               </span>
             </li>
             <li>
               <BsFillCalendarEventFill color="black" size={18} />
               <span>
-                Data de aplicação: {dayjs(data.date).format("DD/MM/YYYY")}{" "}
+                Data de aplicação: {dayjs(data.date).format("DD/MM/YYYY")}
               </span>
             </li>
           </ul>
@@ -66,6 +70,7 @@ const Item = ({
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
+                  sx={{ minWidth: "50px" }}
                 />
               }
               label="Análise de currículo e perfil"
@@ -81,6 +86,7 @@ const Item = ({
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
+                  sx={{ minWidth: "50px" }}
                 />
               }
               label="Etapa técnica"
@@ -96,6 +102,7 @@ const Item = ({
                     setFlag(!flag);
                     updateApplication(data.id);
                   }}
+                  sx={{ minWidth: "50px" }}
                 />
               }
               label="Etapa comportamental"
