@@ -38,6 +38,10 @@ const CustomForm = ({ data, title, token, setApplications }) => {
         toast.success("Aplicação salva com sucesso");
         Applications.getAllApplications(token).then(({ data }) => {
           setApplications(dataFormatter(data));
+          setCompany("");
+          setJob("");
+          setLink("");
+          setDate(null);
         });
       })
       .catch(({ response }) => toast.error(response?.message));

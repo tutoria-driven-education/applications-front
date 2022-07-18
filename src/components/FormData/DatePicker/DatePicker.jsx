@@ -7,12 +7,11 @@ const CustomDatePicker = ({ value, setValue }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={brLocale}>
       <DesktopDatePicker
-        value={value}
-        inputFormat={"DD/MM/YYYY"}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
         label="Data de aplicação"
+        value={value}
+        disableFuture
+        inputFormat="DD/MM/YYYY"
+        onChange={(newValue) => setValue(newValue)}
         renderInput={(params) => <TextField type="date" required {...params} />}
       />
     </LocalizationProvider>
