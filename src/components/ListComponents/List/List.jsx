@@ -14,7 +14,8 @@ const List = ({
   token,
 }) => {
   const [flag, setFlag] = useState(true);
-  useEffect(() => {
+
+  const getAllApplications = () => {
     Applications.getAllApplications(token)
       .then(({ data }) => {
         setApplications(dataFormatter(data));
@@ -23,6 +24,10 @@ const List = ({
         console.error(response.data);
         toast.error(response.data);
       });
+  };
+
+  useEffect(() => {
+    getAllApplications();
   }, [flag]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -36,6 +41,9 @@ const List = ({
           flag={flag}
           data={elem}
           isMentorPage={isMentorPage}
+          updateApplications={() => {
+            getAllApplications();
+          }}
         />
       ))}
     </ListContainer>
