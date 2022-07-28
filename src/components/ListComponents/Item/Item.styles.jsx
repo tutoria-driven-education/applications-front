@@ -7,6 +7,8 @@ const ItemContainer = styled.li`
   background-color: var(--dark);
   border-radius: 2rem;
   padding: 1.5rem;
+
+  position: relative;
 `;
 
 const ItemHeader = styled.header`

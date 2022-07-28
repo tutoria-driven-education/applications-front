@@ -25,6 +25,14 @@ export default class Applications {
     });
   }
 
+  static deleteApplication(token, applicationId) {
+    return api.delete(`/application/${applicationId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   static getDashboard(token) {
     return api.get(`application/dashboard`, {
       headers: {
