@@ -7,6 +7,7 @@ import {
 import { BsFillCalendarEventFill } from "react-icons/bs";
 import { RiBuilding2Fill } from "react-icons/ri";
 import { BsBriefcaseFill, BsBoxArrowUpRight } from "react-icons/bs";
+
 import { FaLink } from "react-icons/fa";
 import dayjs from "dayjs";
 import {
@@ -16,6 +17,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import DeleteButton from "./deleteButton/DeleteButton";
 
 const Item = ({
   data,
@@ -24,9 +26,15 @@ const Item = ({
   setFlag,
   flag,
   isMentorPage,
+  updateApplications,
 }) => {
   return (
     <ItemContainer>
+      <DeleteButton
+        CompanyName={data.company}
+        applicationId={data.id}
+        updateApplications={updateApplications}
+      />
       <MainContent>
         <ItemSection>
           <ItemSectionTitle>Informações</ItemSectionTitle>
