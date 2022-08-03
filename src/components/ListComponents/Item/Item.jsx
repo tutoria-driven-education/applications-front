@@ -18,6 +18,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import DeleteButton from "./deleteButton/DeleteButton";
+import { useState } from "react";
 
 const Item = ({
   data,
@@ -28,6 +29,20 @@ const Item = ({
   isMentorPage,
   updateApplications,
 }) => {
+  const [radioValue, setRadioValue] = useState(String(data.status));
+
+  function handleClick(event) {
+    if (radioValue === event.target.value) {
+      data.status = null;
+      setRadioValue(null);
+    } else {
+      data.status = event.target.value;
+      setRadioValue(data.status);
+    }
+    setFlag(!flag);
+    updateApplication(data.id);
+  }
+
   return (
     <ItemContainer>
       <DeleteButton
@@ -120,17 +135,13 @@ const Item = ({
         </ItemSection>
         <ItemSection>
           <ItemSectionTitle>Finalização</ItemSectionTitle>
-          <RadioGroup>
+          <RadioGroup value={radioValue}>
             <FormControlLabel
               value={1}
-              checked={!!data.status && Number(data.status) === 1}
+              // checked={!!data.status && Number(data.status) === 1}
               control={
                 <Radio
-                  onChange={(event) => {
-                    data.status = event.target.value;
-                    setFlag(!flag);
-                    updateApplication(data.id);
-                  }}
+                  onClick={handleClick}
                   disabled={isWaiting || isMentorPage}
                 />
               }
@@ -138,30 +149,22 @@ const Item = ({
             />
             <FormControlLabel
               value={2}
-              checked={!!data.status && Number(data.status) === 2}
+              // checked={!!data.status && Number(data.status) === 2}
               control={
                 <Radio
                   disabled={isWaiting || isMentorPage}
-                  onChange={(event) => {
-                    data.status = event.target.value;
-                    setFlag(!flag);
-                    updateApplication(data.id);
-                  }}
+                  onClick={handleClick}
                 />
               }
               label="Não rolou"
             />
             <FormControlLabel
               value={3}
-              checked={!!data.status && Number(data.status) === 3}
+              // checked={!!data.status && Number(data.status) === 3}
               control={
                 <Radio
                   disabled={isWaiting || isMentorPage}
-                  onChange={(event) => {
-                    data.status = event.target.value;
-                    setFlag(!flag);
-                    updateApplication(data.id);
-                  }}
+                  onClick={handleClick}
                 />
               }
               label="Desisti"
