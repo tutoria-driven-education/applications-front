@@ -33,7 +33,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
         job,
         link: link || null,
         date,
-        notes,
+        notes: notes || null,
       },
       token
     )
