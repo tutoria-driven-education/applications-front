@@ -1,4 +1,4 @@
-import { TextMessage } from "./Message.styles";
+import { TextMessage } from "./styles";
 
 const Message = ({ children }) => {
   return <TextMessage>{children}</TextMessage>;

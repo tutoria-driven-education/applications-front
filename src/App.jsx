@@ -7,7 +7,7 @@ import { UserProvider } from "./contexts/UserContext";
 import GlobalStyles from "./styles/GlobalStyles";
 import theme from "./styles/MaterialUITheme";
 import ErrorMessage from "./components/ErrorMessage";
-import SharedLayout from "./components/SharedLayout";
+import SharedLayout from "./layouts/SharedLayout";
 import {
   Dashboard,
   MentoringGroups,

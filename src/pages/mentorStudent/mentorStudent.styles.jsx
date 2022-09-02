@@ -1,9 +1,6 @@
 import { RadioGroup } from "@mui/material";
 import styled from "styled-components";
-import {
-  SectionTitle,
-  StyledSection,
-} from "../../components/Section/Section.styles";
+import { SectionTitle, StyledSection } from "../../components/Section/styles";
 
 const Container = styled.main`
   background-color: #000;
@@ -13,6 +10,7 @@ const Container = styled.main`
   flex-direction: column;
   gap: 3rem;
   padding-top: 3rem;
+
   span {
     color: white;
   }

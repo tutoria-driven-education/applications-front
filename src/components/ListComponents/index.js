@@ -1,4 +1,4 @@
-import List from "./List/List";
-import Item from "./Item/Item";
+import List from "./List";
+import Item from "./Item";
 
 export { List, Item };

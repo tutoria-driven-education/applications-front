@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Loader from "../../Loader/Loader";
+import Loader from "../../Loader";
 
 const Form = styled.form`
   background-color: var(--darker);
@@ -58,4 +58,4 @@ const CustomLoader = styled(Loader)`
   background-color: red;
 `;
 
-export { Form, Row, FormTitle, CustomLoader };
+export {Form, Row, FormTitle, CustomLoader};

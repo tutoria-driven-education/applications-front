@@ -1,4 +1,4 @@
-export default function dataFormatter(data) {
+export default function fomatData(data) {
   return data.map((item) => {
     item.company = item.Company.name;
     item.job = item.Job.name;

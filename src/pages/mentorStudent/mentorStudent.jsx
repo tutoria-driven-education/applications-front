@@ -6,7 +6,7 @@ import {
   StudentTitleName,
 } from "./mentorStudent.styles";
 import { Section } from "../../components";
-import { SectionTitle } from "../../components/Section/Section.styles";
+import { SectionTitle } from "../../components/Section/styles";
 import {
   Button,
   Fab,
@@ -15,19 +15,17 @@ import {
   Radio,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaExpandAlt, FaHeartBroken, FaSearch } from "react-icons/fa";
 import { GrClose } from "react-icons/gr";
 import SearchService from "../../services/SearchService";
 import { toast } from "react-toastify";
-import ApplicationsList from "../../components/ListComponents/List/List";
-import dataFormatter from "../../utils/dataFormatter";
+import ApplicationsList from "../../components/ListComponents/List";
+import fomatData from "../../utils/fomatData";
 import { BsFillPersonLinesFill } from "react-icons/bs";
-import Message from "../../components/Message/Message";
-import { useContext } from "react";
+import Message from "../../components/Message";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import AuthContext from "../../contexts/AuthContext";
 
 const MentorStudent = () => {
@@ -52,7 +50,7 @@ const MentorStudent = () => {
         const filteredData = data.map((item) => {
           return {
             ...item,
-            Application: dataFormatter(item.Application),
+            Application: fomatData(item.Application),
             expanded: false,
           };
         });
