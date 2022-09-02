@@ -12,19 +12,16 @@ const CustomForm = ({ data, title, token, setApplications }) => {
   const [date, setDate] = useState(null);
   const [disable, setDisable] = useState(true);
 
-  useEffect(() => {
-    if (company && job && date) {
-      setDisable(false);
-      return;
-    }
+  const areRequiredFieldsFilled = company && job && date;
 
-    !disable && setDisable(true);
+  useEffect(() => {
+    setDisable(!areRequiredFieldsFilled);
   }, [company, job, link, date]); //eslint-disable-line react-hooks/exhaustive-deps
 
   function sendNewJobApplication(event) {
     event.preventDefault();
 
-    if (!company || !job || !date) {
+    if (!areRequiredFieldsFilled) {
       toast.warn("Por favor, preencha todos os campos corretamente!");
       return;
     }
