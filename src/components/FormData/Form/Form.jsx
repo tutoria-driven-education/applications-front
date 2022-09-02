@@ -14,8 +14,8 @@ const CustomForm = ({ data, title, token, setApplications }) => {
 
   useEffect(() => {
     if (company && job && date) {
-        setDisable(false);
-        return;
+      setDisable(false);
+      return;
     }
 
     !disable && setDisable(true);
@@ -33,7 +33,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
       {
         company,
         job,
-        link,
+        link: link || null,
         date,
       },
       token

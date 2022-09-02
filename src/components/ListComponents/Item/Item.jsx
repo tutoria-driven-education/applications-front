@@ -62,22 +62,25 @@ const Item = ({
               <BsBriefcaseFill color="black" size={18} />
               <span>Vaga: {data.job}</span>
             </li>
-            <li>
-              <FaLink color="black" size={18} />
-              <span>
-                Link:
-                <a target={"_blank"} rel="noreferrer" href={data.link}>
-                  {` ${data.link}`}
-                  <BsBoxArrowUpRight />
-                </a>
-              </span>
-            </li>
+            {data.link && (
+              <li>
+                <FaLink color="black" size={18} />
+                <span>
+                  Link:
+                  <a target={"_blank"} rel="noreferrer" href={data.link}>
+                    {` ${data.link}`}
+                    <BsBoxArrowUpRight />
+                  </a>
+                </span>
+              </li>
+            )}
             <li>
               <BsFillCalendarEventFill color="black" size={18} />
               <span>
                 Data de aplicação: {dayjs(data.date).format("DD/MM/YYYY")}
               </span>
             </li>
+            {!data.link && <li />}
           </ul>
         </ItemSection>
         <ItemSection>
