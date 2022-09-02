@@ -13,14 +13,18 @@ const CustomForm = ({ data, title, token, setApplications }) => {
   const [disable, setDisable] = useState(true);
 
   useEffect(() => {
-    if (company && job && link && date) setDisable(false);
-    else !disable && setDisable(true);
+    if (company && job && date) {
+        setDisable(false);
+        return;
+    }
+
+    !disable && setDisable(true);
   }, [company, job, link, date]); //eslint-disable-line react-hooks/exhaustive-deps
 
   function sendNewJobApplication(event) {
     event.preventDefault();
 
-    if (!company || !job || !link || !date) {
+    if (!company || !job || !date) {
       toast.warn("Por favor, preencha todos os campos corretamente!");
       return;
     }
@@ -73,6 +77,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
               setValue={setLink}
               label="Link"
               placeholder="https://..."
+              required={false}
             />
             <DatePicker value={date} setValue={setDate} />
           </Row>
