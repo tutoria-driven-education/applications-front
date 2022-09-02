@@ -32,7 +32,7 @@ export const FilterBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
+  flex-wrap: wrap;
   width: 100%;
   gap: 1rem;
 `;
@@ -56,3 +56,14 @@ export const TableItem = styled.div`
   padding: 1rem;
   border-radius: 1px;
 `;
+
+export const ContainerSelect = styled.div`
+    min-width: 250px;
+    flex: 1;
+    display: flex;
+    box-shadow: 0.125rem 0.125rem 0.5rem #57545419;
+    height:40px;
+    div:first-child{
+        width: 100%;
+    }
+`

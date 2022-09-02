@@ -1,6 +1,25 @@
 import { api } from "./api";
 
+const makeQueryParams = (consultation) => {
+  const keys = Object.keys(consultation)
+  let newConsultation = ''
+  keys.map(key => {
+    if (consultation[key]) newConsultation += `${key}=${consultation[key]}&`
+  })
+  return newConsultation
+}
 export default class Applications {
+
+  static searchApplications(token, filters) {
+    console.log({ filters })
+    const newFilters = makeQueryParams(filters)
+    return api.get(`application/search?${newFilters}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   static postNewApplication(data, token) {
     return api.post(`/application/`, data, {
       headers: {
