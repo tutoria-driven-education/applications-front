@@ -3,7 +3,7 @@ import { Autocomplete, TextField } from "@mui/material";
 const CustomAutocomplete = ({ value, setValue, free, data, label }) => {
   return (
     <Autocomplete
-      options={data}
+      options={data ?? []}
       getOptionLabel={(option) => option.name || value}
       inputValue={value}
       onInputChange={(_, newValue) => setValue(newValue)}
