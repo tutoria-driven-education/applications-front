@@ -24,9 +24,16 @@ const normalizeDate = (date, type) => {
   if (type === 'init') return new Date(year, month, day).toISOString()
   else return new Date(year, month, day + 1).toISOString()
 }
+const getFirstDayOfTheMonth = () => {
+  const date = new Date();
+  const newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  return newDate
+}
+
+const initalRange = [getFirstDayOfTheMonth().toISOString(), new Date().toISOString()]
 
 function Dashboard() {
-  const initValueDates = [new Date().toISOString(), new Date().toISOString()];
+  const initValueDates = initalRange;
   const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
   const optionsRange = [
     { label: "Todas aplicações", value: "all" },
