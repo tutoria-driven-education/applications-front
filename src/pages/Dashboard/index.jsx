@@ -10,10 +10,14 @@ import {
   Container,
   Content,
   FilterBar,
-  TableContent,
-  TableItem,
+  Column,
+  Line,
   ContainerSelect
 } from "./styles";
+import { DashboardCard } from "./DashboardCard";
+import { ChartDoughnut } from './../../components/Charts/Doughnut/index'
+import { BsArrowRight } from "react-icons/bs";
+import { ChartLine } from "../../components/Charts/Line";
 
 const normalizeDate = (date, type) => {
   const newDate = new Date(date)
@@ -24,6 +28,7 @@ const normalizeDate = (date, type) => {
   if (type === 'init') return new Date(year, month, day).toISOString()
   else return new Date(year, month, day + 1).toISOString()
 }
+
 const getFirstDayOfTheMonth = () => {
   const date = new Date();
   const newDate = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -46,7 +51,7 @@ function Dashboard() {
   const [valueMentorDisplay, setValueMentorDisplay] = useState(initalMentorsOptions[0]);
   const [valuePeriod, setValuePeriod] = useState(initValueDates);
 
-  const [infoDisplay, setInfoDisplay] = useState({});
+  const [infoDisplay, setInfoDisplay] = useState(null);
 
   const { token } = useContext(AuthContext);
   const { isMentor } = useContext(UserContext);
@@ -113,28 +118,97 @@ function Dashboard() {
             />
           </div>
         </FilterBar>
-        <TableContent>
-          <TableItem> Total de aplicações </TableItem>
-          <TableItem> {infoDisplay.total} </TableItem>
+        {infoDisplay &&
+          <>
+            <Line style={{ gap: 30, flexWrap: "wrap" }}>
+              <DashboardCard minWidth={300} title="Aplicações (Empresas Parceiras X Outras)" theme={'light'}>
+                <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
+                  <ChartDoughnut
+                    infos={infoDisplay.companies.total.values}
+                    labels={infoDisplay.companies.total.names}
+                    colors={infoDisplay.companies.total.colors}
+                  />
+                  <Line style={{ gap: 10, flexWrap: "wrap" }}>
+                    {infoDisplay.companies.total.names.map((name, index) => (
+                      <Line style={{ alignItems: "center", gap: 5 }}>
+                        <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.companies.total.colors[index] }}></div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
+                          <b>{name}</b>
+                          <BsArrowRight color="#000" />
+                          {infoDisplay.companies.total.values[index]}
+                        </div>
+                      </Line>
+                    ))}
+                  </Line>
+                </Column>
+              </DashboardCard>
+              <DashboardCard minWidth={300} title="Aplicações por Vaga" theme={'light'}>
+                <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
+                  <ChartDoughnut
+                    infos={infoDisplay.jobs.total.values}
+                    labels={infoDisplay.jobs.total.names}
+                    colors={infoDisplay.jobs.total.colors}
+                  />
+                  <Line style={{ gap: 10, flexWrap: "wrap" }}>
+                    {infoDisplay.jobs.total.names.map((name, index) => (
+                      <Line style={{ alignItems: "center", gap: 5 }}>
+                        <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.jobs.total.colors[index] }}></div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
+                          <b>{name}</b>
+                          <BsArrowRight color="#000" />
+                          {infoDisplay.jobs.total.values[index]}
+                        </div>
+                      </Line>
+                    ))}
+                  </Line>
+                </Column>
+              </DashboardCard>
+              <DashboardCard minWidth={300} title="Aplicações por Status" theme={'light'}>
+                <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
+                  <ChartDoughnut
+                    infos={infoDisplay.status.values}
+                    labels={infoDisplay.status.names}
+                    colors={infoDisplay.status.colors}
+                  />
+                  <Line style={{ gap: 10, flexWrap: "wrap" }}>
+                    {infoDisplay.status.names.map((name, index) => (
+                      <Line style={{ alignItems: "center", gap: 5 }}>
+                        <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.status.colors[index] }}></div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
+                          <b>{name}</b>
+                          <BsArrowRight color="#000" />
+                          {infoDisplay.status.values[index]}
+                        </div>
+                      </Line>
+                    ))}
+                  </Line>
+                </Column>
+              </DashboardCard>
+            </Line>
+            <DashboardCard minWidth={300} title="Aplicações ao longo do período" theme={'light'}>
+              <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
+                <ChartLine
+                  infos={[{ name: "Totais", values: infoDisplay.per_day }, ...infoDisplay.companies.per_days, ...infoDisplay.jobs.per_days]}
+                  labels={infoDisplay.days}
+                />
+                <Line style={{ gap: 10, flexWrap: "wrap" }}>
+                  {/* {infoDisplay.status.names.map((name, index) => (
+                    <Line style={{ alignItems: "center", gap: 5 }}>
+                      <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.status.colors[index] }}></div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
+                        <b>{name}</b>
+                        <BsArrowRight color="#000" />
+                        {infoDisplay.status.values[index]}
+                      </div>
+                    </Line>
+                  ))} */}
+                </Line>
+              </Column>
+            </DashboardCard>
+          </>
+        }
 
-          <TableItem> Analise de currículo </TableItem>
-          <TableItem> {infoDisplay.analyticCurriculum} </TableItem>
 
-          <TableItem> Etapa Comportamental </TableItem>
-          <TableItem> {infoDisplay.stageBehavioral} </TableItem>
-
-          <TableItem> Teste técnico </TableItem>
-          <TableItem> {infoDisplay.stageTechnic} </TableItem>
-
-          <TableItem> Receberam propostas </TableItem>
-          <TableItem> {infoDisplay.approved} </TableItem>
-
-          <TableItem> Não rolou </TableItem>
-          <TableItem> {infoDisplay.notMatch} </TableItem>
-
-          <TableItem> Desistiram </TableItem>
-          <TableItem> {infoDisplay.giveUp} </TableItem>
-        </TableContent>
       </Content>
     </Container>
   );
