@@ -4,12 +4,6 @@ import {
   ItemSectionTitle,
   MainContent,
 } from "./styles";
-import { BsFillCalendarEventFill } from "react-icons/bs";
-import { RiBuilding2Fill } from "react-icons/ri";
-import { BsBriefcaseFill, BsBoxArrowUpRight } from "react-icons/bs";
-
-import { FaLink } from "react-icons/fa";
-import dayjs from "dayjs";
 import {
   Checkbox,
   FormControlLabel,
@@ -19,6 +13,8 @@ import {
 } from "@mui/material";
 import DeleteButton from "./DeleteButton";
 import { useState } from "react";
+import CustomModal from "./CustomModal";
+import ItemInfo from "./ItemInfo";
 
 const Item = ({
   data,
@@ -30,6 +26,7 @@ const Item = ({
   updateApplications,
 }) => {
   const [radioValue, setRadioValue] = useState(String(data.status));
+  const [modalOpened, setModalOpened] = useState(false);
 
   function handleClick(event) {
     if (radioValue === event.target.value) {
@@ -45,44 +42,18 @@ const Item = ({
 
   return (
     <ItemContainer>
+      <CustomModal {...data} opened={modalOpened} setOpened={setModalOpened} />
       <DeleteButton
         CompanyName={data.company}
         applicationId={data.id}
         updateApplications={updateApplications}
       />
       <MainContent>
-        <ItemSection>
-          <ItemSectionTitle>Informações</ItemSectionTitle>
-          <ul>
-            <li>
-              <RiBuilding2Fill color="black" size={18} />
-              <span>Empresa: {data.company}</span>
-            </li>
-            <li>
-              <BsBriefcaseFill color="black" size={18} />
-              <span>Vaga: {data.job}</span>
-            </li>
-            {data.link && (
-              <li>
-                <FaLink color="black" size={18} />
-                <span>
-                  Link:
-                  <a target={"_blank"} rel="noreferrer" href={data.link}>
-                    {` ${data.link}`}
-                    <BsBoxArrowUpRight />
-                  </a>
-                </span>
-              </li>
-            )}
-            <li>
-              <BsFillCalendarEventFill color="black" size={18} />
-              <span>
-                Data de aplicação: {dayjs(data.date).format("DD/MM/YYYY")}
-              </span>
-            </li>
-            {!data.link && <li />}
-          </ul>
-        </ItemSection>
+        <ItemInfo
+          {...data}
+          openModal={() => setModalOpened(true)}
+          isNotInModal={true}
+        />
         <ItemSection>
           <ItemSectionTitle>Etapas</ItemSectionTitle>
           <FormGroup>
