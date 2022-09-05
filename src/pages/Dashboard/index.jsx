@@ -1,135 +1,110 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import UserContext from "../../contexts/UserContext";
+import AuthContext from "../../contexts/AuthContext";
+import UsersService from "../../services/UsersServices";
+import ApplicationService from "../../services/ApplicationsService";
+import { useContext, useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { RangePicker } from "../../components/FormData/RangePicker";
 import {
   Container,
   Content,
   FilterBar,
   TableContent,
   TableItem,
+  ContainerSelect
 } from "./styles";
-import AuthContext from "../../contexts/AuthContext";
-import ApplicationService from "../../services/ApplicationsService";
+
+const normalizeDate = (date, type) => {
+  const newDate = new Date(date)
+  const day = newDate.getDate()
+  const month = newDate.getMonth()
+  const year = newDate.getFullYear()
+
+  if (type === 'init') return new Date(year, month, day).toISOString()
+  else return new Date(year, month, day + 1).toISOString()
+}
 
 function Dashboard() {
-  /**
-   * @type {Array<import("../../../@types").ApplicationResponse>}
-   */
-  const [applications, setApplications] = useState({});
-  const [mentorsOptions, setMentorsOptions] = useState([
-    {
-      label: "Todos mentores",
-      value: "all",
-    },
-  ]);
-  /**
-   * @type {Array<import("../../../@types").Amounts>}
-   */
-  const [infoDisplay, setInfoDisplay] = useState({});
-  const [valueRangeDisplay, setValueRangeDisplay] = useState({
-    label: "Total de aplicações",
-    value: "all",
-  });
-  const [valueMentorDisplay, setValueMentorDisplay] = useState({
-    label: "Todos mentores",
-    value: "all",
-  });
-  const { token } = useContext(AuthContext);
-
+  const initValueDates = [new Date().toISOString(), new Date().toISOString()];
+  const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
   const optionsRange = [
-    { label: "Total de aplicações", value: "all" },
+    { label: "Todas aplicações", value: "all" },
     { label: "Aplicações em parceiras", value: "inPartner" },
     { label: "Aplicações em outras", value: "inOther" },
   ];
+  const [mentorsOptions, setMentorsOptions] = useState(initalMentorsOptions);
 
+  const [valueRangeDisplay, setValueRangeDisplay] = useState(optionsRange[0]);
+  const [valueMentorDisplay, setValueMentorDisplay] = useState(initalMentorsOptions[0]);
+  const [valuePeriod, setValuePeriod] = useState(initValueDates);
+
+  const [infoDisplay, setInfoDisplay] = useState({});
+
+  const { token } = useContext(AuthContext);
   const { isMentor } = useContext(UserContext);
 
   const nav = useNavigate();
+
+  const search = useCallback(async ({ range, mentor, date_init, date_end }) => {
+    const [applications, mentoringGroups] = await Promise.all([
+      ApplicationService.searchApplications(token, { range, mentor, date_init, date_end }),
+      UsersService.getMentoringGroups(token)
+    ])
+    const otherOptions = mentoringGroups.data.map((mentor) => {
+      return { label: mentor.name, value: mentor.id };
+    });
+    setInfoDisplay(applications.data);
+    setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
+  }, [])
+
   useEffect(() => {
-    if (!isMentor) {
-      nav("/student");
-      return;
-    }
+    if (!isMentor) nav("/student")
+  }, []);
 
-    ApplicationService.getDashboard(token).then((response) => {
-      const otherOptions = response.data.mentors.map((mentor) => {
-        return {
-          label: mentor.name,
-          value: mentor.name,
-        };
-      });
-
-      setInfoDisplay(response.data.allApplications.amounts);
-      setApplications(response.data);
-      setMentorsOptions([...mentorsOptions, ...otherOptions]);
-    });
-  }, []); //eslint-disable-line  react-hooks/exhaustive-deps
-
-  function handleSelectRange(event) {
-    setValueMentorDisplay(mentorsOptions[0]);
-    setValueRangeDisplay(event);
-    switch (event.value) {
-      case "all":
-        setInfoDisplay(applications.allApplications.amounts);
-        break;
-      case "inPartner":
-        setInfoDisplay(applications.applicationsInCompanyPartner.amounts);
-        break;
-      case "inOther":
-        setInfoDisplay(applications.applicationsInOtherCompany.amounts);
-        break;
-      default:
-        alert("Recarregue a pagina!");
-        break;
-    }
-  }
-  function handleSelectMentor(event) {
-    setValueMentorDisplay(event);
-    if (event.value === "all") {
-      handleSelectRange(optionsRange[0]);
-    }
-    const mentorInfo = applications.mentors.find(
-      (mentor) => mentor.name === event.value
-    );
-    if (!mentorInfo) {
-      return;
-    }
-    setValueRangeDisplay({
-      label: "Total de aplicações",
-      value: "all",
-    });
-    setInfoDisplay(mentorInfo.amounts);
-  }
-
-  if (Object.keys(applications).length === 0) {
-    return "Loading...";
-  }
+  useEffect(() => {
+    search({
+      range: valueRangeDisplay.value,
+      mentor: valueMentorDisplay.value,
+      date_init: normalizeDate(valuePeriod[0], 'init'),
+      date_end: normalizeDate(valuePeriod[1], 'end')
+    })
+  }, [valueRangeDisplay, valueMentorDisplay, valuePeriod]);
 
   return (
     <Container>
       <Content>
         <FilterBar>
-          <Select
-            value={valueRangeDisplay}
-            onChange={handleSelectRange}
-            options={optionsRange}
-            defaultValue={optionsRange[0]}
-            styles={{
-              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
-              control: (provided) => ({ ...provided, cursor: "pointer" }),
-            }}
-          />
-          <Select
-            value={valueMentorDisplay}
-            onChange={handleSelectMentor}
-            options={mentorsOptions}
-            defaultValue={mentorsOptions[0]}
-            styles={{
-              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
-              control: (provided) => ({ ...provided, cursor: "pointer" }),
-            }}
-          />
+          <ContainerSelect>
+            <Select
+              value={valueRangeDisplay}
+              onChange={setValueRangeDisplay}
+              options={optionsRange}
+              defaultValue={optionsRange[0]}
+              styles={{
+                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+                control: (provided) => ({ ...provided, cursor: "pointer" }),
+              }}
+            />
+          </ContainerSelect>
+          <ContainerSelect>
+            <Select
+              value={valueMentorDisplay}
+              onChange={setValueMentorDisplay}
+              options={mentorsOptions}
+              defaultValue={mentorsOptions[0]}
+              styles={{
+                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+                control: (provided) => ({ ...provided, cursor: "pointer" }),
+              }}
+            />
+          </ContainerSelect>
+          <div style={{ display: "flex", flex: 1, minWidth: 250 }}>
+            <RangePicker
+              initValue={initValueDates}
+              onChangeValue={(dates) => setValuePeriod([...dates])}
+            />
+          </div>
         </FilterBar>
         <TableContent>
           <TableItem> Total de aplicações </TableItem>
@@ -145,7 +120,7 @@ function Dashboard() {
           <TableItem> {infoDisplay.stageTechnic} </TableItem>
 
           <TableItem> Receberam propostas </TableItem>
-          <TableItem> {infoDisplay.match} </TableItem>
+          <TableItem> {infoDisplay.approved} </TableItem>
 
           <TableItem> Não rolou </TableItem>
           <TableItem> {infoDisplay.notMatch} </TableItem>

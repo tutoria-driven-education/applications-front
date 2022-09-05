@@ -10,17 +10,19 @@ const CustomForm = ({ data, title, token, setApplications }) => {
   const [job, setJob] = useState("");
   const [link, setLink] = useState("");
   const [date, setDate] = useState(null);
+  const [notes, setNotes] = useState("");
   const [disable, setDisable] = useState(true);
 
+  const areRequiredFieldsFilled = company && job && date;
+
   useEffect(() => {
-    if (company && job && link && date) setDisable(false);
-    else !disable && setDisable(true);
+    setDisable(!areRequiredFieldsFilled);
   }, [company, job, link, date]); //eslint-disable-line react-hooks/exhaustive-deps
 
   function sendNewJobApplication(event) {
     event.preventDefault();
 
-    if (!company || !job || !link || !date) {
+    if (!areRequiredFieldsFilled) {
       toast.warn("Por favor, preencha todos os campos corretamente!");
       return;
     }
@@ -29,8 +31,9 @@ const CustomForm = ({ data, title, token, setApplications }) => {
       {
         company,
         job,
-        link,
+        link: link || null,
         date,
+        notes: notes || null,
       },
       token
     )
@@ -42,6 +45,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
           setJob("");
           setLink("");
           setDate(null);
+          setNotes("");
         });
       })
       .catch(({ response }) => toast.error(response?.message));
@@ -72,10 +76,19 @@ const CustomForm = ({ data, title, token, setApplications }) => {
               value={link}
               setValue={setLink}
               label="Link"
+              type={"url"}
               placeholder="https://..."
+              required={false}
             />
             <DatePicker value={date} setValue={setDate} />
           </Row>
+          <Input
+            value={notes}
+            setValue={setNotes}
+            label="Comentários"
+            multiline={true}
+            required={false}
+          />
           <Button disable={disable}>Enviar</Button>
         </>
       )}
