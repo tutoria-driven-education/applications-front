@@ -37,6 +37,7 @@ const MainContent = styled.main`
     & > section:last-child {
       grid-area: 2 / 2 / 3 / 3;
     }
+
     & > section:first-child {
       grid-area: 1 / 1 / 2 / 3;
     }
@@ -62,6 +63,7 @@ const ItemSection = styled.section`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   label {
     width: 105%;
   }
@@ -69,8 +71,8 @@ const ItemSection = styled.section`
   ul {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex-grow: 1;
+    gap: 1rem;
     margin: 1rem 0 1rem 1rem;
     @media (max-width: 600px) {
       gap: 2rem;
@@ -86,19 +88,24 @@ const ItemSection = styled.section`
       color: var(--driven-color);
       text-decoration: none;
       transition: color 0.3s;
+
       svg {
         margin-left: 0.5rem;
         transition: color 0.3s;
       }
+
       :visited {
         color: #5a0d33;
+
         svg {
           color: #5a0d33 !important;
         }
       }
+
       :hover {
         text-decoration: underline;
         color: #ffacd6;
+
         svg {
           color: #ffacd6 !important;
         }
@@ -108,9 +115,20 @@ const ItemSection = styled.section`
 `;
 
 const ItemSectionTitle = styled.h4`
+  cursor: pointer;
   font-size: 2rem;
   font-weight: 700;
   text-align: center;
+  transition: color 0.3s;
+
+  :hover {
+    color: #ffacd6;
+  }
+`;
+
+const CommentsText = styled.span`
+  white-space: ${(props) =>
+    props.isNotInModal ? "nowrap" : "normal"} !important;
 `;
 
 const FinalizationButton = styled(Button)`
@@ -123,6 +141,7 @@ export {
   ItemSection,
   ItemSectionTitle,
   ItemHeader,
+  CommentsText,
   MainContent,
   FinalizationButton,
 };
