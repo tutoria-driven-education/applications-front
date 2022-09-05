@@ -1,21 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-
-export default function NavButton({ route, buttonText }) {
-  const nav = useNavigate();
-  const location = useLocation();
-  const currentRoute = location.pathname;
-
-  return (
-    <Container
-      onClick={() => nav(route)}
-      route={route}
-      isSelected={currentRoute === route}
-    >
-      {buttonText}
-    </Container>
-  );
-}
 
 const Container = styled.button`
   background-color: ${({ isSelected }) => (isSelected ? "#AAAAAA" : "#d9d9d9")};
@@ -42,3 +25,5 @@ const Container = styled.button`
     font-size: 1rem;
   }
 `;
+
+export {Container};

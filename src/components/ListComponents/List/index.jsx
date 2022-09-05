@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
-import dataFormatter from "../../../utils/dataFormatter";
-import Item from "../Item/Item";
-import { ListContainer } from "./List.styles";
+import fomatData from "../../../utils/fomatData";
+import Item from "../Item";
+import { ListContainer } from "./styles";
 
 const List = ({
   array,
@@ -18,7 +18,7 @@ const List = ({
   const getAllApplications = () => {
     Applications.getAllApplications(token)
       .then(({ data }) => {
-        setApplications(dataFormatter(data));
+        setApplications(fomatData(data));
       })
       .catch(({ response }) => {
         console.error(response.data);

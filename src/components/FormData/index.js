@@ -1,8 +1,8 @@
-import CustomAutocomplete from "./Autocomplete/Autocomplete";
-import CustomInput from "./Input/Input";
-import CustomDatePicker from "./DatePicker/DatePicker";
-import CustomForm from "./Form/Form";
-import CustomButton from "./Button/Button";
+import CustomAutocomplete from "./CustomAutocomplete";
+import CustomInput from "./CustomInput";
+import CustomDatePicker from "./CustomAutocomplete";
+import CustomForm from "./CustomForm";
+import CustomButton from "./CustomAutocomplete";
 
 export {
   CustomAutocomplete as Autocomplete,

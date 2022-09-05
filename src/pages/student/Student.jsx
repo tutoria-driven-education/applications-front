@@ -7,7 +7,7 @@ import { List } from "../../components/ListComponents";
 import AuthContext from "../../contexts/AuthContext";
 import Applications from "../../services/ApplicationsService";
 import CompaniesService from "../../services/CompaniesService";
-import dataFormatter from "../../utils/dataFormatter";
+import fomatData from "../../utils/fomatData";
 import { Container, LoaderContainer, Message } from "./Student.style";
 
 const StudentHomepage = () => {
@@ -23,7 +23,7 @@ const StudentHomepage = () => {
     promise.catch(({ response }) => console.error(response));
 
     Applications.getAllApplications(context.token)
-      .then(({ data }) => setApplications(dataFormatter(data)))
+      .then(({ data }) => setApplications(fomatData(data)))
       .catch(({ response }) => {
         console.error(response.data);
         toast.error(response.data);

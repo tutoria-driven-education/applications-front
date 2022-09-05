@@ -3,7 +3,7 @@ import {
   ItemSection,
   ItemSectionTitle,
   MainContent,
-} from "./Item.styles";
+} from "./styles";
 import { BsFillCalendarEventFill } from "react-icons/bs";
 import { RiBuilding2Fill } from "react-icons/ri";
 import { BsBriefcaseFill, BsBoxArrowUpRight } from "react-icons/bs";
@@ -17,7 +17,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import DeleteButton from "./deleteButton/DeleteButton";
+import DeleteButton from "./DeleteButton";
 import { useState } from "react";
 
 const Item = ({

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export default function validateMethod(navigate, token, setToken) {
+export default function validateRoute(navigate, token, setToken) {
   const validations = allValidations(token);
 
   window.onstorage = (event) => {

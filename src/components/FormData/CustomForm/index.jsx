@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
-import dataFormatter from "../../../utils/dataFormatter";
+import fomatData from "../../../utils/fomatData";
 import { Autocomplete, DatePicker, Input, Button } from "../index";
-import { Form, Row, FormTitle } from "./Form.styles";
+import { Form, Row, FormTitle } from "./styles";
 
 const CustomForm = ({ data, title, token, setApplications }) => {
   const [company, setCompany] = useState("");
@@ -40,7 +40,7 @@ const CustomForm = ({ data, title, token, setApplications }) => {
       .then(() => {
         toast.success("Aplicação salva com sucesso");
         Applications.getAllApplications(token).then(({ data }) => {
-          setApplications(dataFormatter(data));
+          setApplications(fomatData(data));
           setCompany("");
           setJob("");
           setLink("");

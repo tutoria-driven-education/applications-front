@@ -1,4 +1,4 @@
-import { FabStyles, Header as HeaderComponent, Title } from "./Header.styles";
+import { FabStyles, Header as HeaderComponent, Title } from "./styles";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
