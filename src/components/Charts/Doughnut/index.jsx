@@ -1,6 +1,7 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Container } from './style';
+import { TbDatabaseOff } from 'react-icons/tb'
 
 export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
   const options = {
@@ -54,7 +55,7 @@ export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
           label: function (context) {
             var label = labels[context.dataIndex];
             if (label) label += ': ';
-            if(isMoney) label += new Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(context.parsed);
+            if (isMoney) label += new Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(context.parsed);
             else label += context.parsed;
             return `  ${label}`;
           }
@@ -67,7 +68,7 @@ export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
     labels: labels,
     datasets: [
       {
-        label: 'dsafds',
+        label: '',
         backgroundColor: colors,
         pointBorderWidth: 5,
         pointHoverRadius: 5,
@@ -78,8 +79,14 @@ export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
   }
 
   return (
-    <Container haveData={!!infos}>
-      <Doughnut type={''} options={options} data={data} />
+    <Container haveData={infos.filter(info => info > 0).length > 0}>
+      {
+        infos.filter(info => info > 0).length > 0
+          ?
+          <Doughnut type={''} options={options} data={data} />
+          :
+          <TbDatabaseOff size={100} color="rgb(208 208 208)" />
+      }
     </Container>
   )
 }

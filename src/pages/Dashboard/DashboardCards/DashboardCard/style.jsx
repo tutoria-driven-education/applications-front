@@ -15,6 +15,9 @@ export const Container = styled.div`
         min-width: ${props.minWidth}px;
         box-shadow: 0.125rem 0.125rem 0.5rem ${shadowColor[props.theme]};
     `}
+    ${props => props.minHeight && css`
+        min-height: ${props.minHeight}px;
+    `}
 `
 
 export const Title = styled.div`

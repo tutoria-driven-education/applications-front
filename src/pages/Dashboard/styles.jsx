@@ -1,31 +1,20 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Line = styled.div`
     display:flex;
     flex-direction:row;
 `
 
-export const Column = styled.div`
-    display:flex;
-    flex-direction:column;
-`
-
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex:1;
-  font-size: 1.7rem;
-`;
-
-export const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
   width: 100%;
-  padding: 1rem;
+  padding: 4rem;
+  padding-top: 2rem;
   border-radius: 1rem;
-  gap: 2rem;
+  gap: 3rem;
+  font-size: 1.7rem;
 `;
 
 export const FilterBar = styled.div`
@@ -35,24 +24,6 @@ export const FilterBar = styled.div`
   flex-wrap: wrap;
   width: 100%;
   gap: 2rem;
-`;
-
-export const TableContent = styled.div`
-  display: grid;
-  grid: auto / 1fr 1fr;
-  row-gap: 1rem;
-  margin-top: 1rem;
-  width: 100%;
-  color: white;
-`;
-
-export const TableItem = styled.div`
-  line-height: 2rem;
-  background-color: #525268;
-  width: 100%;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 1px;
 `;
 
 export const ContainerSelect = styled.div`

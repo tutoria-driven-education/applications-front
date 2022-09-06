@@ -6,18 +6,9 @@ import ApplicationService from "../../services/ApplicationsService";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { RangePicker } from "../../components/FormData/RangePicker";
-import {
-  Container,
-  Content,
-  FilterBar,
-  Column,
-  Line,
-  ContainerSelect
-} from "./styles";
-import { DashboardCard } from "./DashboardCard";
-import { ChartDoughnut } from './../../components/Charts/Doughnut/index'
-import { BsArrowRight } from "react-icons/bs";
-import { ChartLine } from "../../components/Charts/Line";
+import { DashboardChartDoughnut } from "./DashboardCards/DashboardChartDoughnut";
+import { DashboardCharLine } from "./DashboardCards/DashboardCharLine";
+import { Container, FilterBar, Line, ContainerSelect } from "./styles";
 
 const normalizeDate = (date, type) => {
   const newDate = new Date(date)
@@ -35,21 +26,45 @@ const getFirstDayOfTheMonth = () => {
   return newDate
 }
 
-const initalRange = [getFirstDayOfTheMonth().toISOString(), new Date().toISOString()]
+const initalPeriod = [getFirstDayOfTheMonth().toISOString(), new Date().toISOString()]
+
+const DoughnutCharts = [
+  {
+    title: "Aplicações (Empresas Parceiras X Outras)",
+    attribute: 'companies'
+  },
+  {
+    title: "Aplicações por Vaga",
+    attribute: 'jobs'
+  },
+  {
+    title: "Aplicações por Status",
+    attribute: 'status'
+  }
+]
+
+const LineCharts = [
+  {
+    title: "Aplicações ao longo do período",
+    attribute: 'total'
+  },
+  {
+    title: "Aplicações ao longo do período (Empresas Parceiras X Outras)",
+    attribute: 'companies'
+  },
+  {
+    title: "Aplicações por vaga ao longo do período",
+    attribute: 'jobs'
+  }
+]
 
 function Dashboard() {
-  const initValueDates = initalRange;
   const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
-  const optionsRange = [
-    { label: "Todas aplicações", value: "all" },
-    { label: "Aplicações em parceiras", value: "inPartner" },
-    { label: "Aplicações em outras", value: "inOther" },
-  ];
+
   const [mentorsOptions, setMentorsOptions] = useState(initalMentorsOptions);
 
-  const [valueRangeDisplay, setValueRangeDisplay] = useState(optionsRange[0]);
   const [valueMentorDisplay, setValueMentorDisplay] = useState(initalMentorsOptions[0]);
-  const [valuePeriod, setValuePeriod] = useState(initValueDates);
+  const [valuePeriod, setValuePeriod] = useState(initalPeriod);
 
   const [infoDisplay, setInfoDisplay] = useState(null);
 
@@ -68,149 +83,67 @@ function Dashboard() {
     });
     setInfoDisplay(applications.data);
     setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
-  }, [])
+  }, [token])
 
   useEffect(() => {
     if (!isMentor) nav("/student")
-  }, []);
+  }, [isMentor]);
 
   useEffect(() => {
     search({
-      range: valueRangeDisplay.value,
       mentor: valueMentorDisplay.value,
       date_init: normalizeDate(valuePeriod[0], 'init'),
       date_end: normalizeDate(valuePeriod[1], 'end')
     })
-  }, [valueRangeDisplay, valueMentorDisplay, valuePeriod]);
+  }, [valueMentorDisplay, valuePeriod]);
 
   return (
     <Container>
-      <Content>
-        <FilterBar>
-          <ContainerSelect>
-            <Select
-              value={valueRangeDisplay}
-              onChange={setValueRangeDisplay}
-              options={optionsRange}
-              defaultValue={optionsRange[0]}
-              styles={{
-                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
-                control: (provided) => ({ ...provided, cursor: "pointer" }),
-              }}
+      <FilterBar>
+        <ContainerSelect>
+          <Select
+            value={valueMentorDisplay}
+            onChange={setValueMentorDisplay}
+            options={mentorsOptions}
+            defaultValue={mentorsOptions[0]}
+            styles={{
+              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+              control: (provided) => ({ ...provided, cursor: "pointer" }),
+            }}
+          />
+        </ContainerSelect>
+        <div style={{ display: "flex", flex: 1, minWidth: 250 }}>
+          <RangePicker
+            initValue={initalPeriod}
+            onChangeValue={(dates) => setValuePeriod([...dates])}
+          />
+        </div>
+      </FilterBar>
+      {infoDisplay &&
+        <>
+          <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
+            {DoughnutCharts.map(({ title, attribute }) => (
+              <DashboardChartDoughnut
+                title={title}
+                infos={infoDisplay[attribute].total.values}
+                labels={infoDisplay[attribute].total.names}
+                colors={infoDisplay[attribute].total.colors}
+                minWidth={400}
+              />
+            ))}
+          </Line>
+          {LineCharts.map(({ title, attribute }) => (
+            <DashboardCharLine
+              title={title}
+              infos={infoDisplay[attribute].per_days}
+              labels={infoDisplay.days}
+              minWidth={300}
+              minHeight={350}
             />
-          </ContainerSelect>
-          <ContainerSelect>
-            <Select
-              value={valueMentorDisplay}
-              onChange={setValueMentorDisplay}
-              options={mentorsOptions}
-              defaultValue={mentorsOptions[0]}
-              styles={{
-                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
-                control: (provided) => ({ ...provided, cursor: "pointer" }),
-              }}
-            />
-          </ContainerSelect>
-          <div style={{ display: "flex", flex: 1, minWidth: 250 }}>
-            <RangePicker
-              initValue={initValueDates}
-              onChangeValue={(dates) => setValuePeriod([...dates])}
-            />
-          </div>
-        </FilterBar>
-        {infoDisplay &&
-          <>
-            <Line style={{ gap: 30, flexWrap: "wrap" }}>
-              <DashboardCard minWidth={300} title="Aplicações (Empresas Parceiras X Outras)" theme={'light'}>
-                <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
-                  <ChartDoughnut
-                    infos={infoDisplay.companies.total.values}
-                    labels={infoDisplay.companies.total.names}
-                    colors={infoDisplay.companies.total.colors}
-                  />
-                  <Line style={{ gap: 10, flexWrap: "wrap" }}>
-                    {infoDisplay.companies.total.names.map((name, index) => (
-                      <Line style={{ alignItems: "center", gap: 5 }}>
-                        <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.companies.total.colors[index] }}></div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
-                          <b>{name}</b>
-                          <BsArrowRight color="#000" />
-                          {infoDisplay.companies.total.values[index]}
-                        </div>
-                      </Line>
-                    ))}
-                  </Line>
-                </Column>
-              </DashboardCard>
-              <DashboardCard minWidth={300} title="Aplicações por Vaga" theme={'light'}>
-                <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
-                  <ChartDoughnut
-                    infos={infoDisplay.jobs.total.values}
-                    labels={infoDisplay.jobs.total.names}
-                    colors={infoDisplay.jobs.total.colors}
-                  />
-                  <Line style={{ gap: 10, flexWrap: "wrap" }}>
-                    {infoDisplay.jobs.total.names.map((name, index) => (
-                      <Line style={{ alignItems: "center", gap: 5 }}>
-                        <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.jobs.total.colors[index] }}></div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
-                          <b>{name}</b>
-                          <BsArrowRight color="#000" />
-                          {infoDisplay.jobs.total.values[index]}
-                        </div>
-                      </Line>
-                    ))}
-                  </Line>
-                </Column>
-              </DashboardCard>
-              <DashboardCard minWidth={300} title="Aplicações por Status" theme={'light'}>
-                <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
-                  <ChartDoughnut
-                    infos={infoDisplay.status.values}
-                    labels={infoDisplay.status.names}
-                    colors={infoDisplay.status.colors}
-                  />
-                  <Line style={{ gap: 10, flexWrap: "wrap" }}>
-                    {infoDisplay.status.names.map((name, index) => (
-                      <Line style={{ alignItems: "center", gap: 5 }}>
-                        <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.status.colors[index] }}></div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
-                          <b>{name}</b>
-                          <BsArrowRight color="#000" />
-                          {infoDisplay.status.values[index]}
-                        </div>
-                      </Line>
-                    ))}
-                  </Line>
-                </Column>
-              </DashboardCard>
-            </Line>
-            <DashboardCard minWidth={300} title="Aplicações ao longo do período" theme={'light'}>
-              <Column style={{ padding: 20, gap: 20, background: '#FFF', flex: 1, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
-                <ChartLine
-                  infos={[{ name: "Totais", values: infoDisplay.per_day }, ...infoDisplay.companies.per_days, ...infoDisplay.jobs.per_days]}
-                  labels={infoDisplay.days}
-                />
-                <Line style={{ gap: 10, flexWrap: "wrap" }}>
-                  {/* {infoDisplay.status.names.map((name, index) => (
-                    <Line style={{ alignItems: "center", gap: 5 }}>
-                      <div style={{ minHeight: 10, maxHeight: 10, minWidth: 10, maxWidth: 10, background: infoDisplay.status.colors[index] }}></div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap", fontSize: 12 }}>
-                        <b>{name}</b>
-                        <BsArrowRight color="#000" />
-                        {infoDisplay.status.values[index]}
-                      </div>
-                    </Line>
-                  ))} */}
-                </Line>
-              </Column>
-            </DashboardCard>
-          </>
-        }
-
-
-      </Content>
-    </Container>
+          ))}
+        </>
+      }
+    </Container >
   );
 }
 

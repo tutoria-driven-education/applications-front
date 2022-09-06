@@ -15,7 +15,7 @@ const defaultLabelYFunction = (value, index, values) => value || ''
 
 export const ChartLine = ({
   infos,
-  color = '#ff7bbd',
+  color = '#000',
   labels,
   labelYFunction = defaultLabelYFunction,
   labelTooltipFunction = defaultTooltipFunction,
@@ -83,11 +83,10 @@ export const ChartLine = ({
     datasets: []
   }
   for (const info of infos) {
-    console.log({ info })
     data.datasets.push({
       label: info.name,
       backgroundColor: info.color || '#FF9000',
-      borderColor: secondary,
+      borderColor: info.color || '#FF9000',
       borderCapStyle: 'butt',
       borderJoinStyle: 'miter',
       borderRadius: 5,
@@ -99,13 +98,10 @@ export const ChartLine = ({
       data: info.values,
     })
   }
-  
 
   return (
-    <>
-      <Container haveData={!!infos.data}>
-        <Line type options={options} data={data} />
-      </Container>
-    </>
+    <Container haveData={!!infos.data}>
+      <Line type options={options} data={data} />
+    </Container>
   )
 }
