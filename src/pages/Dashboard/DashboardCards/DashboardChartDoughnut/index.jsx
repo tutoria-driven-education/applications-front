@@ -5,8 +5,6 @@ import { DashboardCard } from '../DashboardCard';
 import { ColumnChart, Label, LabelIndicator, LabelInfo, LineLabels } from './style';
 
 export const DashboardChartDoughnut = ({ infos, labels, colors, title, minWidth }) => {
-    console.log({ infos, labels, colors, title, minWidth })
-
     return (
         <DashboardCard minWidth={minWidth} title={title} theme={'light'}>
             <ColumnChart>

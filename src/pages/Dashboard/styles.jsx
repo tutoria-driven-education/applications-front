@@ -36,3 +36,9 @@ export const ContainerSelect = styled.div`
         width: 100%;
     }
 `
+
+export const ContaineRangePicker = styled.div`
+  display: flex;
+  flex: 1;
+  min-width: 25px;
+`

@@ -19,7 +19,6 @@ export const ChartLine = ({
   labels,
   labelYFunction = defaultLabelYFunction,
   labelTooltipFunction = defaultTooltipFunction,
-  secondary,
 }) => {
   const options = {
     scales: {
