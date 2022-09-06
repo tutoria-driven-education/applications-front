@@ -4,9 +4,9 @@ import { ChartDoughnut } from '../../../../components/Charts/Doughnut';
 import { DashboardCard } from '../DashboardCard';
 import { ColumnChart, Label, LabelIndicator, LabelInfo, LineLabels } from './style';
 
-export const DashboardChartDoughnut = ({ infos, labels, colors, title, minWidth }) => {
+export const DashboardChartDoughnut = ({ infos, labels, colors, title, minWidth, minHeight }) => {
     return (
-        <DashboardCard minWidth={minWidth} title={title} theme={'light'}>
+        <DashboardCard minHeight={minHeight} minWidth={minWidth} title={title} theme={'light'}>
             <ColumnChart>
                 <ChartDoughnut
                     infos={infos}

@@ -10,6 +10,7 @@ import { DashboardChartDoughnut } from "./DashboardCards/DashboardChartDoughnut"
 import { DashboardCharLine } from "./DashboardCards/DashboardCharLine";
 import { Container, FilterBar, Line, ContainerSelect, ContaineRangePicker } from "./styles";
 import { toast } from "react-toastify";
+import { Skeleton } from "@mui/material";
 
 const correct_date_filter = (date) => {
   const day = `${Number.parseInt(date.day) > 9 ? Number.parseInt(date.day) : `0${Number.parseInt(date.day)}`}`
@@ -36,6 +37,16 @@ const getAtualDate = () => {
     year: date.getFullYear()
   }
 }
+
+const debounceEvent = () => {
+  let timer = null
+  return (fn, wait) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => fn(), wait)
+  }
+}
+
+const debounce = debounceEvent()
 
 const initalRange = { from: getFirstDayOfTheMonth(), to: getAtualDate() }
 
@@ -124,6 +135,11 @@ function Dashboard() {
     })
   }, [mentorSelected, rangeSelected, companyTypeSelected]);
 
+  window.onresize = () => {
+    setLoading(true)
+    debounce(() => { setLoading(false) }, 500)
+  }
+
   return (
     <Container>
       <FilterBar>
@@ -166,7 +182,7 @@ function Dashboard() {
         </ContaineRangePicker>
 
       </FilterBar>
-      {stats &&
+      {stats && !loading &&
         <>
           <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
             {DoughnutCharts.map(({ title, attribute }) => (
@@ -176,20 +192,45 @@ function Dashboard() {
                 labels={stats[attribute].total.names}
                 colors={stats[attribute].total.colors}
                 minWidth={400}
+                minHeight={350}
               />
             ))}
           </Line>
           {LineCharts.map(({ title, attribute }) => (
-            <DashboardCharLine
-              title={title}
-              infos={stats[attribute].per_days}
-              labels={stats.days}
-              minWidth={300}
-              minHeight={350}
-            />
+            <Line>
+              <DashboardCharLine
+                title={title}
+                infos={stats[attribute].per_days}
+                labels={stats.days}
+                minWidth={300}
+                minHeight={350}
+              />
+            </Line>
           ))}
         </>
       }
+      {!(stats && !loading) &&
+        <>
+          <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
+            {DoughnutCharts.map(({ title, attribute }) => (
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
+            ))}
+          </Line>
+
+          {LineCharts.map(({ title, attribute }) => (
+            <Line>
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
+            </Line>
+          ))}
+        </>
+      }
+      {loading && "..."}
     </Container >
   );
 }

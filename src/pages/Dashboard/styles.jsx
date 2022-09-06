@@ -40,5 +40,5 @@ export const ContainerSelect = styled.div`
 export const ContaineRangePicker = styled.div`
   display: flex;
   flex: 1;
-  min-width: 25px;
+  min-width: 250px;
 `
