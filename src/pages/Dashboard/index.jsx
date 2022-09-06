@@ -6,130 +6,232 @@ import ApplicationService from "../../services/ApplicationsService";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { RangePicker } from "../../components/FormData/RangePicker";
-import {
-  Container,
-  Content,
-  FilterBar,
-  TableContent,
-  TableItem,
-  ContainerSelect
-} from "./styles";
+import { DashboardChartDoughnut } from "./DashboardCards/DashboardChartDoughnut";
+import { DashboardCharLine } from "./DashboardCards/DashboardCharLine";
+import { Container, FilterBar, Line, ContainerSelect, ContaineRangePicker } from "./styles";
+import { toast } from "react-toastify";
+import { Skeleton } from "@mui/material";
 
-const normalizeDate = (date, type) => {
-  const newDate = new Date(date)
-  const day = newDate.getDate()
-  const month = newDate.getMonth()
-  const year = newDate.getFullYear()
-
-  if (type === 'init') return new Date(year, month, day).toISOString()
-  else return new Date(year, month, day + 1).toISOString()
+const correct_date_filter = (date) => {
+  const day = `${Number.parseInt(date.day) > 9 ? Number.parseInt(date.day) : `0${Number.parseInt(date.day)}`}`
+  const month = `${Number.parseInt(date.month) > 9 ? Number.parseInt(date.month) : `0${Number.parseInt(date.month)}`}`
+  const year = date.year
+  return `${day}/${month}/${year}`
 }
 
+const getFirstDayOfTheMonth = () => {
+  const date = new Date();
+  const newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  return {
+    day: newDate.getDate(),
+    month: newDate.getMonth() + 1,
+    year: newDate.getFullYear()
+  }
+}
+
+const getAtualDate = () => {
+  const date = new Date();
+  return {
+    day: date.getDate(),
+    month: date.getMonth() + 1,
+    year: date.getFullYear()
+  }
+}
+
+const debounceEvent = () => {
+  let timer = null
+  return (fn, wait) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => fn(), wait)
+  }
+}
+
+const debounce = debounceEvent()
+
+const initalRange = { from: getFirstDayOfTheMonth(), to: getAtualDate() }
+
+const DoughnutCharts = [
+  {
+    title: "Aplicações (Empresas Parceiras X Outras)",
+    attribute: 'companies'
+  },
+  {
+    title: "Aplicações por Vaga",
+    attribute: 'jobs'
+  },
+  {
+    title: "Aplicações por Status",
+    attribute: 'status'
+  }
+]
+
+const LineCharts = [
+  {
+    title: "Aplicações ao longo do período",
+    attribute: 'total'
+  },
+  {
+    title: "Aplicações ao longo do período (Empresas Parceiras X Outras)",
+    attribute: 'companies'
+  },
+  {
+    title: "Aplicações por vaga ao longo do período",
+    attribute: 'jobs'
+  }
+]
+
 function Dashboard() {
-  const initValueDates = [new Date().toISOString(), new Date().toISOString()];
   const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
-  const optionsRange = [
-    { label: "Todas aplicações", value: "all" },
-    { label: "Aplicações em parceiras", value: "inPartner" },
-    { label: "Aplicações em outras", value: "inOther" },
+  const initialCompaniesTypesOptions = [
+    { label: "Todas empresas", value: "all" },
+    { label: "Empresas Parceiras", value: "inPartner" },
+    { label: "Outras empresas", value: "inOther" }
   ];
+
   const [mentorsOptions, setMentorsOptions] = useState(initalMentorsOptions);
 
-  const [valueRangeDisplay, setValueRangeDisplay] = useState(optionsRange[0]);
-  const [valueMentorDisplay, setValueMentorDisplay] = useState(initalMentorsOptions[0]);
-  const [valuePeriod, setValuePeriod] = useState(initValueDates);
+  const [companyTypeSelected, setCompanyTypeSelected] = useState(initialCompaniesTypesOptions[0]);
+  const [mentorSelected, setMentorSelected] = useState(initalMentorsOptions[0]);
+  const [rangeSelected, setRangeSelected] = useState(initalRange);
 
-  const [infoDisplay, setInfoDisplay] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const [stats, setStats] = useState(null);
 
   const { token } = useContext(AuthContext);
   const { isMentor } = useContext(UserContext);
 
   const nav = useNavigate();
 
-  const search = useCallback(async ({ range, mentor, date_init, date_end }) => {
-    const [applications, mentoringGroups] = await Promise.all([
-      ApplicationService.searchApplications(token, { range, mentor, date_init, date_end }),
-      UsersService.getMentoringGroups(token)
-    ])
-    const otherOptions = mentoringGroups.data.map((mentor) => {
-      return { label: mentor.name, value: mentor.id };
-    });
-    setInfoDisplay(applications.data);
-    setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
-  }, [])
+  const search = useCallback(async ({ companyType, mentor, date_init, date_end }) => {
+    setLoading(true)
+    try {
+      const [applications, mentoringGroups] = await Promise.all([
+        ApplicationService.searchApplications(token, { companyType, mentor, date_init, date_end }),
+        UsersService.getMentoringGroups(token)
+      ])
+      const otherOptions = mentoringGroups.data.map((mentor) => {
+        return { label: mentor.name, value: mentor.id };
+      });
+      setStats(applications.data);
+      setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
+    } catch (err) {
+      console.log(err)
+      toast.error("Erro ao buscar dashboard");
+    }
+    setLoading(false)
+  }, [token])
 
   useEffect(() => {
     if (!isMentor) nav("/student")
-  }, []);
+  }, [isMentor]);
 
   useEffect(() => {
     search({
-      range: valueRangeDisplay.value,
-      mentor: valueMentorDisplay.value,
-      date_init: normalizeDate(valuePeriod[0], 'init'),
-      date_end: normalizeDate(valuePeriod[1], 'end')
+      companyType: companyTypeSelected.value,
+      mentor: mentorSelected.value,
+      date_init: correct_date_filter(rangeSelected.from ? rangeSelected.from : rangeSelected.to),
+      date_end: correct_date_filter(rangeSelected.to ? rangeSelected.to : rangeSelected.from)
     })
-  }, [valueRangeDisplay, valueMentorDisplay, valuePeriod]);
+  }, [mentorSelected, rangeSelected, companyTypeSelected]);
+
+  window.onresize = () => {
+    setLoading(true)
+    debounce(() => { setLoading(false) }, 500)
+  }
 
   return (
     <Container>
-      <Content>
-        <FilterBar>
-          <ContainerSelect>
-            <Select
-              value={valueRangeDisplay}
-              onChange={setValueRangeDisplay}
-              options={optionsRange}
-              defaultValue={optionsRange[0]}
-              styles={{
-                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
-                control: (provided) => ({ ...provided, cursor: "pointer" }),
-              }}
-            />
-          </ContainerSelect>
-          <ContainerSelect>
-            <Select
-              value={valueMentorDisplay}
-              onChange={setValueMentorDisplay}
-              options={mentorsOptions}
-              defaultValue={mentorsOptions[0]}
-              styles={{
-                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
-                control: (provided) => ({ ...provided, cursor: "pointer" }),
-              }}
-            />
-          </ContainerSelect>
-          <div style={{ display: "flex", flex: 1, minWidth: 250 }}>
-            <RangePicker
-              initValue={initValueDates}
-              onChangeValue={(dates) => setValuePeriod([...dates])}
-            />
-          </div>
-        </FilterBar>
-        <TableContent>
-          <TableItem> Total de aplicações </TableItem>
-          <TableItem> {infoDisplay.total} </TableItem>
+      <FilterBar>
 
-          <TableItem> Analise de currículo </TableItem>
-          <TableItem> {infoDisplay.analyticCurriculum} </TableItem>
+        <ContainerSelect>
+          <Select
+            isDisabled={loading}
+            value={companyTypeSelected}
+            onChange={setCompanyTypeSelected}
+            options={initialCompaniesTypesOptions}
+            defaultValue={initialCompaniesTypesOptions[0]}
+            styles={{
+              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+              control: (provided) => ({ ...provided, cursor: "pointer" }),
+            }}
+          />
+        </ContainerSelect>
 
-          <TableItem> Etapa Comportamental </TableItem>
-          <TableItem> {infoDisplay.stageBehavioral} </TableItem>
+        <ContainerSelect>
+          <Select
+            isDisabled={loading}
+            value={mentorSelected}
+            onChange={setMentorSelected}
+            options={mentorsOptions}
+            defaultValue={mentorsOptions[0]}
+            styles={{
+              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+              control: (provided) => ({ ...provided, cursor: "pointer" }),
+            }}
+          />
+        </ContainerSelect>
 
-          <TableItem> Teste técnico </TableItem>
-          <TableItem> {infoDisplay.stageTechnic} </TableItem>
+        <ContaineRangePicker>
+          <RangePicker
+            disabled={loading}
+            onChange={(newRange) => setRangeSelected({ ...newRange })}
+            initialRange={initalRange}
+            noRemove
+          />
+        </ContaineRangePicker>
 
-          <TableItem> Receberam propostas </TableItem>
-          <TableItem> {infoDisplay.approved} </TableItem>
+      </FilterBar>
+      {stats && !loading &&
+        <>
+          <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
+            {DoughnutCharts.map(({ title, attribute }) => (
+              <DashboardChartDoughnut
+                title={title}
+                infos={stats[attribute].total.values}
+                labels={stats[attribute].total.names}
+                colors={stats[attribute].total.colors}
+                minWidth={400}
+                minHeight={350}
+              />
+            ))}
+          </Line>
+          {LineCharts.map(({ title, attribute }) => (
+            <Line>
+              <DashboardCharLine
+                title={title}
+                infos={stats[attribute].per_days}
+                labels={stats.days}
+                minWidth={300}
+                minHeight={350}
+              />
+            </Line>
+          ))}
+        </>
+      }
+      {!(stats && !loading) &&
+        <>
+          <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
+            {DoughnutCharts.map(({ title, attribute }) => (
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
+            ))}
+          </Line>
 
-          <TableItem> Não rolou </TableItem>
-          <TableItem> {infoDisplay.notMatch} </TableItem>
-
-          <TableItem> Desistiram </TableItem>
-          <TableItem> {infoDisplay.giveUp} </TableItem>
-        </TableContent>
-      </Content>
-    </Container>
+          {LineCharts.map(({ title, attribute }) => (
+            <Line>
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
+            </Line>
+          ))}
+        </>
+      }
+      {loading && "..."}
+    </Container >
   );
 }
 
