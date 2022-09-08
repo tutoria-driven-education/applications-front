@@ -187,6 +187,7 @@ function Dashboard() {
           <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
             {DoughnutCharts.map(({ title, attribute }) => (
               <DashboardChartDoughnut
+                key={title}
                 title={title}
                 infos={stats[attribute].total.values}
                 labels={stats[attribute].total.names}
@@ -199,6 +200,7 @@ function Dashboard() {
           {LineCharts.map(({ title, attribute }) => (
             <Line>
               <DashboardCharLine
+                key={title}
                 title={title}
                 infos={stats[attribute].per_days}
                 labels={stats.days}
@@ -214,6 +216,7 @@ function Dashboard() {
           <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
             {DoughnutCharts.map(({ title, attribute }) => (
               <Skeleton
+                key={`${title}-skeleton`}
                 variant="rectangular"
                 animation="wave"
                 style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
@@ -221,7 +224,7 @@ function Dashboard() {
           </Line>
 
           {LineCharts.map(({ title, attribute }) => (
-            <Line>
+            <Line key={`${title}-skeleton`}>
               <Skeleton
                 variant="rectangular"
                 animation="wave"
