@@ -1,0 +1,8 @@
+.Calendar__weekDay {
+    text-decoration: none !important;
+    pointer-events: none !important;
+}
+
+.custom-calendar {
+    border-radius: 4px !important;
+}

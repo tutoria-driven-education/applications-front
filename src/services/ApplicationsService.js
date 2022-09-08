@@ -11,7 +11,6 @@ const makeQueryParams = (consultation) => {
 export default class Applications {
 
   static searchApplications(token, filters) {
-    console.log({ filters })
     const newFilters = makeQueryParams(filters)
     return api.get(`application/search?${newFilters}`, {
       headers: {

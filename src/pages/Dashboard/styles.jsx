@@ -1,31 +1,20 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+export const Line = styled.div`
+    display:flex;
+    flex-direction:row;
+`
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 100vw;
-  height: 100%;
-
-  font-size: 1.7rem;
-`;
-
-export const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 80%;
-  height: 100%;
-  max-width: 1440px;
   margin-top: 1rem;
-  padding: 1rem;
-
-  background-color: #7d7d8e;
+  width: 100%;
+  padding: 4rem;
+  padding-top: 2rem;
   border-radius: 1rem;
+  gap: 3rem;
+  font-size: 1.7rem;
 `;
 
 export const FilterBar = styled.div`
@@ -34,27 +23,7 @@ export const FilterBar = styled.div`
   justify-content: flex-end;
   flex-wrap: wrap;
   width: 100%;
-  gap: 1rem;
-`;
-
-export const TableContent = styled.div`
-  display: grid;
-  grid: auto / 1fr 1fr;
-  row-gap: 1rem;
-
-  margin-top: 1rem;
-  width: 100%;
-
-  color: white;
-`;
-
-export const TableItem = styled.div`
-  line-height: 2rem;
-  background-color: #525268;
-  width: 100%;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 1px;
+  gap: 2rem;
 `;
 
 export const ContainerSelect = styled.div`
@@ -66,4 +35,10 @@ export const ContainerSelect = styled.div`
     div:first-child{
         width: 100%;
     }
+`
+
+export const ContaineRangePicker = styled.div`
+  display: flex;
+  flex: 1;
+  min-width: 250px;
 `

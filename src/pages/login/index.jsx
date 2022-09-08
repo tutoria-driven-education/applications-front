@@ -37,11 +37,12 @@ export default function Login() {
 
   return (
     <PageBody>
-      <Box onSubmit={submitInput}>
+      <Box data-cy="login-box" onSubmit={submitInput}>
         <TextField
           label="Senha de acesso"
           variant="standard"
           value={inputValue}
+          name="password"
           onChange={(e) => {
             setInputValue(e.target.value);
             if (e.target.value.length === 36) setIsDisabled(false);
