@@ -1,21 +1,21 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { Container } from './style';
+import React from "react";
+import { Line } from "react-chartjs-2";
+import { Container } from "./style";
 
 const defaultTooltipFunction = (context) => {
-  var label = context.dataset.label || '';
-  if (label) label += ': ';
+  var label = context.dataset.label || "";
+  if (label) label += ": ";
   if (context.parsed.y !== null) {
     label += context.parsed.y;
   }
   return `  ${label}`;
-}
+};
 
-const defaultLabelYFunction = (value, index, values) => value || ''
+const defaultLabelYFunction = (value, index, values) => value || "";
 
 export const ChartLine = ({
   infos,
-  color = '#000',
+  color = "#000",
   labels,
   labelYFunction = defaultLabelYFunction,
   labelTooltipFunction = defaultTooltipFunction,
@@ -24,70 +24,68 @@ export const ChartLine = ({
     scales: {
       x: {
         display: true,
-        grid: {
-        },
+        grid: {},
         ticks: {
           callback: function (value, index, values) {
-            return labels[index]
+            return labels[index];
           },
           color: color,
           font: {
             family: "Nunito",
-            weight: "bold"
-          }
+            weight: "bold",
+          },
         },
       },
       y: {
-        grid: {
-        },
+        grid: {},
         ticks: {
           callback: labelYFunction,
           color: color,
           font: {
             family: "Nunito",
-            weight: "bold"
-          }
+            weight: "bold",
+          },
         },
-        beginAtZero: true
-      }
+        beginAtZero: true,
+      },
     },
     animation: false,
     maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
-      labelFontColor: '#FFF',
+      labelFontColor: "#FFF",
       tooltip: {
         bodyFont: {
           family: "Nunito",
-          weight: "bold"
+          weight: "bold",
         },
         titleFont: {
           family: "Nunito",
-          weight: "bold"
+          weight: "bold",
         },
-        yAlign: 'bottom',
+        yAlign: "bottom",
         xAlign: "center",
         callbacks: {
-          label: labelTooltipFunction
+          label: labelTooltipFunction,
         },
-        overflow: 'scroll',
-      }
-    }
-  }
+        overflow: "scroll",
+      },
+    },
+  };
   const data = {
     labels: labels,
-    datasets: []
-  }
+    datasets: [],
+  };
   for (const info of infos) {
     data.datasets.push({
       label: info.name,
-      backgroundColor: info.color || '#FF9000',
-      borderColor: info.color || '#FF9000',
-      borderCapStyle: 'butt',
-      borderJoinStyle: 'miter',
+      backgroundColor: info.color || "#FF9000",
+      borderColor: info.color || "#FF9000",
+      borderCapStyle: "butt",
+      borderJoinStyle: "miter",
       borderRadius: 5,
       pointRadius: 1,
       maxBarThickness: 25,
@@ -95,12 +93,12 @@ export const ChartLine = ({
       pointHitRadius: 10,
       borderDash: [5, 5],
       data: info.values,
-    })
+    });
   }
 
   return (
     <Container haveData={!!infos.data}>
       <Line type options={options} data={data} />
     </Container>
-  )
-}
+  );
+};

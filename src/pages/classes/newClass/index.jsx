@@ -4,6 +4,7 @@ import AuthContext from "../../../contexts/AuthContext";
 import CompaniesServices from "../../../services/CompaniesServices";
 import { toast } from "react-toastify";
 import { Container } from "./style";
+import ClassesService from "../../../services/ClassesService";
 
 export default function AddNewClass({
   isAddingClass,
@@ -16,7 +17,7 @@ export default function AddNewClass({
 
   function saveClass() {
     setIsLoading(true);
-    CompaniesServices.createCompany(className, token)
+    ClassesService.createClass(className, token)
       .then(() => {
         setIsLoading(false);
 

@@ -4,10 +4,10 @@ import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import { Container, Content } from "./style";
-import CompaniesService from "../../services/CompaniesServices";
 import { toast } from "react-toastify";
 import AddNewClass from "./newClass";
 import Class from "./class";
+import ClassesService from "../../services/ClassesService";
 
 export default function Classes() {
   // eslint-disable-next-line no-unused-vars
@@ -27,10 +27,10 @@ export default function Classes() {
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   function getClasses() {
-    CompaniesService.getAll(token)
+    ClassesService.getAll(token)
       .then(({ data }) => {
         setIsLoading(false);
-        setClasses(data.companies);
+        setClasses(data);
       })
       .catch(() => {
         setIsLoading(false);
@@ -62,10 +62,8 @@ export default function Classes() {
           {isLoading && Loader}
 
           <div>
-            {classes.map(({ id, name, is_partner }) => {
-              return (
-                <Class key={id} id={id} name={name} isPartner={is_partner} />
-              );
+            {classes.map(({ id, name }) => {
+              return <Class key={id} id={id} name={name} />;
             })}
           </div>
         </Content>

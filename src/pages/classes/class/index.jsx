@@ -4,6 +4,7 @@ import CompaniesService from "../../../services/CompaniesServices";
 import { toast } from "react-toastify";
 import { FaClipboardList } from "react-icons/fa";
 import { CompanyNameHolder, Container } from "./style";
+import ClassesService from "../../../services/ClassesService";
 
 export default function Class({ id, name }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,10 +14,12 @@ export default function Class({ id, name }) {
     if (isLoading) return;
 
     setIsLoading(true);
-    CompaniesService.changePartnership(id, token)
-      .then((data) => {
-        // TODO - colocar link recebido da api aqui
-        copyLinkToClipboard("aaaaa");
+    ClassesService.getLinkParameters(id, token)
+      .then(({ data }) => {
+        const baseUrl = window.location.origin;
+        const url = `${baseUrl}?m=${data.m}&c=${data.c}`;
+        copyLinkToClipboard(url);
+
         setIsLoading(false);
       })
       .catch(() => {
@@ -26,8 +29,14 @@ export default function Class({ id, name }) {
   };
 
   function copyLinkToClipboard(link) {
-    navigator.clipboard.writeText(link);
-    toast.success("Link copiado!");
+    navigator.clipboard.writeText(link).then(
+      () => {
+        toast.success("Link copiado!");
+      },
+      (err) => {
+        console.error("Não foi possível copiar o link...", err);
+      }
+    );
   }
 
   return (
