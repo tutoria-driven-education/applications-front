@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function MentoringGrouop({ mentorName, students }) {
+export default function MentoringGroup({ mentorName, students }) {
   return (
     <Container>
       <MentorNameHolder>{`Mentor(a): ${mentorName}`}</MentorNameHolder>

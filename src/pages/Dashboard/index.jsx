@@ -3,107 +3,46 @@ import UserContext from "../../contexts/UserContext";
 import AuthContext from "../../contexts/AuthContext";
 import UsersService from "../../services/UsersServices";
 import ApplicationService from "../../services/ApplicationsService";
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RangePicker } from "../../components/FormData/RangePicker";
 import { DashboardChartDoughnut } from "./DashboardCards/DashboardChartDoughnut";
 import { DashboardCharLine } from "./DashboardCards/DashboardCharLine";
 import {
   Container,
+  ContaineRangePicker,
+  ContainerSelect,
   FilterBar,
   Line,
-  ContainerSelect,
-  ContaineRangePicker,
-} from "./styles";
+} from "./style";
 import { toast } from "react-toastify";
 import { Skeleton } from "@mui/material";
-
-const correct_date_filter = (date) => {
-  const day = `${
-    Number.parseInt(date.day) > 9
-      ? Number.parseInt(date.day)
-      : `0${Number.parseInt(date.day)}`
-  }`;
-  const month = `${
-    Number.parseInt(date.month) > 9
-      ? Number.parseInt(date.month)
-      : `0${Number.parseInt(date.month)}`
-  }`;
-  const year = date.year;
-  return `${day}/${month}/${year}`;
-};
-
-const getFirstDayOfTheMonth = () => {
-  const date = new Date();
-  const newDate = new Date(date.getFullYear(), date.getMonth(), 1);
-  return {
-    day: newDate.getDate(),
-    month: newDate.getMonth() + 1,
-    year: newDate.getFullYear(),
-  };
-};
-
-const getAtualDate = () => {
-  const date = new Date();
-  return {
-    day: date.getDate(),
-    month: date.getMonth() + 1,
-    year: date.getFullYear(),
-  };
-};
-
-const debounceEvent = () => {
-  let timer = null;
-  return (fn, wait) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(), wait);
-  };
-};
+import ClassesService from "../../services/ClassesService";
+import { lineCharts } from "./constants/lineCharts";
+import { getFirstDayOfTheMonth } from "./utils/getFirstDayOfTheMonth";
+import { getCorrectDateFilter } from "./utils/getCorrectDateFilter";
+import { doughnutCharts } from "./constants/doughnutCharts";
+import { getAtualDate } from "./utils/getAtualDate";
+import { debounceEvent } from "./utils/debounceEvent";
 
 const debounce = debounceEvent();
 
 const initalRange = { from: getFirstDayOfTheMonth(), to: getAtualDate() };
 
-const DoughnutCharts = [
-  {
-    title: "Aplicações (Empresas Parceiras X Outras)",
-    attribute: "companies",
-  },
-  {
-    title: "Aplicações por Vaga",
-    attribute: "jobs",
-  },
-  {
-    title: "Aplicações por Status",
-    attribute: "status",
-  },
-];
-
-const LineCharts = [
-  {
-    title: "Aplicações ao longo do período",
-    attribute: "total",
-  },
-  {
-    title: "Aplicações ao longo do período (Empresas Parceiras X Outras)",
-    attribute: "companies",
-  },
-  {
-    title: "Aplicações por vaga ao longo do período",
-    attribute: "jobs",
-  },
-];
-
 function Dashboard() {
-  const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
+  const initialClassesOptions = [{ value: "all", label: "Todas as turmas" }];
   const initialCompaniesTypesOptions = [
     { label: "Todas empresas", value: "all" },
     { label: "Empresas Parceiras", value: "inPartner" },
     { label: "Outras empresas", value: "inOther" },
   ];
+  const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
+
+  const [classesOptions, setClassesOptions] = useState(initialClassesOptions);
 
   const [mentorsOptions, setMentorsOptions] = useState(initalMentorsOptions);
 
+  const [classSelected, setClassSelected] = useState(initialClassesOptions[0]);
   const [companyTypeSelected, setCompanyTypeSelected] = useState(
     initialCompaniesTypesOptions[0]
   );
@@ -120,48 +59,58 @@ function Dashboard() {
   const nav = useNavigate();
 
   const search = useCallback(
-    async ({ companyType, mentor, date_init, date_end }) => {
+    async ({ _class, companyType, mentor, date_init, date_end }) => {
       setLoading(true);
       try {
-        const [applications, mentoringGroups] = await Promise.all([
+        const [applications, mentoringGroups, classes] = await Promise.all([
           ApplicationService.searchApplications(token, {
+            _class,
             companyType,
             mentor,
             date_init,
             date_end,
           }),
-          UsersService.getMentoringGroups(token),
+          UsersService.getMentoringGroups(token, {}),
+          ClassesService.getAll(token),
         ]);
-        const otherOptions = mentoringGroups.data.map((mentor) => {
+        const _mentoringGroupsOptions = mentoringGroups.data.map((mentor) => {
           return { label: mentor.name, value: mentor.id };
         });
+        const _classesOptions = classes.data.map((_class) => {
+          return { label: _class.name, value: _class.id };
+        });
+        setClassesOptions([...initialClassesOptions, ..._classesOptions]);
         setStats(applications.data);
-        setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
+        setMentorsOptions([
+          ...initalMentorsOptions,
+          ..._mentoringGroupsOptions,
+        ]);
       } catch (err) {
         console.log(err);
         toast.error("Erro ao buscar dashboard");
       }
       setLoading(false);
     },
-    [token]
+    [token] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   useEffect(() => {
     if (!isMentor) nav("/student");
-  }, [isMentor]);
+  }, [isMentor]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     search({
+      _class: classSelected.value,
       companyType: companyTypeSelected.value,
       mentor: mentorSelected.value,
-      date_init: correct_date_filter(
+      date_init: getCorrectDateFilter(
         rangeSelected.from ? rangeSelected.from : rangeSelected.to
       ),
-      date_end: correct_date_filter(
+      date_end: getCorrectDateFilter(
         rangeSelected.to ? rangeSelected.to : rangeSelected.from
       ),
     });
-  }, [mentorSelected, rangeSelected, companyTypeSelected]);
+  }, [classSelected, mentorSelected, rangeSelected, companyTypeSelected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   window.onresize = () => {
     setLoading(true);
@@ -173,6 +122,19 @@ function Dashboard() {
   return (
     <Container>
       <FilterBar>
+        <ContainerSelect>
+          <Select
+            isDisabled={loading}
+            value={classSelected}
+            onChange={setClassSelected}
+            options={classesOptions}
+            defaultValue={classesOptions[0]}
+            styles={{
+              option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+              control: (provided) => ({ ...provided, cursor: "pointer" }),
+            }}
+          />
+        </ContainerSelect>
         <ContainerSelect>
           <Select
             isDisabled={loading}
@@ -213,7 +175,7 @@ function Dashboard() {
       {stats && !loading && (
         <>
           <Line style={{ gap: "3rem", flexWrap: "wrap" }}>
-            {DoughnutCharts.map(({ title, attribute }) => (
+            {doughnutCharts.map(({ title, attribute }) => (
               <DashboardChartDoughnut
                 key={title}
                 title={title}
@@ -225,7 +187,7 @@ function Dashboard() {
               />
             ))}
           </Line>
-          {LineCharts.map(({ title, attribute }) => (
+          {lineCharts.map(({ title, attribute }) => (
             <Line key={title}>
               <DashboardCharLine
                 key={title}
@@ -242,7 +204,7 @@ function Dashboard() {
       {!(stats && !loading) && (
         <>
           <Line style={{ gap: "3rem", flexWrap: "wrap" }}>
-            {DoughnutCharts.map(({ title, attribute }) => (
+            {doughnutCharts.map(({ title, attribute }) => (
               <Skeleton
                 key={`${title}-skeleton`}
                 variant="rectangular"
@@ -252,7 +214,7 @@ function Dashboard() {
             ))}
           </Line>
 
-          {LineCharts.map(({ title, attribute }) => (
+          {lineCharts.map(({ title, attribute }) => (
             <Line key={`${title}-skeleton`}>
               <Skeleton
                 variant="rectangular"
