@@ -8,16 +8,30 @@ import { useNavigate } from "react-router-dom";
 import { RangePicker } from "../../components/FormData/RangePicker";
 import { DashboardChartDoughnut } from "./DashboardCards/DashboardChartDoughnut";
 import { DashboardCharLine } from "./DashboardCards/DashboardCharLine";
-import { Container, FilterBar, Line, ContainerSelect, ContaineRangePicker } from "./styles";
+import {
+  Container,
+  FilterBar,
+  Line,
+  ContainerSelect,
+  ContaineRangePicker,
+} from "./styles";
 import { toast } from "react-toastify";
 import { Skeleton } from "@mui/material";
 
 const correct_date_filter = (date) => {
-  const day = `${Number.parseInt(date.day) > 9 ? Number.parseInt(date.day) : `0${Number.parseInt(date.day)}`}`
-  const month = `${Number.parseInt(date.month) > 9 ? Number.parseInt(date.month) : `0${Number.parseInt(date.month)}`}`
-  const year = date.year
-  return `${day}/${month}/${year}`
-}
+  const day = `${
+    Number.parseInt(date.day) > 9
+      ? Number.parseInt(date.day)
+      : `0${Number.parseInt(date.day)}`
+  }`;
+  const month = `${
+    Number.parseInt(date.month) > 9
+      ? Number.parseInt(date.month)
+      : `0${Number.parseInt(date.month)}`
+  }`;
+  const year = date.year;
+  return `${day}/${month}/${year}`;
+};
 
 const getFirstDayOfTheMonth = () => {
   const date = new Date();
@@ -25,72 +39,74 @@ const getFirstDayOfTheMonth = () => {
   return {
     day: newDate.getDate(),
     month: newDate.getMonth() + 1,
-    year: newDate.getFullYear()
-  }
-}
+    year: newDate.getFullYear(),
+  };
+};
 
 const getAtualDate = () => {
   const date = new Date();
   return {
     day: date.getDate(),
     month: date.getMonth() + 1,
-    year: date.getFullYear()
-  }
-}
+    year: date.getFullYear(),
+  };
+};
 
 const debounceEvent = () => {
-  let timer = null
+  let timer = null;
   return (fn, wait) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => fn(), wait)
-  }
-}
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(), wait);
+  };
+};
 
-const debounce = debounceEvent()
+const debounce = debounceEvent();
 
-const initalRange = { from: getFirstDayOfTheMonth(), to: getAtualDate() }
+const initalRange = { from: getFirstDayOfTheMonth(), to: getAtualDate() };
 
 const DoughnutCharts = [
   {
     title: "Aplicações (Empresas Parceiras X Outras)",
-    attribute: 'companies'
+    attribute: "companies",
   },
   {
     title: "Aplicações por Vaga",
-    attribute: 'jobs'
+    attribute: "jobs",
   },
   {
     title: "Aplicações por Status",
-    attribute: 'status'
-  }
-]
+    attribute: "status",
+  },
+];
 
 const LineCharts = [
   {
     title: "Aplicações ao longo do período",
-    attribute: 'total'
+    attribute: "total",
   },
   {
     title: "Aplicações ao longo do período (Empresas Parceiras X Outras)",
-    attribute: 'companies'
+    attribute: "companies",
   },
   {
     title: "Aplicações por vaga ao longo do período",
-    attribute: 'jobs'
-  }
-]
+    attribute: "jobs",
+  },
+];
 
 function Dashboard() {
   const initalMentorsOptions = [{ label: "Todos mentores", value: "all" }];
   const initialCompaniesTypesOptions = [
     { label: "Todas empresas", value: "all" },
     { label: "Empresas Parceiras", value: "inPartner" },
-    { label: "Outras empresas", value: "inOther" }
+    { label: "Outras empresas", value: "inOther" },
   ];
 
   const [mentorsOptions, setMentorsOptions] = useState(initalMentorsOptions);
 
-  const [companyTypeSelected, setCompanyTypeSelected] = useState(initialCompaniesTypesOptions[0]);
+  const [companyTypeSelected, setCompanyTypeSelected] = useState(
+    initialCompaniesTypesOptions[0]
+  );
   const [mentorSelected, setMentorSelected] = useState(initalMentorsOptions[0]);
   const [rangeSelected, setRangeSelected] = useState(initalRange);
 
@@ -103,47 +119,60 @@ function Dashboard() {
 
   const nav = useNavigate();
 
-  const search = useCallback(async ({ companyType, mentor, date_init, date_end }) => {
-    setLoading(true)
-    try {
-      const [applications, mentoringGroups] = await Promise.all([
-        ApplicationService.searchApplications(token, { companyType, mentor, date_init, date_end }),
-        UsersService.getMentoringGroups(token)
-      ])
-      const otherOptions = mentoringGroups.data.map((mentor) => {
-        return { label: mentor.name, value: mentor.id };
-      });
-      setStats(applications.data);
-      setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
-    } catch (err) {
-      console.log(err)
-      toast.error("Erro ao buscar dashboard");
-    }
-    setLoading(false)
-  }, [token])
+  const search = useCallback(
+    async ({ companyType, mentor, date_init, date_end }) => {
+      setLoading(true);
+      try {
+        const [applications, mentoringGroups] = await Promise.all([
+          ApplicationService.searchApplications(token, {
+            companyType,
+            mentor,
+            date_init,
+            date_end,
+          }),
+          UsersService.getMentoringGroups(token),
+        ]);
+        const otherOptions = mentoringGroups.data.map((mentor) => {
+          return { label: mentor.name, value: mentor.id };
+        });
+        setStats(applications.data);
+        setMentorsOptions([...initalMentorsOptions, ...otherOptions]);
+      } catch (err) {
+        console.log(err);
+        toast.error("Erro ao buscar dashboard");
+      }
+      setLoading(false);
+    },
+    [token]
+  );
 
   useEffect(() => {
-    if (!isMentor) nav("/student")
+    if (!isMentor) nav("/student");
   }, [isMentor]);
 
   useEffect(() => {
     search({
       companyType: companyTypeSelected.value,
       mentor: mentorSelected.value,
-      date_init: correct_date_filter(rangeSelected.from ? rangeSelected.from : rangeSelected.to),
-      date_end: correct_date_filter(rangeSelected.to ? rangeSelected.to : rangeSelected.from)
-    })
+      date_init: correct_date_filter(
+        rangeSelected.from ? rangeSelected.from : rangeSelected.to
+      ),
+      date_end: correct_date_filter(
+        rangeSelected.to ? rangeSelected.to : rangeSelected.from
+      ),
+    });
   }, [mentorSelected, rangeSelected, companyTypeSelected]);
 
   window.onresize = () => {
-    setLoading(true)
-    debounce(() => { setLoading(false) }, 500)
-  }
+    setLoading(true);
+    debounce(() => {
+      setLoading(false);
+    }, 500);
+  };
 
   return (
     <Container>
       <FilterBar>
-
         <ContainerSelect>
           <Select
             isDisabled={loading}
@@ -180,11 +209,10 @@ function Dashboard() {
             noRemove
           />
         </ContaineRangePicker>
-
       </FilterBar>
-      {stats && !loading &&
+      {stats && !loading && (
         <>
-          <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
+          <Line style={{ gap: "3rem", flexWrap: "wrap" }}>
             {DoughnutCharts.map(({ title, attribute }) => (
               <DashboardChartDoughnut
                 key={title}
@@ -198,7 +226,7 @@ function Dashboard() {
             ))}
           </Line>
           {LineCharts.map(({ title, attribute }) => (
-            <Line>
+            <Line key={title}>
               <DashboardCharLine
                 key={title}
                 title={title}
@@ -210,16 +238,17 @@ function Dashboard() {
             </Line>
           ))}
         </>
-      }
-      {!(stats && !loading) &&
+      )}
+      {!(stats && !loading) && (
         <>
-          <Line style={{ gap: '3rem', flexWrap: "wrap" }}>
+          <Line style={{ gap: "3rem", flexWrap: "wrap" }}>
             {DoughnutCharts.map(({ title, attribute }) => (
               <Skeleton
                 key={`${title}-skeleton`}
                 variant="rectangular"
                 animation="wave"
-                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
+                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }}
+              />
             ))}
           </Line>
 
@@ -228,13 +257,14 @@ function Dashboard() {
               <Skeleton
                 variant="rectangular"
                 animation="wave"
-                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }} />
+                style={{ minWidth: 400, borderRadius: 5, flex: 1, height: 350 }}
+              />
             </Line>
           ))}
         </>
-      }
+      )}
       {loading && "..."}
-    </Container >
+    </Container>
   );
 }
 

@@ -8,6 +8,7 @@ const NavMenu = () => {
       <Navbutton buttonText="Dashboard" route="/dashboard" />
       <Navbutton buttonText="Empresas parceiras" route="/partner-companies" />
       <Navbutton buttonText="Grupos mentoria" route="/mentoring-groups" />
+      <Navbutton buttonText="Turmas" route="/classes" />
     </Container>
   );
 };
