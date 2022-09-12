@@ -51,12 +51,22 @@ export default function Login() {
       });
   }
 
+  function handleCallbackResponse(res) {
+    AuthService.authWithGoogle({
+      token: res.credential,
+      ...(isSignUpAction && {
+        mentor_id: searchParams.get("m"),
+        class_id: searchParams.get("c"),
+      }),
+    });
+  }
+
   return (
     <Container>
       <AuthWrapper>
         <AuthLabel>Entrar</AuthLabel>
         {isSignUpAction ? (
-          <LoginWithGoogle />
+          <LoginWithGoogle callback={handleCallbackResponse} />
         ) : (
           <>
             <Box data-cy="login-box" onSubmit={submitInput}>
@@ -83,7 +93,7 @@ export default function Login() {
                 Entrar
               </Button>
             </Box>
-            <LoginWithGoogle />
+            <LoginWithGoogle callback={handleCallbackResponse} />
           </>
         )}
       </AuthWrapper>

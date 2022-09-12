@@ -1,20 +1,13 @@
 import { useEffect, useRef } from "react";
 
-import jwt_decode from "jwt-decode";
-
-const LoginWithGoogle = () => {
+const LoginWithGoogle = ({ callback }) => {
   const googleLogin = useRef();
-
-  function handleCallbackResponse(res) {
-    const user = jwt_decode(res.credential);
-    console.log(user)
-  }
 
   useEffect(() => {
     // eslint-disable-next-line no-undef
     google.accounts.id.initialize({
       client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-      callback: handleCallbackResponse,
+      callback: callback,
     });
 
     // eslint-disable-next-line no-undef
