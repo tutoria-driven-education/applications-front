@@ -1,7 +1,7 @@
-import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import { Container } from './style';
-import { TbDatabaseOff } from 'react-icons/tb'
+import React from "react";
+import { Doughnut } from "react-chartjs-2";
+import { Container } from "./style";
+import { TbDatabaseOff } from "react-icons/tb";
 
 export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
   const options = {
@@ -10,26 +10,25 @@ export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
         display: false,
         ticks: {
           callback: function (value, index, values) {
-            return ""
+            return "";
           },
-          color: "#000"
+          color: "#000",
         },
-
       },
       y: {
         display: false,
         ticks: {
           callback: function (value, index, values) {
-            return ''
+            return "";
           },
           color: "#000",
           font: {
             family: "Nunito",
-            weight: "bold"
-          }
+            weight: "bold",
+          },
         },
-        beginAtZero: true
-      }
+        beginAtZero: true,
+      },
     },
     animation: false,
     maintainAspectRatio: false,
@@ -37,56 +36,59 @@ export const ChartDoughnut = ({ infos, colors, labels, isMoney = false }) => {
     hoverBorderJoinStyle: "bevel",
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
-      labelFontColor: '#FFF',
+      labelFontColor: "#FFF",
       tooltip: {
         bodyFont: {
           family: "Nunito",
-          weight: "bold"
+          weight: "bold",
         },
         titleFont: {
           family: "Nunito",
-          weight: "bold"
+          weight: "bold",
         },
-        yAlign: 'bottom',
+        yAlign: "bottom",
         xAlign: "center",
         callbacks: {
           label: function (context) {
             var label = labels[context.dataIndex];
-            if (label) label += ': ';
-            if (isMoney) label += new Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(context.parsed);
+            if (label) label += ": ";
+            if (isMoney)
+              label += new Intl.NumberFormat("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              }).format(context.parsed);
             else label += context.parsed;
             return `  ${label}`;
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  };
 
   const data = {
     labels: labels,
     datasets: [
       {
-        label: '',
+        label: "",
         backgroundColor: colors,
         pointBorderWidth: 5,
         pointHoverRadius: 5,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: infos
-      }]
-  }
+        data: infos,
+      },
+    ],
+  };
 
   return (
-    <Container haveData={infos.filter(info => info > 0).length > 0}>
-      {
-        infos.filter(info => info > 0).length > 0
-          ?
-          <Doughnut type={''} options={options} data={data} />
-          :
-          <TbDatabaseOff size={100} color="rgb(208 208 208)" />
-      }
+    <Container haveData={infos.filter((info) => info > 0).length > 0}>
+      {infos.filter((info) => info > 0).length > 0 ? (
+        <Doughnut type={""} options={options} data={data} />
+      ) : (
+        <TbDatabaseOff size={100} color="rgb(208 208 208)" />
+      )}
     </Container>
-  )
-}
+  );
+};

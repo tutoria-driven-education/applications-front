@@ -17,6 +17,7 @@ import {
   MentorStudent,
 } from "./pages";
 import { Header } from "./components";
+import Classes from "./pages/classes";
 
 function App() {
   return (
@@ -40,13 +41,14 @@ function App() {
                   <Route path="/student" element={<StudentHomepage />} />
                   <Route path="/mentor" element={<MentorStudent />} />
                   <Route
-                    path="/mentoring-groups"
-                    element={<MentoringGroups />}
-                  />
-                  <Route
                     path="/partner-companies"
                     element={<PartnerCompanies />}
                   />
+                  <Route
+                    path="/mentoring-groups"
+                    element={<MentoringGroups />}
+                  />
+                  <Route path="/classes" element={<Classes />} />
                 </Route>
               </Routes>
             </UserProvider>
