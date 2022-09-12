@@ -90,11 +90,11 @@ const List = ({
           <option value="Engenheiro de Software">Engenheiro de Software</option>
           <option value="Outros">Outros</option>
         </select>
-        <RangePicker
-            className="date"
+        <div className="date"><RangePicker
             onChange={(newRange) => setRangeSelected({ ...newRange })}
             initialRange={initalRange}
           />
+        </div>
       </Filter>
       {filterApplications(array).map((elem) => (
         <Item

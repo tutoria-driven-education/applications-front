@@ -63,6 +63,7 @@ export const RangePicker = ({ onChange, disabled = false, noRemove = false, init
                         <BiX size={22} />
                     </ContainerRemove>
                 }
+                {/* !range.from?<div className="teste" onClick={() => setShowCalendar(true)} style={{ marginRight:"100px", fontSize:"14px" }}>Data</div>: */}
             </BaseInput>
             <ModalGeneric open={showCalendar} onClose={() => setShowCalendar(false)}>
                 <Calendar

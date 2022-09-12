@@ -18,9 +18,9 @@ const Filter = styled.section`
     font-size: 16px;
   }
   .option{
-    border-radius: 15px;
+    border-radius: 5px;
     padding-left: 10px;
-    height: 30px;
+    height: 40px;
     min-width:150px;
     display:flex;
     flex: 1;
@@ -28,10 +28,7 @@ const Filter = styled.section`
   }
   .date{
     border-radius: 15px;
-    padding-left: 10px;
-    height: 30px;
-    min-width:150px;
-    display:flex;
+    max-width: 150px;
     flex: 1;
   }
   /* @media (max-width: 875px) {
