@@ -58,7 +58,17 @@ export default function Login() {
         mentor_id: searchParams.get("m"),
         class_id: searchParams.get("c"),
       }),
-    });
+    })
+      .then(({ data }) => {
+        setToken(data.token);
+        setIsMentor(data.is_mentor);
+        data.is_mentor ? navigate("/mentor") : navigate("/student");
+      })
+      .catch(() => {
+        toast.error(
+          "Erro inesperado. Por favor, entre em contato com a coordenação!"
+        );
+      });
   }
 
   return (
