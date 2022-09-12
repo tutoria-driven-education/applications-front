@@ -2,8 +2,37 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Applications from "../../../services/ApplicationsService";
 import fomatData from "../../../utils/fomatData";
+import { RangePicker } from "../../FormData/RangePicker";
 import Item from "../Item";
-import { ListContainer } from "./styles";
+import { ListContainer, Filter } from "./styles";
+
+const correct_date_filter = (date) => {
+  const day = date.day
+  const month = date.month
+  const year = date.year
+  return new Date(year,month-1,day)
+}
+
+const getFirstDayOfTheMonth = () => {
+    const date = new Date();
+    const newDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    return {
+      day: newDate.getDate(),
+      month: newDate.getMonth() + 1,
+      year: newDate.getFullYear()
+    }
+  }
+
+  const getAtualDate = () => {
+    const date = new Date();
+    return {
+      day: date.getDate(),
+      month: date.getMonth() + 1,
+      year: date.getFullYear()
+    }
+  }
+
+  const initalRange = { from: null, to: null }
 
 const List = ({
   array,
@@ -14,6 +43,9 @@ const List = ({
   token,
 }) => {
   const [flag, setFlag] = useState(true);
+  const [company,setCompany] = useState("")
+  const [job,setJob] = useState("Todos")
+  const [rangeSelected, setRangeSelected] = useState(initalRange);
 
   const getAllApplications = () => {
     Applications.getAllApplications(token)
@@ -29,10 +61,41 @@ const List = ({
   useEffect(() => {
     getAllApplications();
   }, [flag]); //eslint-disable-line react-hooks/exhaustive-deps
+  
+
+  function filterApplications(array){
+    return array.filter((app)=>{
+      return (
+        (job==="Todos"?
+          true:
+          app.job===job) 
+        && app.company.toLowerCase().includes(company.toLowerCase()) 
+        && (!rangeSelected.from?true:new Date(app.date)>=correct_date_filter(rangeSelected.from)) 
+        && (!rangeSelected.to?true:new Date(app.date)<=correct_date_filter(rangeSelected.to)))
+    })
+  }
+
 
   return (
     <ListContainer>
-      {array.map((elem) => (
+      <Filter>
+        <p>Filtrar:</p>
+        <input className="option" placeholder="Empresa" onChange={(e)=> setCompany(e.target.value)}></input>
+        <select className="option" onChange={(e)=> setJob(e.target.value)}>
+          <option value="Todos">Todos</option>
+          <option value="Desenvolvedor FullStack">Desenvolvedor FullStack</option>
+          <option value="Desenvolvedor Back-End">Desenvolvedor Back-End</option>
+          <option value="Desenvolvedor Front-End">Desenvolvedor Front-End</option>
+          <option value="Engenheiro de Software">Engenheiro de Software</option>
+          <option value="Outros">Outros</option>
+        </select>
+        <div className="date"><RangePicker
+            onChange={(newRange) => setRangeSelected({ ...newRange })}
+            initialRange={initalRange}
+          />
+        </div>
+      </Filter>
+      {filterApplications(array).map((elem) => (
         <Item
           key={elem.id}
           isWaiting={isWaiting}
@@ -46,8 +109,10 @@ const List = ({
           }}
         />
       ))}
+      
     </ListContainer>
   );
 };
+
 
 export default List;
