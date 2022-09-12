@@ -64,10 +64,14 @@ export default function Login() {
         setIsMentor(data.is_mentor);
         data.is_mentor ? navigate("/mentor") : navigate("/student");
       })
-      .catch(() => {
-        toast.error(
-          "Erro inesperado. Por favor, entre em contato com a coordenação!"
-        );
+      .catch(({ response }) => {
+        if (response.status === 401) {
+          toast.error("Link de cadastro inválido!");
+        } else {
+          toast.error(
+            "Erro inesperado. Por favor, entre em contato com a coordenação!"
+          );
+        }
       });
   }
 
