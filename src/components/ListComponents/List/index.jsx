@@ -47,10 +47,6 @@ const List = ({
   const [job,setJob] = useState("Todos")
   const [rangeSelected, setRangeSelected] = useState(initalRange);
 
-  console.log(rangeSelected)
-  console.log(rangeSelected.from===null? null:correct_date_filter(rangeSelected.from))
-  console.log(array)
-  console.log(rangeSelected.to===null? null:correct_date_filter(rangeSelected.to))
   const getAllApplications = () => {
     Applications.getAllApplications(token)
       .then(({ data }) => {
@@ -69,10 +65,13 @@ const List = ({
 
   function filterApplications(array){
     return array.filter((app)=>{
-      return ((job==="Todos"?true:app.job===job) 
-      && app.company.includes(company) && 
-      (!rangeSelected.from?true:new Date(app.date)>=correct_date_filter(rangeSelected.from)) 
-      && (!rangeSelected.to?true:new Date(app.date)<=correct_date_filter(rangeSelected.to)))
+      return (
+        (job==="Todos"?
+          true:
+          app.job===job) 
+        && app.company.toLowerCase().includes(company.toLowerCase()) 
+        && (!rangeSelected.from?true:new Date(app.date)>=correct_date_filter(rangeSelected.from)) 
+        && (!rangeSelected.to?true:new Date(app.date)<=correct_date_filter(rangeSelected.to)))
     })
   }
 
