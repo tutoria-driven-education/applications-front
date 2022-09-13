@@ -1,12 +1,21 @@
-import {
-  Container,
-  CustomRadioGroup,
-  ResultSection,
-  StudentSection,
-  StudentTitleName,
-} from "./mentorStudent.styles";
+import ClassesService from "../../services/ClassesService";
+import Select from "react-select";
+import AuthContext from "../../contexts/AuthContext";
+import Message from "../../components/Message";
+import UserContext from "../../contexts/UserContext";
+import fomatData from "../../utils/fomatData";
+import ApplicationsList from "../../components/ListComponents/List";
+import SearchService from "../../services/SearchService";
 import { Section } from "../../components";
 import { SectionTitle } from "../../components/Section/styles";
+import { useContext, useEffect, useState } from "react";
+import { FaExpandAlt, FaHeartBroken, FaSearch } from "react-icons/fa";
+import { GrClose } from "react-icons/gr";
+import { toast } from "react-toastify";
+import { BsFillPersonLinesFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
+import { ContainerSelect } from "./style";
 import {
   Button,
   Fab,
@@ -15,18 +24,15 @@ import {
   Radio,
   TextField,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { FaExpandAlt, FaHeartBroken, FaSearch } from "react-icons/fa";
-import { GrClose } from "react-icons/gr";
-import SearchService from "../../services/SearchService";
-import { toast } from "react-toastify";
-import ApplicationsList from "../../components/ListComponents/List";
-import fomatData from "../../utils/fomatData";
-import { BsFillPersonLinesFill } from "react-icons/bs";
-import Message from "../../components/Message";
-import UserContext from "../../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
-import AuthContext from "../../contexts/AuthContext";
+import {
+  Container,
+  CustomRadioGroup,
+  ResultSection,
+  StudentSection,
+  StudentTitleName,
+} from "./mentorStudent.styles";
+
+const initialClassesOptions = [{ value: "all", label: "Todas as turmas" }];
 
 const MentorStudent = () => {
   const [searchFilter, setSearchFilter] = useState("student");
@@ -34,6 +40,9 @@ const MentorStudent = () => {
   const [result, setResult] = useState(null);
   const { isMentor } = useContext(UserContext);
   const { token } = useContext(AuthContext);
+  const [classesOptions, setClassesOptions] = useState(initialClassesOptions);
+  const [classSelected, setClassSelected] = useState(initialClassesOptions[0]);
+
   const nav = useNavigate();
 
   useEffect(() => {
@@ -47,6 +56,10 @@ const MentorStudent = () => {
     event.preventDefault();
     SearchService.search({ name: input, type: searchFilter }, token)
       .then(({ data }) => {
+        data = data.filter((item) => {
+          if (classSelected.value === 'all') return true
+          else return classSelected.value === item.class_id
+        });
         const filteredData = data.map((item) => {
           return {
             ...item,
@@ -67,12 +80,11 @@ const MentorStudent = () => {
           searchFilter === "company"
             ? toast.warning("Nenhuma Aplicação para esta empresa até o momento")
             : toast.error(
-                `${
-                  searchFilter === "student"
-                    ? "Nenhum aluno(a) encontrado(a)"
-                    : "Nenhum mentor(a) encontrado(a)"
-                }`
-              );
+              `${searchFilter === "student"
+                ? "Nenhum aluno(a) encontrado(a)"
+                : "Nenhum mentor(a) encontrado(a)"
+              }`
+            );
         }
       })
       .catch((error) => {
@@ -91,10 +103,38 @@ const MentorStudent = () => {
     setResult(null);
   }
 
+  const searchClasses = useCallback(async () => {
+    try {
+      const { data } = await ClassesService.getAll(token);
+      const _classesOptions = data.map((_class) => {
+        return { label: _class.name, value: _class.id };
+      });
+      setClassesOptions([...initialClassesOptions, ..._classesOptions]);
+    } catch (error) {
+      toast.error('Erro ao buscar turmas');
+    }
+  }, [token])
+
+  useEffect(() => {
+    searchClasses()
+  }, [])
+
   return (
     <Container>
       <Section title={"Barra de pesquisa:"}>
-        <CustomRadioGroup onSubmit={handleSubmit} defaultValue={"student"} row>
+        <CustomRadioGroup onSubmit={handleSubmit} defaultValue={"student"} row style={{ alignItems: "center" }}>
+          <ContainerSelect>
+            <Select
+              value={classSelected}
+              onChange={setClassSelected}
+              options={classesOptions}
+              defaultValue={classesOptions[0]}
+              styles={{
+                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+                control: (provided) => ({ ...provided, cursor: "pointer" }),
+              }}
+            />
+          </ContainerSelect>
           <FormControlLabel
             value="student"
             control={
@@ -136,8 +176,8 @@ const MentorStudent = () => {
               searchFilter === "student"
                 ? "Pesquise pelo nome de um(a) aluno(a)"
                 : searchFilter === "mentor"
-                ? "Pesquise pelo nome de um(a) mentor(a)"
-                : "Pesquise pelo nome de uma empresa"
+                  ? "Pesquise pelo nome de um(a) mentor(a)"
+                  : "Pesquise pelo nome de uma empresa"
             }
             value={input}
             InputProps={{
@@ -185,7 +225,7 @@ const MentorStudent = () => {
                 {element.expanded && element.Application.length ? (
                   <ApplicationsList
                     array={element.Application}
-                    setApplications={() => {}}
+                    setApplications={() => { }}
                     isMentorPage={true}
                     token={token}
                   />
