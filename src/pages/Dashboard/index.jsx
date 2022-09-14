@@ -3,11 +3,20 @@ import UserContext from "../../contexts/UserContext";
 import AuthContext from "../../contexts/AuthContext";
 import UsersService from "../../services/UsersServices";
 import ApplicationService from "../../services/ApplicationsService";
+import ClassesService from "../../services/ClassesService";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RangePicker } from "../../components/FormData/RangePicker";
 import { DashboardChartDoughnut } from "./DashboardCards/DashboardChartDoughnut";
 import { DashboardCharLine } from "./DashboardCards/DashboardCharLine";
+import { toast } from "react-toastify";
+import { Skeleton } from "@mui/material";
+import { lineCharts } from "./constants/lineCharts";
+import { getFirstDayOfTheMonth } from "./utils/getFirstDayOfTheMonth";
+import { getCorrectDateFilter } from "./utils/getCorrectDateFilter";
+import { doughnutCharts } from "./constants/doughnutCharts";
+import { getAtualDate } from "./utils/getAtualDate";
+import { debounceEvent } from "./utils/debounceEvent";
 import {
   Container,
   ContaineRangePicker,
@@ -15,15 +24,6 @@ import {
   FilterBar,
   Line,
 } from "./style";
-import { toast } from "react-toastify";
-import { Skeleton } from "@mui/material";
-import ClassesService from "../../services/ClassesService";
-import { lineCharts } from "./constants/lineCharts";
-import { getFirstDayOfTheMonth } from "./utils/getFirstDayOfTheMonth";
-import { getCorrectDateFilter } from "./utils/getCorrectDateFilter";
-import { doughnutCharts } from "./constants/doughnutCharts";
-import { getAtualDate } from "./utils/getAtualDate";
-import { debounceEvent } from "./utils/debounceEvent";
 
 const debounce = debounceEvent();
 
