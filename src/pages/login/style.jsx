@@ -1,15 +1,51 @@
 import styled from "styled-components";
 
-const PageBody = styled.div`
+export const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - 6rem);
-  background-color: black;
+  padding: 0 64px;
+
   display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #000;
+
+  @media (max-width: 600px) {
+    padding: 32px 8px;
+  }
+`;
+
+export const AuthWrapper = styled.div`
+  width: 100%;
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px dashed var(--driven-color);
+
+  position: relative;
+
+  display: flex;
+  gap: 32px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const Box = styled.form`
+export const AuthLabel = styled.div`
+  padding: 0 8px;
+
+  position: absolute;
+
+  top: -16px;
+  left: 24px;
+
+  font-size: 32px;
+  color: #fff;
+
+  background-color: #000;
+`;
+
+export const Box = styled.form`
   width: 50%;
   max-width: 60rem;
   height: 250px;
@@ -28,5 +64,3 @@ const Box = styled.form`
     border-radius: 0;
   }
 `;
-
-export { PageBody, Box };
