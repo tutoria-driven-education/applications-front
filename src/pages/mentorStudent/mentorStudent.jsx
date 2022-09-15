@@ -71,12 +71,14 @@ const MentorStudent = () => {
           setResult(filteredData);
           setInput("");
         } else if (filteredData.length === 0 && data.length !== 0) {
+          setResult(null)
           toast.error(
             searchFilter === "student"
               ? `Nenhuma aplicação encontrada para os(as) alunos(as) selecionados`
               : `Nenhum aluno(a) do mentor(a) aplicou para alguma vaga até o momento`
           );
         } else {
+          setResult(null)
           searchFilter === "company"
             ? toast.warning("Nenhuma Aplicação para esta empresa até o momento")
             : toast.error(
@@ -90,6 +92,7 @@ const MentorStudent = () => {
       .catch((error) => {
         toast.error(error.response.data.message);
         console.error(error.response.message || error);
+        setResult(null)
       });
   }
 
