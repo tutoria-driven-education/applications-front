@@ -1,4 +1,3 @@
-import './style.css';
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import React, { useEffect } from 'react'
 import { BiCalendar, BiX } from 'react-icons/bi'

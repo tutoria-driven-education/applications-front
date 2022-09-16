@@ -22,6 +22,14 @@ export const BaseInput = styled.div`
         border-color: #e2e2e2 !important;
         pointer-events: none !important;
     `}
+    .Calendar__weekDay {
+        text-decoration: none !important;
+        pointer-events: none !important;
+    }
+
+    .custom-calendar {
+        border-radius: 4px !important;
+    }
 
 `
 
