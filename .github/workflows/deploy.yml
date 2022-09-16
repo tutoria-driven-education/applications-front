@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
+
       - name: Remove old files
         uses: appleboy/ssh-action@master
         with:
@@ -24,7 +24,7 @@ jobs:
           script: |
             cd ${{ secrets.REMOTE_TARGET }}
             for f in *; do rm -rf $f; done
-      
+
       - name: Sync files to server
         uses: easingthemes/ssh-deploy@main
         env:
@@ -33,18 +33,19 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
-      
+
       - name: Deploy in server
         uses: appleboy/ssh-action@master
         env:
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
           PUBLIC_DIR: ${{ secrets.PUBLIC_DIR }}
+          REACT_APP_GOOGLE_CLIENT_ID: "1024012816628-c99kkubjrq70ehaisloqlmetsjs467i3.apps.googleusercontent.com"
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          envs: REACT_APP_API_URL,PUBLIC_DIR
+          envs: REACT_APP_API_URL,PUBLIC_DIR,REACT_APP_GOOGLE_CLIENT_ID
           script: |
             set > ${{ secrets.REMOTE_TARGET }}/.env
             cd ${{ secrets.REMOTE_TARGET }}
