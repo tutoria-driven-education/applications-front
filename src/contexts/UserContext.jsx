@@ -5,9 +5,10 @@ const UserContext = createContext();
 
 function UserProvider({ children }) {
   const [isMentor, setIsMentor] = useLocalStorage("isMentor", null);
+  const [name, setName] = useLocalStorage("name", null);
 
   return (
-    <UserContext.Provider value={{ isMentor, setIsMentor }}>
+    <UserContext.Provider value={{ isMentor, setIsMentor, name, setName }}>
       {children}
     </UserContext.Provider>
   );
