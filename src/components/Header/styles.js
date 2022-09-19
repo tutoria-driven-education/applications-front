@@ -21,8 +21,38 @@ const FabStyles = {
   backgroundColor: "black",
   color: "white",
   position: "absolute",
-  left: "1rem",
   gap: "1rem",
 };
 
-export { Header, Title, FabStyles };
+const FabLogoutStyles = {
+  ...FabStyles,
+  left: "1rem",
+};
+
+const FabUserStyles = {
+  ...FabStyles,
+  right: "1rem",
+};
+
+const UserStyles = {
+  lineHeight: "15px",
+  marginTop: "5px",
+  maxWidth: "300px",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+};
+
+const UserTypeStyles = {
+  display: "block",
+  fontSize: "1.2rem",
+};
+
+export {
+  Header,
+  Title,
+  FabLogoutStyles,
+  FabUserStyles,
+  UserTypeStyles,
+  UserStyles,
+};

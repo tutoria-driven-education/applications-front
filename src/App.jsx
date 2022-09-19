@@ -18,6 +18,7 @@ import {
 } from "./pages";
 import { Header } from "./components";
 import Classes from "./pages/classes";
+import Mentors from "./pages/mentors";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
                     element={<MentoringGroups />}
                   />
                   <Route path="/classes" element={<Classes />} />
+                  <Route path="/mentors" element={<Mentors />} />
                 </Route>
               </Routes>
             </UserProvider>

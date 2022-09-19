@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import AuthContext from "../../../contexts/AuthContext";
-import CompaniesService from "../../../services/CompaniesServices";
 import { toast } from "react-toastify";
 import { FaClipboardList } from "react-icons/fa";
 import { CompanyNameHolder, Container } from "./style";
 import ClassesService from "../../../services/ClassesService";
+import copyText from "../../../utils/copyText";
 
 export default function Class({ id, name }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function Class({ id, name }) {
       .then(({ data }) => {
         const baseUrl = window.location.origin;
         const url = `${baseUrl}?m=${data.m}&c=${data.c}`;
-        copyLinkToClipboard(url);
+        copyText(url, "o link");
 
         setIsLoading(false);
       })
@@ -27,17 +27,6 @@ export default function Class({ id, name }) {
         setIsLoading(false);
       });
   };
-
-  function copyLinkToClipboard(link) {
-    navigator.clipboard.writeText(link).then(
-      () => {
-        toast.success("Link copiado!");
-      },
-      (err) => {
-        console.error("Não foi possível copiar o link...", err);
-      }
-    );
-  }
 
   return (
     <Container onClick={() => getLink()}>

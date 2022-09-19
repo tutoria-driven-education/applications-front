@@ -16,4 +16,17 @@ export default class UsersService {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
+
+  static createMentor(token, mentor) {
+    return api.post("/users/mentors", mentor, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  static getAllFiltered(token, filters) {
+    const newFilters = makeQueryParams(filters);
+    return api.get(`/users?${newFilters}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 }

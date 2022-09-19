@@ -26,6 +26,7 @@ export default function Login() {
 
   const { setToken } = useContext(AuthContext);
   const { setIsMentor } = useContext(UserContext);
+  const { setName } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -36,6 +37,7 @@ export default function Login() {
       .then(({ data }) => {
         setToken(data.token);
         setIsMentor(data.is_mentor);
+        setName(data.name);
         data.is_mentor ? navigate("/mentor") : navigate("/student");
       })
       .catch(({ response }) => {
@@ -62,6 +64,7 @@ export default function Login() {
       .then(({ data }) => {
         setToken(data.token);
         setIsMentor(data.is_mentor);
+        setName(data.name);
         data.is_mentor ? navigate("/mentor") : navigate("/student");
       })
       .catch(({ response }) => {
