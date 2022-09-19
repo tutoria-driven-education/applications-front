@@ -61,4 +61,23 @@ const ModalWrapper = styled.div`
   position: relative;
 `;
 
-export { Form, FormTitle, ModalBox, ModalCloseButton, Row, ModalWrapper };
+const GoogleText = styled.div`
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+
+  &:after {
+    content: "*";
+  }
+`;
+
+export {
+  Form,
+  FormTitle,
+  ModalBox,
+  ModalCloseButton,
+  Row,
+  ModalWrapper,
+  GoogleText,
+};
