@@ -7,17 +7,18 @@ import {
   UserTypeStyles,
 } from "./styles";
 import { RiLogoutBoxFill, RiUserFill } from "react-icons/ri";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import UserContext from "../../contexts/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fab } from "@mui/material";
-import copyText from "../../utils/copyText";
+import UpdateUser from "./updateUser";
 
 const Header = ({ children }) => {
   const { isMentor, setIsMentor } = useContext(UserContext);
   const { setToken } = useContext(AuthContext);
   const { name, setName } = useContext(UserContext);
+  const [modalOpened, setModalOpened] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,21 +48,29 @@ const Header = ({ children }) => {
       )}
       <Title>{children}</Title>
       {location.pathname !== "/" && (
-        <Fab
-          onClick={() => copyText(name, "o nome")}
-          size="medium"
-          variant="extended"
-          color="secondary"
-          sx={FabUserStyles}
-        >
-          <RiUserFill size={26} />
-          <div style={UserStyles}>
-            {name}
-            <small style={UserTypeStyles}>
-              {isMentor ? "Mentor(a)" : "Aluno(a)"}
-            </small>
-          </div>
-        </Fab>
+        <>
+          <Fab
+            onClick={() => setModalOpened(true)}
+            size="medium"
+            variant="extended"
+            color="secondary"
+            sx={FabUserStyles}
+          >
+            <RiUserFill size={26} />
+            <div style={UserStyles}>
+              {name}
+              <small style={UserTypeStyles}>
+                {isMentor ? "Mentor(a)" : "Aluno(a)"}
+              </small>
+            </div>
+          </Fab>
+          <UpdateUser
+            opened={modalOpened}
+            setOpened={setModalOpened}
+            name={name}
+            logout={logout}
+          />
+        </>
       )}
     </HeaderComponent>
   );

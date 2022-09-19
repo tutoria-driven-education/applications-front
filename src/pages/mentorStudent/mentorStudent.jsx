@@ -57,8 +57,8 @@ const MentorStudent = () => {
     SearchService.search({ name: input, type: searchFilter }, token)
       .then(({ data }) => {
         data = data.filter((item) => {
-          if (classSelected.value === 'all') return true
-          else return classSelected.value === item.class_id
+          if (classSelected.value === "all") return true;
+          else return classSelected.value === item.class_id;
         });
         const filteredData = data.map((item) => {
           return {
@@ -71,28 +71,29 @@ const MentorStudent = () => {
           setResult(filteredData);
           setInput("");
         } else if (filteredData.length === 0 && data.length !== 0) {
-          setResult(null)
+          setResult(null);
           toast.error(
             searchFilter === "student"
               ? `Nenhuma aplicação encontrada para os(as) alunos(as) selecionados`
               : `Nenhum aluno(a) do mentor(a) aplicou para alguma vaga até o momento`
           );
         } else {
-          setResult(null)
+          setResult(null);
           searchFilter === "company"
             ? toast.warning("Nenhuma Aplicação para esta empresa até o momento")
             : toast.error(
-              `${searchFilter === "student"
-                ? "Nenhum aluno(a) encontrado(a)"
-                : "Nenhum mentor(a) encontrado(a)"
-              }`
-            );
+                `${
+                  searchFilter === "student"
+                    ? "Nenhum aluno(a) encontrado(a)"
+                    : "Nenhum mentor(a) encontrado(a)"
+                }`
+              );
         }
       })
       .catch((error) => {
         toast.error(error.response.data.message);
         console.error(error.response.message || error);
-        setResult(null)
+        setResult(null);
       });
   }
 
@@ -114,18 +115,23 @@ const MentorStudent = () => {
       });
       setClassesOptions([...initialClassesOptions, ..._classesOptions]);
     } catch (error) {
-      toast.error('Erro ao buscar turmas');
+      toast.error("Erro ao buscar turmas");
     }
-  }, [token])
+  }, [token]);
 
   useEffect(() => {
-    searchClasses()
-  }, [])
+    searchClasses();
+  }, []);
 
   return (
     <Container>
       <Section title={"Barra de pesquisa:"}>
-        <CustomRadioGroup onSubmit={handleSubmit} defaultValue={"student"} row style={{ alignItems: "center" }}>
+        <CustomRadioGroup
+          onSubmit={handleSubmit}
+          defaultValue={"student"}
+          row
+          style={{ alignItems: "center" }}
+        >
           <ContainerSelect>
             <Select
               value={classSelected}
@@ -133,7 +139,10 @@ const MentorStudent = () => {
               options={classesOptions}
               defaultValue={classesOptions[0]}
               styles={{
-                option: (provided, state) => ({ ...provided, cursor: "pointer" }),
+                option: (provided, state) => ({
+                  ...provided,
+                  cursor: "pointer",
+                }),
                 control: (provided) => ({ ...provided, cursor: "pointer" }),
               }}
             />
@@ -179,8 +188,8 @@ const MentorStudent = () => {
               searchFilter === "student"
                 ? "Pesquise pelo nome de um(a) aluno(a)"
                 : searchFilter === "mentor"
-                  ? "Pesquise pelo nome de um(a) mentor(a)"
-                  : "Pesquise pelo nome de uma empresa"
+                ? "Pesquise pelo nome de um(a) mentor(a)"
+                : "Pesquise pelo nome de uma empresa"
             }
             value={input}
             InputProps={{
@@ -223,12 +232,12 @@ const MentorStudent = () => {
                   ) : (
                     <FaExpandAlt size={24} color="white" />
                   )}
-                  {element.name}
+                  {element.name} {element.email ? `- ${element.email}` : ""}
                 </StudentTitleName>
                 {element.expanded && element.Application.length ? (
                   <ApplicationsList
                     array={element.Application}
-                    setApplications={() => { }}
+                    setApplications={() => {}}
                     isMentorPage={true}
                     token={token}
                   />

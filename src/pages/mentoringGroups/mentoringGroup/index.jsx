@@ -5,8 +5,10 @@ export default function MentoringGroup({ mentorName, students }) {
     <Container>
       <MentorNameHolder>{`Mentor(a): ${mentorName}`}</MentorNameHolder>
 
-      {students.map(({ id, name }) => (
-        <StudentNameHolder key={`student-${id}`}>{name}</StudentNameHolder>
+      {students.map(({ id, name, email }) => (
+        <StudentNameHolder key={`student-${id}`}>
+          {name} {email ? `- ${email}` : ""}
+        </StudentNameHolder>
       ))}
     </Container>
   );
