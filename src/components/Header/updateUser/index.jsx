@@ -2,6 +2,7 @@ import { Modal } from "@mui/material";
 import {
   Form,
   FormTitle,
+  GoogleText,
   ModalBox,
   ModalCloseButton,
   ModalWrapper,
@@ -14,6 +15,7 @@ import { Button, Input } from "../../FormData";
 import { useContext, useEffect, useState } from "react";
 import UsersService from "../../../services/UsersServices";
 import { toast } from "react-toastify";
+import LoginWithGoogle from "../../LoginWithGoogle";
 
 const UpdateUser = ({ opened, setOpened, name, logout }) => {
   const { token, setToken } = useContext(AuthContext);
@@ -30,12 +32,12 @@ const UpdateUser = ({ opened, setOpened, name, logout }) => {
 
   useEffect(() => {
     setNameInput(name);
+    setEmailInput("");
 
     if (opened) {
       UsersService.getInfo(token)
         .then(({ data }) => {
           setNameInput(data.name);
-          data.email && setEmailInput(data.email);
         })
         .catch((err) => {
           toast.error("Erro ao pegar os dados do usuário");
@@ -43,10 +45,17 @@ const UpdateUser = ({ opened, setOpened, name, logout }) => {
     }
   }, [opened]);
 
+  function handleUserGmail(res) {
+    setEmailInput(res.credential);
+  }
+
   function handleUpdateUser(event) {
     event.preventDefault();
     console.log("update user");
-    UsersService.putInfo(token, { name: nameInput, email: emailInput })
+    UsersService.putInfo(token, {
+      name: nameInput,
+      googleCredential: emailInput,
+    })
       .then(({ data }) => {
         logout();
         setOpened(false);
@@ -82,14 +91,12 @@ const UpdateUser = ({ opened, setOpened, name, logout }) => {
               />
             </Row>
             <Row>
-              <Input
-                value={emailInput}
-                setValue={setEmailInput}
-                label="E-mail"
-                type={"email"}
-                placeholder="E-mail"
-                required={true}
-              />
+              <center>
+                {!emailInput && (
+                  <GoogleText>Conecte sua conta do Google</GoogleText>
+                )}
+                <LoginWithGoogle callback={handleUserGmail} />
+              </center>
             </Row>
             <Button disable={disable}>Salvar</Button>
           </Form>
